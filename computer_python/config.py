@@ -1,0 +1,34 @@
+# Robot physical parameters
+WHEEL_CIRCUMFERENCE = 17.59 # cm
+WHEEL_BASE = 12.0 # cm between wheels
+DEFAULT_SPEED = 300 # degrees per second
+
+# Course parameters
+COURSE_WIDTH = 180 # cm
+COURSE_HEIGHT = 120 # cm
+GOAL_A_WIDTH = 20 # cm (150 points)
+GOAL_B_WIDTH = 8 # cm (100 points)
+
+# Ball parameters
+BALL_DIAMETER = 4 # cm
+EGG_DIAMETER = 8 # cm
+
+# Vision parameters
+CAMERA_INDEX = 1
+ORANGE_HSV_LOWER = [10, 150, 150]
+ORANGE_HSV_UPPER = [25, 255, 255]
+WHITE_HSV_LOWER = [0, 0, 180]
+WHITE_HSV_UPPER = [180, 80, 255]
+
+# Network parameters
+WEBSOCKET_HOST = '0.0.0.0'
+WEBSOCKET_PORT = 8765
+
+# Scoring parameters
+POINTS_GOAL_A = 150
+POINTS_GOAL_B = 100
+POINTS_ORANGE_FIRST = 200
+POINTS_PER_SECOND = 3
+PENALTY_TOUCH_WALL = -50
+PENALTY_MOVE_OBSTACLE = -100
+PENALTY_MOVE_EGG = -300
