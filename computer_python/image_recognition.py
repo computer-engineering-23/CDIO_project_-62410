@@ -5,7 +5,7 @@ from typing import Union
 # Start kameraet
 class Camera:
     def __init__(self):
-        self.capture = cv2.VideoCapture(2)
+        self.capture = cv2.VideoCapture(1,cv2.CAP_DSHOW)
     
     def displayFrame(self,frame:np.array):
         cv2.imshow("Bold Detektion", frame)
@@ -61,8 +61,10 @@ class Camera:
         masked = cv2.bitwise_and(frame, frame, mask=mask)
         
         # Konverter til gråskala og blur igen
-        gray = cv2.medianBlur(masked,5)
-        gray = cv2.cvtColor(gray, cv2.COLOR_HSV2BGR)
+        gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
+        gray = cv2.medianBlur(gray,5)
+        gray = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+        gray = cv2.cvtColor(gray, cv2.COLOR_BGR2HSV)
 
         
         # Find cirkler med Hough Circle Transform
