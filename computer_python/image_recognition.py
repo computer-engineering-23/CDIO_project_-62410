@@ -7,6 +7,7 @@ import math
 class Camera:
     def __init__(self):
         self.capture = cv2.VideoCapture(1,cv2.CAP_DSHOW)
+        self.walls = []
     
     def displayFrame(self,frame:np.array,name:str = "detection window"):
         cv2.imshow(name, frame)
@@ -40,7 +41,6 @@ class Camera:
         self.displayFrame(frame, "with camera")
         self.displayFrame(data, "without camera")
 
-    
     def getFrame(self) -> np.array:
         ret, frame = self.capture.read()
         if not ret:
@@ -171,6 +171,8 @@ class Camera:
 
         linesP = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5)
         
+        self.walls = linesP
+
         return linesP
 
     def generateWall(self, frameNumber) ->np.array:
@@ -185,7 +187,8 @@ class Camera:
                     (x1, y1, x2,y2) = walls[i][0]
                     cv2.line(buffer,(x1,y1),(x2,y2),(255,255,255),1, cv2.LINE_AA)
         self.displayFrame(buffer, "walls")
-        return self.findWall(buffer,True)
+        self.walls = self.findWall(buffer,True)
+        return self.walls
 
     def findCar(self, frame):
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -234,8 +237,7 @@ class Camera:
         if(useOldWall):
             walls = self.walls
         else:
-            self.walls = self.generateWall(40)
-            walls = self.walls
+            walls = self.generateWall(40)
         frame:np.array = self.getFrame()
         eggs = self.findEgg(np.copy(frame))
         circles = self.findCircle(np.copy(frame))
