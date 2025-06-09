@@ -19,7 +19,7 @@ data = client_socket.recv(1024)
 print("Modtaget:", data.decode())
 
 # Send svar tilbage til EV3
-client_socket.sendall(b"Hej fra PC'en!")
+client_socket.sendall(b"drive")
 
 # Luk forbindelsen
 client_socket.close()
