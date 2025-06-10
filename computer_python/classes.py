@@ -1,3 +1,6 @@
+import math
+import numpy as np
+
 class Point:
     """Point class to represent a point in 2D space"""
     def __init__(self, x:int, y:int):
