@@ -69,14 +69,20 @@ class track:
     
     def VectorPath(self) -> Tuple[int,int]:
         """generates Vector from front to first goal"""
-        target:Tuple[int,int] = self.goals[0]
-        return Point(self.front[0] - target[0], self.front[1] - target[1])
+        target:Point = self.goals[0]
+        vector =  Point(self.car.front.y - target.y, self.car.front.x - target.x)
+        if(abs(vector.x) < 10):
+            vector.x = 0
+        if(abs(vector.y) < 10):
+            vector.y = 0
+        return vector
     
     def generatepath(self) -> List[Union[Rotation,Movement]]:
         """Generates a path from the car to the first goal"""
-        if(self.goals is None or self.front is None):
+        if(self.goals is None or self.car.front is None):
             return []
         path = []
+        
         vector = self.VectorPath()
         if(vector.x == 0 and vector.y == 0):
             return [Pickup()]
@@ -100,22 +106,35 @@ class track:
     def Draw(self, frame:np.array):
         """Draws the track on the frame"""
         for wall in self.walls:
-            cv2.line(frame, (int(wall.start.x), int(wall.start.y)), (int(wall.end.x), int(wall.end.y)), (0, 0, 255), 1)
+            cv2.line(frame, (int(wall.start.y), int(wall.start.x)), (int(wall.end.y), int(wall.end.x)), (0, 0, 255), 1)
         
         for goal in self.goals:
-            cv2.circle(frame, (int(goal.x), int(goal.y)), 5, (255, 0, 0), -1)
+            cv2.circle(frame, (int(goal.y), int(goal.x)), 5, (255, 0, 0), -1)
         
         for target in self.targets:
-            cv2.circle(frame, (int(target.x), int(target.y)), 5, (0, 255, 0), -1)
+            cv2.circle(frame, (int(target.y), int(target.x)), 5, (0, 255, 0), -1)
         
         for obsticle in self.obsticles:
-            cv2.circle(frame, (int(obsticle.x), int(obsticle.y)), 5, (0, 255, 255), -1)
+            cv2.circle(frame, (int(obsticle.y), int(obsticle.x)), 5, (0, 255, 255), -1)
         
         for i in range(len(self.car.triangle)):
             p0 = self.car.triangle[i]
             p1 = self.car.triangle[(i + 1) % 3]
-            cv2.line(frame, (int(p0.y), int(p0.x)), (int(p1.y), int(p1.x)), (255, 255, 0), 2)
+            cv2.line(frame, (int(p0.x), int(p0.y)), (int(p1.x), int(p1.y)), (255, 255, 0), 2)
         
+        for i in self.generatepath():
+            if isinstance(i, Movement):
+                cv2.arrowedLine(frame, (int(self.car.front.y), int(self.car.front.x)), (int(self.car.front.y + i.distance * math.cos(i.direction)), int(self.car.front.x + i.distance * math.sin(i.direction))), (0, 255, 0), 1)
+            elif isinstance(i, Rotation):
+                cv2.putText(frame, f"Rotate: {i.angle:.2f} rad", (i.location.x,i.location.y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+        
+        cv2.putText(frame, "walls: red", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+        cv2.putText(frame, "goals: blue", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+        cv2.putText(frame, "targets: green", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+        cv2.putText(frame, "obsticles: yellow", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+        cv2.putText(frame, "car: cyan", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+        cv2.putText(frame, "Press 'q' to exit", (10, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+
         return frame
 
     def test(self):
