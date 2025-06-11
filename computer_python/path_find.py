@@ -134,9 +134,9 @@ class track:
         cv2.putText(frame, "obsticles: yellow", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
         cv2.putText(frame, "car: cyan", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
         cv2.putText(frame, "Press 'q' to exit", (10, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-
+        
         return frame
-
+    
     def test(self):
         """Test function to show the track"""
         while True:
@@ -148,3 +148,7 @@ class track:
                 break
         self.cam.close()
         cv2.destroyAllWindows()
+    
+    def testPath(self):
+        """Test function to show the path"""
+        return [Movement(10, 0), Rotation(math.pi, Point(0, 0)), Movement(5, math.pi), Pickup()]
