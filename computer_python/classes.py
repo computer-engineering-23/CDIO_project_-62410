@@ -1,29 +1,32 @@
 import math
 import numpy as np
-from typing import List
+from typing import List,Union,Tuple
 
 def __sgn(x:float) -> int:
     """Returns the sign of a number"""
     if x >= 0:
         return 1
-    elif x < 0:
+    else:
         return -1
+
+def pointAverage(points:List['Point']) -> 'Point':
+    """Calculates the average of a list of points"""
+    if not points or len(points) == 0:
+        return Point(0, 0)
+    x_sum = sum(point.x for point in points)
+    y_sum = sum(point.y for point in points)
+    return Point(x_sum // len(points), y_sum // len(points))
 
 class Point:
     """Point class to represent a point in 2D space"""
-    def __init__(self, x:int, y:int):
-        self.x = x
-        self.y = y
-    def average(self, points:List['Point']) -> 'Point':
-        """Calculates the average of a list of points"""
-        if not points or len(points) == 0:
-            return Point(0, 0)
-        x_sum = sum(point.x for point in points)
-        y_sum = sum(point.y for point in points)
-        return Point(x_sum // len(points), y_sum // len(points))
-    def __eq__(self, other: 'Point') -> bool:
+    def __init__(self, x:Union[int,float], y:Union[int,float]):
+        self.x:Union[int,float] = x
+        self.y:Union[int,float] = y
+    def __eq__(self, other: object) -> bool:
         """Checks if two points are equal"""
-        return self.x == other.x and self.y == other.y
+        if(isinstance(other,Point)):
+            return self.x == other.x and self.y == other.y
+        return False
     def move(self, point: 'Point') -> 'Point':
         """Moves the point by a given point"""
         return Point(self.x + point.x, self.y + point.y)
@@ -63,7 +66,7 @@ class Wall:
         wall is represented by two points: start and end
         can generate the angle of the wall
     """
-    def __init__(self, wall:np.array):
+    def __init__(self, wall:List[List[Union[int,float]]]):
         self.start:Point = Point(wall[0][1], wall[0][0])
         self.end:Point = Point(wall[0][3], wall[0][2])
     def _asLine(self) -> 'Line':
@@ -92,7 +95,7 @@ class Line:
                 return True
         return False
     def _intersects(self, wall:Wall) -> bool:
-        col = Point(0, 0)
+        col:Point = Point(0, 0)
         func1 = self._asFunction()
         func2 = wall._asLine()._asFunction()
         col.x = (func1[1] * func2[2] - func2[1] * func1[2]) / (func1[0] * func2[1] - func2[0] * func1[1])
@@ -107,13 +110,13 @@ class Line:
             return False
         return True  # returns True if the line intersects with the wall
     
-    def _asFunction(self) -> List[float]:
+    def _asFunction(self) ->List[float]:
         """Converts the line to a function of y = mx + b"""
         out = []
         if self.start.x < self.end.x:
             self.start, self.end = self.end, self.start
         if(self.start.x == self.end.x):
-            return None
+            return [0,0,0]
         
         out.append(self.end.y - self.start.y)  # a
         out.append(self.start.x - self.end.x)  # b
@@ -121,7 +124,7 @@ class Line:
         
         return out  # returns [a, b, c] for the line equation ax + by + c = 0
     
-    def Shift(self, offset:int, angle:float = None) -> List['Line']:
+    def Shift(self, offset:int, angle:Union[float,None] = None) -> List['Line']:
         """Shifts the line by a given offset in both directions"""
         if angle is None:
             angle = self.angle()
@@ -157,11 +160,11 @@ class Car:
         car is represented by a triangle formed by three points
         front is the point in front of the car, used to determine the direction
     """
-    def __init__(self, car:List[np.array], front:List[np.array] = None):
+    def __init__(self, car:List[List[Union[Tuple[int,int],Tuple[float,float]]]], front:Union[Tuple[Union[int,float]],None] = None):
         self.triangle:List[Point] = []
         for point in car:
             self.triangle.append(Point(point[0][1], point[0][0]))
-        self.front:Point = Point(front[0][1], front[0][0]) if front is not None and len(front) == 2 else Point(0, 0)
+        self.front:Point = Point(front[1], front[0]) if front is not None and len(front) == 2 else Point(0, 0)
         
         while(len(self.triangle) < 3):
             self.triangle.append(Point(0, 0))
@@ -169,7 +172,6 @@ class Car:
             self.triangle = self.triangle[0:3]
         
         self.valid()
-
         self.offset:int = 10
     
     def area(self) -> float:
@@ -179,7 +181,7 @@ class Car:
         x3, y3 = self.triangle[2].x, self.triangle[2].y
         
         return abs((x1*(y2 - y3) + x2*(y3 - y1) + x3*(y1 - y2)) / 2.0)
-
+    
     def valid(self) -> bool:
         """Checks if the front point is valid (not at the same position as the triangle points)"""
         i:int = 0
@@ -208,13 +210,13 @@ class Car:
         """Calculates the width of the car based on the distance between the base points"""
         if not self.valid():
             return 0.0
-        return Line(self.triangle[1:3]).length()
+        return Line(*self.triangle[1:3]).length()
     
     def getRotationCenter(self) -> Point:
         """Calculates the center of the car's rotation based on its triangle points"""
         if not self.valid():
             return Point(0, 0)
-        return Point.average(self.triangle[1:3])
+        return pointAverage(self.triangle[1:3])
     
     def getRotationDiameter(self) -> float:
         """Calculates the diameter of the car based on the distance between the front point and the base points"""
