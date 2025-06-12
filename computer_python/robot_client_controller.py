@@ -25,7 +25,7 @@ print("Modtaget:", data.decode())
 
 """Test function to show the path"""
 def testPath():
-        return [Movement(10, 0), Rotation(math.pi, Point(0, 0)), Movement(5, math.pi), Pickup()]
+        return [Movement(10, 0, 0), Rotation(math.pi, Point(0, 0), 0), Movement(5, math.pi, 0), Pickup(0, 0)]
 
 path = testPath()
 
