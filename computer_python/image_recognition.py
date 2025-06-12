@@ -8,15 +8,17 @@ class Camera:
     def __init__(self, APIid:int = cv2.CAP_DSHOW, debug:bool = False):
         self.debug = debug
         self.capture = cv2.VideoCapture(1, APIid)
-        self.walls = []
-        self.goals = []
-        self.car = []
-        self.shape = None
+        self.walls:List[List[List[int | float]]] = []
         if not self.capture.isOpened():
             print("Kunne ikke åbne kamera")
             exit(1)
+        initial_frame:Union[np.ndarray,None] = self.getFrame()
+        if initial_frame is None:
+            print("Kunne ikke hente billede fra kamera")
+            exit(1)
+        self.shape:Tuple[int,...] = np.shape(initial_frame)
     
-    def displayFrame(self,frame:np.array,name:str = "detection window", debug:bool = False):
+    def displayFrame(self,frame:np.ndarray,name:str = "detection window", debug:bool = False):
         if(debug == True and not self.debug):
             return
         cv2.imshow(name, frame)
@@ -24,7 +26,7 @@ class Camera:
             return
         pass
 
-    def displayWithDetails(self,frame:np.array,circles:List[Tuple[np.array,str]] = None, lines:List[np.array] = None, goals:List[Tuple[int,int]] = None, name:str = None, debug:bool = False) -> None:
+    def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:Union[List[list[tuple[int,int,int,int]]],None] = None, goals:Union[List[Tuple[int,int]],None] = None, name:Union[str,None] = None, debug:bool = False) -> None:
         if(debug == True and not self.debug):
             return
         data = np.zeros(np.shape(frame), dtype=np.uint8)
@@ -36,14 +38,14 @@ class Camera:
             self.displayFrame(frame, "with camera", debug)
             self.displayFrame(data, "without camera", True)
 
-    def drawToFrame(self, frame:np.array, circles:List[Tuple[np.array,str]] = None, lines:List[np.array] = None, goals:List[Tuple[int,int]] = None) -> np.array:
+    def drawToFrame(self, frame:np.ndarray, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:Union[List[list[tuple[int,int,int,int]]],None] = None, goals:Union[List[Tuple[int,int]],None] = None) -> np.ndarray:
         if circles is not None:
-            names = [a[1] for a in circles]
-            circles = [a[0] for a in circles]
-            circles = np.round(circles).astype("int")
+            names:List[str] = [a[1] for a in circles]
+            _circles:List[List[Union[int,float]]] = [a[0] for a in circles]
+            _circles_:np.ndarray = np.round(_circles).astype("int")
             
             for i in range(len(names)):
-                (x, y, r) = circles[i]
+                (x, y, r) = _circles_[i]
                 cv2.circle(frame, (x, y), r, (0, 255, 0), 4)
                 cv2.putText(frame, names[i], (x - 10, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
@@ -61,7 +63,7 @@ class Camera:
 
         return frame
 
-    def getFrame(self) -> np.array:
+    def getFrame(self) -> Union[np.ndarray,None]:
         ret, frame = self.capture.read()
         if not ret:
             print("Kunne ikke hente billede fra kamera")
@@ -69,7 +71,7 @@ class Camera:
         self.shape = np.shape(frame)
         return frame
     
-    def findCircle(self,frame:np.array):
+    def findCircle(self,frame:np.ndarray) -> Union[List[Tuple[List[Union[int,float]],str]],None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
         # Orange farveområde (kan justeres)
@@ -91,13 +93,12 @@ class Camera:
         masked = cv2.bitwise_and(frame, frame, mask=mask)
         self.displayFrame(masked, "masked circle", debug=True)
 
-
         # Konverter til gråskala og blur igen
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
 
         # Find cirkler med Hough Circle Transform
-        circles = cv2.HoughCircles(
+        circles:Union[List[List[List[Union[int,float]]]],None] = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
             dp=1,
@@ -106,16 +107,16 @@ class Camera:
             param2=15,
             minRadius=3,
             maxRadius=7
-        )
+        ).tolist()
         if(circles is not None):
             names = ["ball"]*len(circles[0])
             if(len(circles[0]) == 1):
-                circles = [*zip(circles[0],names)]
+                return [*zip(circles[0],names)]
             else:
-                circles = [*zip(circles[0],names)]
+                return [*zip(circles[0],names)]
         return circles
     
-    def findEgg(self, frame):
+    def findEgg(self, frame:np.ndarray) -> Union[List[Tuple[List[int | float], str]],None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
         # Hvid farveområde (HSV)
@@ -134,7 +135,7 @@ class Camera:
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
 
         # Find cirkler med Hough Circle Transform
-        circles = cv2.HoughCircles(
+        circles: Union[List[List[List[Union[int,float]]]],None] = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
             dp=1,
@@ -143,18 +144,18 @@ class Camera:
             param2=15,
             minRadius=12,
             maxRadius=15
-        )
+        ).tolist()
         if(circles is not None):
             names = ["eggs"]*len(circles[0])
             if(len(circles[0]) == 1):
-                circles = [*zip(circles[0],names)]
+                return [*zip(circles[0],names)]
             else:
-                circles = [*zip(circles[0],names)]
+                return [*zip(circles[0],names)]
         return circles
 
-    def findWall(self, frame, noMask:bool = False):
+    def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[List[Union[int,float]]]]:
         if(not noMask):
-            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             
             hueMid = 170
             hueWidth = 25
@@ -171,34 +172,37 @@ class Camera:
             upper_red1 = np.array([hue1, 200, 200])
 
             # Skab maske
-            mask0 = cv2.inRange(hsv, lower_red0, upper_red0)
-            mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
+            mask0:np.ndarray = cv2.inRange(hsv, lower_red0, upper_red0)
+            mask1:np.ndarray = cv2.inRange(hsv, lower_red1, upper_red1)
             
-            mask = cv2.bitwise_or(mask0,mask1)
+            mask:np.ndarray = cv2.bitwise_or(mask0,mask1)
 
 
             # Brug masken til at finde relevante områder
-            masked = cv2.bitwise_and(frame, frame, mask=mask)
-            masked = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-            edges = cv2.Canny(masked, 50, 200, None, 3)
+            masked:np.ndarray = cv2.bitwise_and(frame, frame, mask=mask)
+            masked:np.ndarray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
+            edges:np.ndarray = cv2.Canny(masked, 50, 200, None, 3)
             self.displayFrame(masked, "walls masked", debug = True)
             self.displayFrame(edges, "walls edges", debug = True)
         
         else:
-            edges = frame
-            edges = cv2.cvtColor(edges, cv2.COLOR_BGR2GRAY)
+            edges:np.ndarray = frame
+            edges:np.ndarray = cv2.cvtColor(edges, cv2.COLOR_BGR2GRAY)
         
 
-        linesP = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5)
+        linesP:List[List[List[Union[int,float]]]] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5).tolist()
         
         self.walls = linesP
 
         return linesP
 
-    def generateWall(self, frameNumber) ->np.array:
+    def generateWall(self, frameNumber) ->List[List[List[int | float]]]:
         rawWalls = []
         for i in range (frameNumber):
             current = self.getFrame()
+            if(current is None):
+                print("Kunne ikke hente billede fra kamera")
+                return []
             rawWalls.append(self.findWall(current))
         buffer = np.zeros(self.shape, dtype=np.uint8)
         for walls in rawWalls:
@@ -210,7 +214,7 @@ class Camera:
         self.walls = self.findWall(buffer,True)
         return self.walls
 
-    def findCar(self, frame:np.array):
+    def findCar(self, frame:np.ndarray) -> Tuple[List[Tuple[List[int | float],str]],Tuple[List[int | float],str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
         hueWidth = 22
@@ -222,14 +226,11 @@ class Camera:
         
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
-        # Brug masken til at finde relevante områder
-
-
         # Konverter til gråskala og blur igen
         gray = cv2.GaussianBlur(mask_green, (15, 15), 0)
 
         # Find cirkler med Hough Circle Transform
-        circles = cv2.HoughCircles(
+        circles: Union[List[List[List[Union[int,float]]]],None] = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
             dp=1,
@@ -238,12 +239,12 @@ class Camera:
             param2=10,
             minRadius=3,
             maxRadius=20
-        )
+        ).tolist()
         self.displayFrame(mask_green,"car mask", debug=True)
         self.displayFrame(gray, "car blur", debug=True)
-        closest:Tuple[int,int] = None
+        closest:Union[Tuple[int,int], None] = None
         distance = 1000000
-        front = None
+        front: Union[List[Union[int, float]],None] = None
         if(circles is not None):
             for i in range (0, len(circles[0])):
                 for j in range (0, len(circles[0])):
@@ -256,78 +257,29 @@ class Camera:
                         distance = currentDistance
                         closest = (i,j)
             if(closest is not None):
-                front = np.array([(circles[0][closest[0]][0] + circles[0][closest[1]][0]) // 2, (circles[0][closest[0]][1] + circles[0][closest[1]][1]) // 2, 5])
-                circles = circles.tolist()
+                front = [(circles[0][closest[0]][0] + circles[0][closest[1]][0]) // 2, (circles[0][closest[0]][1] + circles[0][closest[1]][1]) // 2, 5]
                 circles[0].remove(circles[0][closest[1]])
                 circles[0].remove(circles[0][closest[0]])
                 circles[0].append(front)
-                circles = np.array(circles)
             if(len(circles[0]) > 1):
-                lines = []
+                lines:List[List[Tuple[int,int,int,int]]] = []
                 for i in range (0,len(circles[0])):
                     (y0, x0, r) = circles[0][i]
                     (y1, x1, r) = circles[0][(i+1) % len(circles[0])]
                     lines.append([(int(y0), int(x0), int(y1), int(x1))])
-                self.car = lines
                 self.displayWithDetails(frame, lines= lines, name="car", debug=True)
-        if(circles is not None):
+                
             names = ["car"]*len(circles[0])
-            if(len(circles[0]) == 1):
-                circles = [*zip(circles[0],names)]
-            else:
-                circles = [*zip(circles[0],names)]
-        if(front is not None):
-            front = [front, "front"]
-            return (circles, front)
+            circles_ = [*zip(circles[0],names)]
+            if(front is not None):
+                return (circles_, (front, "front"))
         else:
-            return (circles, None)
-
-    def __findCar(self, frame):
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        
-        hueWidth = 15
-        huemiddle = 227/2
-        generalWidth = 65
-        # Hvid farveområde (HSV)
-        lower_blue = np.array([huemiddle - hueWidth, 0.82 * 255 - generalWidth, 0.43 * 255 - generalWidth])
-        upper_blue = np.array([huemiddle + hueWidth, 0.82 * 255 + generalWidth, 0.43 * 255 + generalWidth])
-        
-        mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
-        
-        # Brug masken til at finde relevante områder
-        masked = cv2.bitwise_and(frame, frame, mask=mask_blue)
-        self.displayFrame(masked,"car masked", debug=True)
-
-
-        # Konverter til gråskala og blur igen
-        gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (11, 11), 0)
-
-        # Find cirkler med Hough Circle Transform
-        circles = cv2.HoughCircles(
-            gray,
-            cv2.HOUGH_GRADIENT,
-            dp=1,
-            minDist=1,
-            param1=50,
-            param2=15,
-            minRadius=3,
-            maxRadius=7
-        )
-        if(circles is not None):
-            names = ["car"]*len(circles[0])
-            if(len(circles[0]) == 1):
-                circles = [*zip(circles[0],names)]
-            else:
-                circles = [*zip(circles[0],names)]
-        return circles
+            return None
 
     def close(self):
         self.capture.release()
     
-    def midpointWalls(self, width, lines:List[np.array] = None) -> List[Tuple[int,int]]:
-        if(lines is None):
-            lines = self.walls
+    def midpointWalls(self, width, lines:List[List[List[Union[int,float]]]]) -> List[Tuple[int,int]]:
         
         if(lines is None or len(lines) == 0):
             return [(0,0),(0,0)]
@@ -420,8 +372,6 @@ class Camera:
         self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=rightLines, goals=[goals[0]]), "right lines", debug=True)
         self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=leftLines, goals=[goals[1]]), "left lines", debug=True)
         
-        self.goals = goals
-
         return goals
 
     def Test(self, useOldWall = False):
@@ -429,11 +379,12 @@ class Camera:
             walls = self.walls
         else:
             walls = self.generateWall(40)
-        frame:np.array = self.getFrame()
+        frame:Union[np.ndarray,None] = self.getFrame()
+        if(frame is None): return
         eggs = self.findEgg(np.copy(frame))
         circles = self.findCircle(np.copy(frame))
-        car, front = self.findCar(np.copy(frame))
-        goals = self.midpointWalls(self.shape[1], walls)
+        car, front = self.findCar(np.copy(frame))# type: ignore
+        goals = self.midpointWalls(self.shape[1], walls)# type: ignore
         if(circles is None):
             circles = []
         if(eggs is None):
@@ -448,7 +399,7 @@ class Camera:
             front = []
         else:
             front = [front]
-        self.displayWithDetails(frame, circles + eggs + car + front, walls, goals)
+        self.displayWithDetails(frame, circles + eggs + car + front, walls, goals)# type: ignore
 
     def setDebug(self, debug:bool):
         self.debug = debug
