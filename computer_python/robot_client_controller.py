@@ -37,3 +37,12 @@ server_socket.close()
 #"""Test function to show the path"""
 #def testPath(self):
         #return [Movement(10, 0), Rotation(math.pi, Point(0, 0)), Movement(5, math.pi), Pickup()]
+
+#class Movement(RobotInfo):
+ #   """
+  #      Movement class to represent a movement in 2D space for the robot
+   #     robot will only read distance
+    #"""
+    #def __init__(self, distance:float, location:Point, direction:float):
+     #   super().__init__(location, direction, "move")
+      #  self.distance:float = distance

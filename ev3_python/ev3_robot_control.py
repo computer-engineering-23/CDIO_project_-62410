@@ -52,8 +52,27 @@ while(True):
     elif command == "turn right":
         rightMotor.run_forever(speed_sp=-100)
         leftMotor.run_forever(speed_sp=100)
+        leftMotor.stop()
+        rightMotor.stop()
         s.sendall("OK".encode())
 
+
+    elif command == "turn left":
+        rightMotor.run_forever(speed_sp=100)
+        leftMotor.run_forever(speed_sp=-100)
+        leftMotor.stop()
+        rightMotor.stop()
+        s.sendall("OK".encode())
+
+    elif command == "backward":
+        print "Driving backward for 2 seconds"
+        leftMotor.run_forever(speed_sp=250)
+        rightMotor.run_forever(speed_sp=250)
+        time.sleep(2)
+        leftMotor.stop()
+        rightMotor.stop()
+        s.sendall("OK".encode())
+        
     else:
         print "Unknown command:", command
         s.sendall("OK".encode())
