@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from typing import List, Tuple, Union
 from image_recognition import Camera
-from classes import Point, Movement, Rotation, Wall, Car, Pickup
+from classes import Point, Movement, Rotation, Wall, Car, Pickup,RobotInfo
 import math
 
 class track:
