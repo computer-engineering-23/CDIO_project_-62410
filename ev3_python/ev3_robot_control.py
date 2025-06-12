@@ -16,6 +16,7 @@ s.send("EV3 is ready")
 leftMotor = ev3.LargeMotor('outA')
 rightMotor = ev3.LargeMotor('outB')
 smallMotor = ev3.MediumMotor('outC')
+degrees_per_robot_degree = 617 / 180 # 617 motor degrees correspond to 180 degrees robot rotation
 
 while(True):
     data = s.recv(1024)
@@ -46,27 +47,25 @@ while(True):
 
     elif command == "stop":
         leftMotor.stop()
-        rightMotor.stop()
-        s.sendall("OK".encode())
+        rightMotor.stop()        s.sendall("OK".encode())
+
 
     elif command.startswith("rotate "):
         try:
             angle_deg = float(command.split()[1])
-            duration_per_degree = 0.03  # Adjust this value based on real robot testing
-            turn_time = abs(angle_deg) * duration_per_degree
+            motor_degrees = abs(angle_deg) * degrees_per_robot_degree
+            speed = 30
 
             if angle_deg > 0:
                 # Turn left (counter-clockwise)
-                leftMotor.run_forever(speed_sp=-100)
-                rightMotor.run_forever(speed_sp=100)
+                leftMotor.on_for_degrees(speed=-speed, degrees=motor_degrees, block=False)
+                rightMotor.on_for_degrees(speed=speed, degrees=motor_degrees)
             else:
                 # Turn right (clockwise)
-                leftMotor.run_forever(speed_sp=100)
-                rightMotor.run_forever(speed_sp=-100)
+                leftMotor.on_for_degrees(speed=speed, degrees=motor_degrees, block=False)
+                rightMotor.on_for_degrees(speed=-speed, degrees=motor_degrees)
 
-            time.sleep(turn_time)
-            leftMotor.stop()
-            rightMotor.stop()
+            
             s.sendall("OK".encode())
 
         except (IndexError, ValueError):
