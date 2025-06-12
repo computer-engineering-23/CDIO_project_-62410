@@ -36,6 +36,16 @@ class Point:
     def angleTo(self, point: 'Point') -> float:
         """Calculates the angle to another point in radians"""
         return math.sqrt((point.x - self.x) ** 2 + (point.y - self.y) ** 2)
+    def rotateAround(self, center: 'Point', angle: float) -> 'Point':
+        """Rotates the point around a center point by a given angle in radians"""
+        cos_angle = math.cos(angle)
+        sin_angle = math.sin(angle)
+        x_new = cos_angle * (self.x - center.x) - sin_angle * (self.y - center.y) + center.x
+        y_new = sin_angle * (self.x - center.x) + cos_angle * (self.y - center.y) + center.y
+        return Point(x_new, y_new)
+    def distanceTo(self, point: 'Point') -> float:
+        """Calculates the distance to another point"""
+        return math.sqrt((point.x - self.x) ** 2 + (point.y - self.y) ** 2)
 
 class RobotInfo:
     """
@@ -115,7 +125,7 @@ class Line:
         return self.end.angleTo(self.start)
     def length(self) -> float:
         """Calculates the length of the line"""
-        return math.sqrt((self.end.x - self.start.x) ** 2 + (self.end.y - self.start.y) ** 2)
+        return self.start.distanceTo(self.end)
     def intersects(self, walls:List[Wall]) -> bool:
         """Checks if the line intersects with any of the walls"""
         for wall in walls:
