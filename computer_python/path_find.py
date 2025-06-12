@@ -5,6 +5,19 @@ from image_recognition import Camera
 from classes import Point, Movement, Rotation, Wall, Car, Pickup,RobotInfo,Start
 import math
 
+def deltaRotation(newAngle:float, currentAngle:float) -> float:
+    """Generates the rotation needed to turn the car to the new angle"""
+    if(newAngle < 0):
+        newAngle += 2 * math.pi
+    if(currentAngle < 0):
+        currentAngle += 2 * math.pi
+    rotation = newAngle - currentAngle
+    if(rotation > math.pi):
+        rotation -= 2 * math.pi
+    elif(rotation < -math.pi):
+        rotation += 2 * math.pi
+    return rotation
+
 class track:
     def __init__(self,cam:Camera ,
             walls:Union[List[List[List[Union[int,float]]]],None] = None, 
@@ -82,19 +95,6 @@ class track:
         if(car is None or len(car) == 0):
             return Car([([0,0],"fail"),([0,1],"fail"),([1,0],"fail")],([0,0],"fail"))
         return Car(car, front)
-    
-    def deltaRotation(self, newAngle:float, currentAngle:float) -> float:
-        """Generates the rotation needed to turn the car to the new angle"""
-        if(newAngle < 0):
-            newAngle += 2 * math.pi
-        if(currentAngle < 0):
-            currentAngle += 2 * math.pi
-        rotation = newAngle - currentAngle
-        if(rotation > math.pi):
-            rotation -= 2 * math.pi
-        elif(rotation < -math.pi):
-            rotation += 2 * math.pi
-        return rotation
 
     def generatepath(self) -> List[RobotInfo]:
         """Generates a path from the car to the first goal"""
@@ -109,7 +109,7 @@ class track:
         #generate the starting position
         path.append(Start(self.car.front, direction))
         path.append(Rotation(self.deltaRotation(self.car.front.angleTo(target),path[-1].direction),self.car.front, 0))  # No rotation at the start
-        
+
         return path
     
     def Draw(self, frame:np.ndarray):
