@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import socket
+import time
 
 host = '0.0.0.0'  # Lyt på alle interfaces
 port = 12345      # Samme port som EV3-klienten bruger
@@ -18,9 +21,28 @@ print(f"Forbundet til: {client_address}")
 data = client_socket.recv(1024)
 print("Modtaget:", data.decode())
 
-# Send svar tilbage til EV3
-client_socket.sendall(b"drive")
+commands = ["drive", "grab", "turn right", "open", "stop"]
+
+for cmd in commands:
+    client_socket.sendall(cmd.encode())
+    response = client_socket.recv(1024).decode()
+    if response != "OK":
+        print("Error at:", cmd)
+        break
 
 # Luk forbindelsen
 client_socket.close()
 server_socket.close()
+
+#"""Test function to show the path"""
+#def testPath(self):
+        #return [Movement(10, 0), Rotation(math.pi, Point(0, 0)), Movement(5, math.pi), Pickup()]
+
+#class Movement(RobotInfo):
+ #   """
+  #      Movement class to represent a movement in 2D space for the robot
+   #     robot will only read distance
+    #"""
+    #def __init__(self, distance:float, location:Point, direction:float):
+     #   super().__init__(location, direction, "move")
+      #  self.distance:float = distance
