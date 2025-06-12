@@ -281,6 +281,9 @@ class Camera:
     
     def midpointWalls(self, width, lines:List[List[List[Union[int,float]]]]) -> List[Tuple[int,int]]:
         
+        if(lines is None or len(lines) == 0):
+            return [(0,0),(0,0)]
+
         veritcalLines = []
         for i in range (0,len(lines)):
             (y1, x1, y2,x2) = lines[i][0]

@@ -34,31 +34,41 @@ class Point:
         """Negates the point by swapping the x and y coordinates"""
         return Point(-self.x, -self.y)
 
-class Movement:
+class RobotInfo:
+    """
+        RobotInfo class to represent the robot's information
+        contains the robot's position, direction, and other relevant information
+    """
+    def __init__(self, location:Point, direction:float, action:str = None):
+        self.location:Point = location
+        self.direction:float = direction  # in radians
+        self.action:str = action  # action to be performed by the robot, e.g. "move", "rotate", "pickup"
+
+class Movement(RobotInfo):
     """
         Movement class to represent a movement in 2D space for the robot
         robot will only read distance
     """
-    def __init__(self, distance:float, direction:float):
+    def __init__(self, distance:float, location:Point, direction:float):
+        super().__init__(location, direction, "move")
         self.distance:float = distance
-        self.direction:float = direction
 
-class Rotation:
+class Rotation(RobotInfo):
     """
         Rotation class to represent an angle change in radians for the robot
         possitive angle is counter-clockwise, negative angle is clockwise
         robot will only read angle
     """
-    def __init__(self, angle:float, Location:Point):
+    def __init__(self, angle:float, location:Point, direction:float):
+        super().__init__(location, direction,"rotate")
         self.angle:float = angle
-        self.location:Point = Location
 
-class Pickup:
+class Pickup(RobotInfo):
     """
         Pickup class to represent a pickup action for the robot
     """
-    def __init__(self):
-        pass
+    def __init__(self, location:Point, direction:float):
+        super().__init__(location, direction, "pickup")
 
 class Wall:
     """
