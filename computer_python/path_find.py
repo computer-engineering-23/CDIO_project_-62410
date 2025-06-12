@@ -110,7 +110,19 @@ class track:
         path.append(Start(self.car.front, direction))
         path.append(Rotation(deltaRotation(self.car.front.angleTo(target),path[-1].direction),self.car.front, 0))  # No rotation at the start
 
+        #Make vector from fron  of th 
+        dx = target.x - front.x
+        dy = target.y - front.y
+        angle = math.atan2(dy, dx)
+        angle_diff = angle - direction
+        if abs(angle_diff > 0.01):
+            path.append(Rotation(deltaRotation(angle, direction), front.rotateAround(self.car.getRotationCenter(), deltaRotation(angle,direction)), direction))  # Rotate to face the target 
+        
+        
+        path.append(Movement(front.distanceTo(target), front, angle))
+        
         return path
+
     
     def Draw(self, frame:np.ndarray):
         """Draws the track on the frame"""
