@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from typing import List, Tuple, Union
 from image_recognition import Camera
-from classes import Point, Movement, Rotation, Wall, Car, Pickup,RobotInfo,Start
+from classes import Point, Wall, Car, Pickup, Movement, Rotation
 import math
 
 def deltaRotation(newAngle:float, currentAngle:float) -> float:
@@ -92,38 +92,53 @@ class track:
             realObsticles.append(Point(obsticle[0][1], obsticle[0][0]))
         return realObsticles
     def formatCar(self, car:Union[List[Tuple[List[int | float],str]],None], front:Union[Tuple[List[int | float],str],None]) -> Car:
-        if(car is None or len(car) == 0):
-            return Car([([0,0],"fail"),([0,1],"fail"),([1,0],"fail")],([0,0],"fail"))
-        return Car(car, front)
+        triangle:List[Point] = []
+        if(car is not None and len(car) != 0):
+            for point in car:
+                triangle.append(Point(point[0][1], point[0][0]))
+            if(len(triangle) < 3):
+                return self.car
+            if(len(triangle) > 3):
+                triangle = triangle[0:3]
+            front_point:Point = Point(0, 0)
+            if(front is not None):
+                front_point = Point(front[0][1], front[0][0])
+            return Car(triangle,front_point)
+        return Car([Point(0,0),Point(0,1),Point(1,0)], Point(0, 0))  # Default car if no car is provided
 
-    def generatepath(self) -> List[RobotInfo]:
+    def generatepath(self) -> List[Pickup | Movement | Rotation]:
         """Generates a path from the car to the first goal"""
         if(self.goals is None or self.car.front is None):
             return []
-        path:List[RobotInfo] = []
+        path:List[Pickup | Movement | Rotation] = []
         front = self.car.front
         self.targets.sort(key=lambda target: math.sqrt((target.x - front.x) ** 2 + (target.y - front.y) ** 2))
         target = self.targets[0]
         direction = self.car.getRotation()
-
+        car = self.car
         #generate the starting position
-        path.append(Start(self.car.front, direction))
-        path.append(Rotation(deltaRotation(self.car.front.angleTo(target),path[-1].direction),self.car.front, 0))  # No rotation at the start
 
         #Make vector from fron  of th 
         dx = target.x - front.x
         dy = target.y - front.y
-        angle = math.atan2(dy, dx)
+        angle = math.atan2(dx, dy)
         angle_diff = angle - direction
-        if abs(angle_diff > 0.01):
-            path.append(Rotation(deltaRotation(angle, direction), front.rotateAround(self.car.getRotationCenter(), deltaRotation(angle,direction)), direction))  # Rotate to face the target 
+        print(f"Target: x={angle_diff} y={target.y}")
         
+        path.append(Rotation(deltaRotation(angle, direction)))  # Rotate to face the target 
+        car = car.applySelf(path[-1])
         
-        path.append(Movement(front.distanceTo(target), front, angle))
+        path.append(Movement(front.distanceTo(target)))
         
         return path
 
-    
+    def drawCar(self, frame:np.ndarray,car:Car) -> np.ndarray:
+        """Draws the car on the frame"""
+        for i in range(len(car.triangle)):
+            p0 = car.triangle[i]
+            p1 = car.triangle[(i + 1) % 3]
+            cv2.line(frame, (int(p0.y), int(p0.x)), (int(p1.y), int(p1.x)), (255, 255, 0), 2)
+        return frame
     def Draw(self, frame:np.ndarray):
         """Draws the track on the frame"""
         for wall in self.walls:
@@ -138,17 +153,19 @@ class track:
         for obsticle in self.obsticles:
             cv2.circle(frame, (int(obsticle.y), int(obsticle.x)), 5, (0, 255, 255), -1)
         
-        for i in range(len(self.car.triangle)):
-            p0 = self.car.triangle[i]
-            p1 = self.car.triangle[(i + 1) % 3]
-            cv2.line(frame, (int(p0.x), int(p0.y)), (int(p1.x), int(p1.y)), (255, 255, 0), 2)
+        frame =self.drawCar(frame,self.car)
         
+        car:Car = self.car.copy()
         for i in self.generatepath():
+            front = car.front
+            car.applySelf(i)
             if isinstance(i, Movement):
-                cv2.arrowedLine(frame, (int(self.car.front.y), int(self.car.front.x)), (int(self.car.front.y + i.distance * math.cos(i.direction)), int(self.car.front.x + i.distance * math.sin(i.direction))), (0, 255, 0), 1)
-            elif isinstance(i, Rotation):
-                cv2.putText(frame, f"Rotate: {i.angle:.2f} rad", (i.location.x,i.location.y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-        
+                cv2.arrowedLine(frame, (int(front.y),int(front.x)),(int(car.front.y), int(car.front.x)), (0, 255, 0), 1)
+            if isinstance(i, Rotation):
+                cv2.arrowedLine(frame, (int(front.y),int(front.x)),(int(car.front.y), int(car.front.x)), (255, 255, 255), 1)
+                cv2.putText(frame, f"Rotate: {i.angle:.2f} rad", (int(car.front.y),int(car.front.x)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+            frame = self.drawCar(frame,car)
+
         cv2.putText(frame, "walls: red", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
         cv2.putText(frame, "goals: blue", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
         cv2.putText(frame, "targets: green", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
@@ -175,4 +192,4 @@ class track:
     
     def testPath(self):
         """Test function to show the path"""
-        return [Movement(10, Point(0,0), 0), Rotation(math.pi, Point(0, 0), 0), Movement(5, Point(0,0),  math.pi), Pickup(Point(0,0), 0)]
+        return [Movement(10), Rotation(math.pi), Movement(5), Pickup()]

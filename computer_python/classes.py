@@ -47,56 +47,32 @@ class Point:
         """Calculates the distance to another point"""
         return math.sqrt((point.x - self.x) ** 2 + (point.y - self.y) ** 2)
 
-class RobotInfo:
-    """
-        RobotInfo class to represent the robot's information
-        contains the robot's position, direction, and other relevant information
-    """
-    def __init__(self, location:Point, direction:float, action:str | None = None):
-        self.location:Point = location
-        self.direction:float = direction  # in radians
-        self.action:str | None = action  # action to be performed by the robot, e.g. "move", "rotate", "pickup"
-
-class Start(RobotInfo):
-    """
-        Start class to represent the starting position of the robot
-        robot will only read position and direction
-    """
-    def __init__(self, location:Point, direction:float):
-        super().__init__(location, direction, "start")
-
-class Movement(RobotInfo):
+class Movement:
     """
         Movement class to represent a movement in 2D space for the robot
         robot will only read distance
     """
-    def __init__(self, distance:float, location:Point, direction:float):
-        super().__init__(location, direction, "move")
+    def __init__(self, distance:float):
         self.distance:float = distance
 
-class Rotation(RobotInfo):
+class Rotation:
     """
         Rotation class to represent an angle change in radians for the robot
         possitive angle is counter-clockwise, negative angle is clockwise
         robot will only read angle
     """
-    def __init__(self, angle:float, location:Point, direction:float):
-        super().__init__(location, direction,"rotate")
+    def __init__(self, angle:float):
         self.angle:float = angle
 
-class Pickup(RobotInfo):
+class Pickup:
     """
         Pickup class to represent a pickup action for the robot
     """
-    def __init__(self, location:Point, direction:float):
-        super().__init__(location, direction, "pickup")
 
-class Dropoff(RobotInfo):
+class Dropoff:
     """
         Dropoff class to represent a dropoff action for the robot
     """
-    def __init__(self, location:Point, direction:float):
-        super().__init__(location, direction, "dropoff")
 
 class Wall:
     """
@@ -198,20 +174,14 @@ class Car:
         car is represented by a triangle formed by three points
         front is the point in front of the car, used to determine the direction
     """
-    def __init__(self, car:List[Tuple[List[int | float], str]], front:Union[Tuple[List[int | float], str],None] = None):
-        self.triangle:List[Point] = []
-        for point in car:
-            self.triangle.append(Point(point[0][1], point[0][0]))
-        self.front:Point = Point(front[0][1], front[0][0]) if front is not None and len(front) == 2 else Point(0, 0)
-        
-        while(len(self.triangle) < 3):
-            self.triangle.append(Point(0, 0))
-        if(len(self.triangle) > 3):
-            self.triangle = self.triangle[0:3]
+    def __init__(self, triangle:List[Point], front:Point):
+        self.triangle:List[Point] = triangle
+        self.front:Point = front
         
         self.valid()
-        self.offset:int = 10
-    
+    def copy(self) -> 'Car':
+        """Creates a copy of the car with the same triangle and front point"""
+        return Car(self.triangle.copy(), self.front)
     def area(self) -> float:
         """Calculates the area of the triangle formed by the car's points"""
         x1, y1 = self.triangle[0].x, self.triangle[0].y
@@ -261,6 +231,27 @@ class Car:
         if not self.valid():
             return 0.0
         return Line(self.front, self.getRotationCenter()).length()
+    def apply(self, robotInfo:Pickup | Movement | Rotation) -> 'Car':
+        """Applies the robot info to the car and returns a new RobotInfo object"""
+        CarCopy = Car(self.triangle.copy(), self.front)
+        CarCopy.applySelf(robotInfo)
+        return CarCopy
+    def applySelf(self, robotInfo:Pickup | Movement | Rotation) -> None:
+        """Applies the robot info to the car"""
+        if isinstance(robotInfo, Rotation):
+            self.rotate(robotInfo.angle)
+        if isinstance(robotInfo, Movement):
+            self.move(robotInfo.distance)
+    def rotate(self, angle:float) -> None:
+        """Rotates the car around its rotation center by a given angle in radians"""
+        center = self.getRotationCenter()
+        for i in range(len(self.triangle)):
+            self.triangle[i] = self.triangle[i].rotateAround(center, angle)
+    def move(self, distance:float) -> None:
+        """Moves the car in the direction of its front point by a given distance"""
+        vector = Point(distance * math.cos(self.getRotation()),distance * math.sin(self.getRotation()))
+        for point in self.triangle:
+            point = point.move(vector)
 
 class Arc:
     """
