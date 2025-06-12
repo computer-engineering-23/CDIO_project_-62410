@@ -5,7 +5,7 @@ import socket
 import ev3dev.ev3 as ev3
 import time
 
-host = '192.168.245.134' # IP-address to computer
+host = '192.168.28.119' # IP-address to computer
 port = 12345            # Port the server is listening to
 
 s = socket.socket()
@@ -52,6 +52,9 @@ while(True):
     elif command == "turn right":
         rightMotor.run_forever(speed_sp=-100)
         leftMotor.run_forever(speed_sp=100)
+        time.sleep(2.5)
+        rightMotor.stop()
+        leftMotor.stop()
         s.sendall("OK".encode())
 
     else:
