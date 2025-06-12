@@ -33,3 +33,7 @@ for cmd in commands:
 # Luk forbindelsen
 client_socket.close()
 server_socket.close()
+
+#"""Test function to show the path"""
+#def testPath(self):
+        #return [Movement(10, 0), Rotation(math.pi, Point(0, 0)), Movement(5, math.pi), Pickup()]
