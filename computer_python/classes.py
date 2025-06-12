@@ -70,6 +70,13 @@ class Pickup(RobotInfo):
     def __init__(self, location:Point, direction:float):
         super().__init__(location, direction, "pickup")
 
+class Dropoff(RobotInfo):
+    """
+        Dropoff class to represent a dropoff action for the robot
+    """
+    def __init__(self, location:Point, direction:float):
+        super().__init__(location, direction, "dropoff")
+
 class Wall:
     """
         Wall class to represent a wall in the environment

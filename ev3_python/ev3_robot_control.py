@@ -52,7 +52,7 @@ while(True):
     elif command.startswith("rotate "):
         try:
             angle_deg = float(command.split()[1])
-            duration_per_degree = 0.01  # Adjust this value based on real robot testing
+            duration_per_degree = 0.03  # Adjust this value based on real robot testing
             turn_time = abs(angle_deg) * duration_per_degree
 
             if angle_deg > 0:

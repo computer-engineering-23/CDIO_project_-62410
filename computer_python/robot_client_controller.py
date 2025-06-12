@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import socket
 import time
-from classes import Movement, Rotation, Pickup, Point
+from classes import Movement, Rotation, Pickup, Point, Dropoff
 import math
 
 host = '0.0.0.0'  # Lyt på alle interfaces
@@ -25,7 +25,7 @@ print("Modtaget:", data.decode())
 
 """Test function to show the path"""
 def testPath():
-        return [Movement(10, 0, 0), Rotation(math.pi, Point(0, 0), 0), Movement(5, math.pi, 0), Pickup(0, 0)]
+        return [Dropoff(0,0), Movement(10, Point(0,0), 0), Rotation(math.pi, Point(0, 0), 0), Movement(5, math.pi, 0), Pickup(0, 0)]
 
     
 
@@ -47,6 +47,8 @@ for step in path:
 
     elif isinstance(step, Pickup):
         cmd = "grab"
+    elif isinstance(step, Dropoff):
+        cmd = "open"
 
     else:
         print("Unknown step:", step)
