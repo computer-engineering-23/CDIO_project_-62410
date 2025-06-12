@@ -2,8 +2,21 @@ import cv2
 import numpy as np
 from typing import List, Tuple, Union
 from image_recognition import Camera
-from classes import Point, Movement, Rotation, Wall, Car, Pickup,RobotInfo
+from classes import Point, Movement, Rotation, Wall, Car, Pickup,RobotInfo,Start
 import math
+
+def deltaRotation(newAngle:float, currentAngle:float) -> float:
+    """Generates the rotation needed to turn the car to the new angle"""
+    if(newAngle < 0):
+        newAngle += 2 * math.pi
+    if(currentAngle < 0):
+        currentAngle += 2 * math.pi
+    rotation = newAngle - currentAngle
+    if(rotation > math.pi):
+        rotation -= 2 * math.pi
+    elif(rotation < -math.pi):
+        rotation += 2 * math.pi
+    return rotation
 
 class track:
     def __init__(self,cam:Camera ,
@@ -82,42 +95,34 @@ class track:
         if(car is None or len(car) == 0):
             return Car([([0,0],"fail"),([0,1],"fail"),([1,0],"fail")],([0,0],"fail"))
         return Car(car, front)
-    
-    def VectorPath(self) -> Point:
-        """generates Vector from front to first goal"""
-        target:Point = self.goals[0]
-        vector =  Point(self.car.front.y - target.y, self.car.front.x - target.x)
-        if(abs(vector.x) < 10):
-            vector.x = 0
-        if(abs(vector.y) < 10):
-            vector.y = 0
-        return vector
-    
+
     def generatepath(self) -> List[RobotInfo]:
         """Generates a path from the car to the first goal"""
         if(self.goals is None or self.car.front is None):
             return []
-        path = []
-        
-        vector = self.VectorPath()
-        if(vector.x == 0 and vector.y == 0):
-            return [Pickup(Point(0,0),0)]
-        
-        if(vector.y > 0):
-            path.append(Rotation(math.pi / 2 - self.car.getRotation(),Point(0,0),0))
-            path.append(Movement(vector.y,Point(0,0),math.pi / 2))
-        elif(vector.y < 0):
-            path.append(Rotation(-math.pi / 2 - self.car.getRotation(),Point(0,0),0))
-            path.append(Movement(vector.y,Point(0,0),-math.pi / 2))
-        
-        if(vector.x > 0):
-            path.append(Rotation(0 - path[-1].direction,Point(0,0),0))
-            path.append(Movement(vector.x,Point(0,0), 0))
-        elif(vector.x < 0):
-            path.append(Rotation(math.pi - path[-1].direction,Point(0,0),0))
-            path.append(Movement(vector.x,Point(0,0), math.pi))
+        path:List[RobotInfo] = []
+        front = self.car.front
+        self.targets.sort(key=lambda target: math.sqrt((target.x - front.x) ** 2 + (target.y - front.y) ** 2))
+        target = self.targets[0]
+        direction = self.car.getRotation()
 
-        return path + [Pickup(Point(0,0), 0)]
+        #generate the starting position
+        path.append(Start(self.car.front, direction))
+        path.append(Rotation(deltaRotation(self.car.front.angleTo(target),path[-1].direction),self.car.front, 0))  # No rotation at the start
+
+        #Make vector from fron  of th 
+        dx = target.x - front.x
+        dy = target.y - front.y
+        angle = math.atan2(dy, dx)
+        angle_diff = angle - direction
+        if abs(angle_diff > 0.01):
+            path.append(Rotation(deltaRotation(angle, direction), front.rotateAround(self.car.getRotationCenter(), deltaRotation(angle,direction)), direction))  # Rotate to face the target 
+        
+        
+        path.append(Movement(front.distanceTo(target), front, angle))
+        
+        return path
+
     
     def Draw(self, frame:np.ndarray):
         """Draws the track on the frame"""
