@@ -8,7 +8,7 @@ class Camera:
     def __init__(self, APIid:int = cv2.CAP_DSHOW, debug:bool = False):
         self.debug = debug
         self.capture = cv2.VideoCapture(1, APIid)
-        self.walls:List[List[int | float]] = []
+        self.walls:List[List[List[int | float]]] = []
         if not self.capture.isOpened():
             print("Kunne ikke åbne kamera")
             exit(1)
@@ -116,7 +116,7 @@ class Camera:
                 return [*zip(circles[0],names)]
         return circles
     
-    def findEgg(self, frame:np.ndarray) -> Union[List[Tuple[List[Union[int,float]],str]],None]:
+    def findEgg(self, frame:np.ndarray) -> Union[List[Tuple[List[int | float], str]],None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
         # Hvid farveområde (HSV)
@@ -153,7 +153,7 @@ class Camera:
                 return [*zip(circles[0],names)]
         return circles
 
-    def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[Union[int,float]]]:
+    def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[List[Union[int,float]]]]:
         if(not noMask):
             hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             
@@ -190,13 +190,13 @@ class Camera:
             edges:np.ndarray = cv2.cvtColor(edges, cv2.COLOR_BGR2GRAY)
         
 
-        linesP:List[List[Union[int,float]]] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5).tolist()
+        linesP:List[List[List[Union[int,float]]]] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5).tolist()
         
         self.walls = linesP
 
         return linesP
 
-    def generateWall(self, frameNumber) ->List[List]:
+    def generateWall(self, frameNumber) ->List[List[List[int | float]]]:
         rawWalls = []
         for i in range (frameNumber):
             current = self.getFrame()
@@ -214,7 +214,7 @@ class Camera:
         self.walls = self.findWall(buffer,True)
         return self.walls
 
-    def findCar(self, frame:np.ndarray) -> Tuple[Union[List[Tuple[List[Union[int, float]], str]], None], Union[Tuple[List[Union[int, float]],str], None]]:
+    def findCar(self, frame:np.ndarray) -> Tuple[List[Tuple[List[int | float],str]],Tuple[List[int | float],str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
         hueWidth = 22
@@ -268,14 +268,13 @@ class Camera:
                     (y1, x1, r) = circles[0][(i+1) % len(circles[0])]
                     lines.append([(int(y0), int(x0), int(y1), int(x1))])
                 self.displayWithDetails(frame, lines= lines, name="car", debug=True)
-        circles_: Union[list[tuple[List[int | float], str]],None] = None
-        if(circles is not None):
+                
             names = ["car"]*len(circles[0])
             circles_ = [*zip(circles[0],names)]
-        if(front is not None):
-            return (circles_, (front, "front"))
+            if(front is not None):
+                return (circles_, (front, "front"))
         else:
-            return (circles_, None)
+            return None
 
     def close(self):
         self.capture.release()

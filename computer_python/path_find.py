@@ -6,7 +6,15 @@ from classes import Point, Movement, Rotation, Wall, Car, Pickup
 import math
 
 class track:
-    def __init__(self,cam:Camera ,walls:Union[List[np.ndarray],None] = None, goals:Union[List[Tuple[int,int]],None] = None, targets:Union[List[Tuple[int,int]],None] = None, obsticles: Union[List[Tuple[int,int]],None] = None, car:Union[List[Tuple[int,int]],None] = None, front:Union[Tuple[int,int],None] = None):
+    def __init__(self,cam:Camera ,
+            walls:Union[List[List[List[Union[int,float]]]],None] = None, 
+            goals:Union[List[Tuple[int,int]],None] = None, 
+            targets:Union[List[Tuple[List[int | float],str]],None] = None, 
+            obsticles: Union[List[Tuple[List[int | float],str]],None] = None, 
+            car:Union[List[Tuple[List[int |float], str]],None] = None, 
+            front:Union[Tuple[List[int | float],str],None] = None
+        ):
+
         self.walls:List[Wall] = self.formatWalls(walls)
         self.goals:List[Point] = self.formatGoals(goals)
         self.targets:List[Point] = self.formatTargets(targets)
@@ -19,6 +27,10 @@ class track:
     def update(self, walls:bool = False, goals:bool = False, targets:bool = False, obsticles:bool = False, car:bool = False):
         frame:np.ndarray | None = self.cam.getFrame()
         
+        if(frame is None):
+            print("No frame received from camera.")
+            return
+        
         if(walls):
             self.walls = self.formatWalls(self.cam.generateWall(40))
         
@@ -30,11 +42,15 @@ class track:
         
         if(obsticles is not None):
             self.obsticles = self.formatObsticles(self.cam.findEgg(np.copy(frame)))
-        
         if(car):
-            self.car = self.formatCar(*self.cam.findCar(np.copy(frame)))
+            tempCar = self.cam.findCar(np.copy(frame))
+            if(tempCar is not None and len(tempCar) == 2): 
+                car_,front_ = tempCar
+                self.car = self.formatCar(car_, front_)
+            else:
+                self.car = self.formatCar(None, None)
     
-    def formatWalls(self, walls:Union[List[np.ndarray],None]) -> List[Wall]:
+    def formatWalls(self, walls:Union[List[List[List[int | float]]],None]) -> List[Wall]:
         realWalls = []
         if(walls is None or len(walls) == 0):
             return []
@@ -48,26 +64,26 @@ class track:
         for goal in goals:
             realGoals.append(Point(goal[1], goal[0]))
         return realGoals
-    def formatTargets(self, targets:Union[List[Tuple[int,int]],None]) -> List[Point]:
+    def formatTargets(self, targets:Union[List[Tuple[List[int | float],str]],None]) -> List[Point]:
         realTargets = []
         if(targets is None or len(targets) == 0):
             return []
         for target in targets:
             realTargets.append(Point(target[0][1], target[0][0]))
         return realTargets
-    def formatObsticles(self, obsticles:Union[List[Tuple[int,int]],None]) -> List[Point]:
+    def formatObsticles(self, obsticles:Union[List[Tuple[List[int | float],str]],None]) -> List[Point]:
         realObsticles = []
         if(obsticles is None or len(obsticles) == 0):
             return []
         for obsticle in obsticles:
             realObsticles.append(Point(obsticle[0][1], obsticle[0][0]))
         return realObsticles
-    def formatCar(self, car:Union[List[List[Tuple[int,int]]],None], front:Union[Tuple[int,int],None]) -> Car:
+    def formatCar(self, car:Union[List[Tuple[List[int | float],str]],None], front:Union[Tuple[List[int | float],str],None]) -> Car:
         if(car is None or len(car) == 0):
-            return Car([[(0, 0)],[(0, 1)],[(0, 2)]], (0, 0))
+            return Car([([0,0],"fail"),([0,1],"fail"),([1,0],"fail")],([0,0],"fail"))
         return Car(car, front)
     
-    def VectorPath(self) -> Tuple[int,int]:
+    def VectorPath(self) -> Point:
         """generates Vector from front to first goal"""
         target:Point = self.goals[0]
         vector =  Point(self.car.front.y - target.y, self.car.front.x - target.x)
@@ -77,7 +93,7 @@ class track:
             vector.y = 0
         return vector
     
-    def generatepath(self) -> List[Union[Rotation,Movement]]:
+    def generatepath(self) -> List[Union[Movement, Rotation, Pickup]]:
         """Generates a path from the car to the first goal"""
         if(self.goals is None or self.car.front is None):
             return []
@@ -141,7 +157,10 @@ class track:
         """Test function to show the track"""
         while True:
             self.update(walls=False, goals=False, targets=True, obsticles=True, car=True)
-            frame = self.cam.getFrame()
+            frame:np.ndarray | None = self.cam.getFrame()
+            if(frame is None):
+                print("No frame received from camera.")
+                break
             self.Draw(frame)
             self.cam.displayFrame(frame,"Track")
             if cv2.waitKey(100) & 0xFF == ord('q'):

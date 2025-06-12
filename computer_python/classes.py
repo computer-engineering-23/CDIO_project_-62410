@@ -160,11 +160,11 @@ class Car:
         car is represented by a triangle formed by three points
         front is the point in front of the car, used to determine the direction
     """
-    def __init__(self, car:List[List[Union[Tuple[int,int],Tuple[float,float]]]], front:Union[Tuple[Union[int,float]],None] = None):
+    def __init__(self, car:List[Tuple[List[int | float], str]], front:Union[Tuple[List[int | float], str],None] = None):
         self.triangle:List[Point] = []
         for point in car:
             self.triangle.append(Point(point[0][1], point[0][0]))
-        self.front:Point = Point(front[1], front[0]) if front is not None and len(front) == 2 else Point(0, 0)
+        self.front:Point = Point(front[0][1], front[0][0]) if front is not None and len(front) == 2 else Point(0, 0)
         
         while(len(self.triangle) < 3):
             self.triangle.append(Point(0, 0))
