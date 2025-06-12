@@ -24,7 +24,7 @@ data = client_socket.recv(1024)
 print("Modtaget:", data.decode())
 
 """Test function to show the path"""
-def testPath(self):
+def testPath():
         return [Movement(10, 0), Rotation(math.pi, Point(0, 0)), Movement(5, math.pi), Pickup()]
 
 path = testPath()

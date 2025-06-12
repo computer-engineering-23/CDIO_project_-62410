@@ -57,7 +57,7 @@ class Rotation(RobotInfo):
         robot will only read angle
     """
     def __init__(self, angle:float, location:Point, direction:float):
-        super(location, direction,"rotate")
+        super().__init__(location, direction,"rotate")
         self.angle:float = angle
 
 class Pickup(RobotInfo):
@@ -65,7 +65,7 @@ class Pickup(RobotInfo):
         Pickup class to represent a pickup action for the robot
     """
     def __init__(self, location:Point, direction:float):
-        super(location, direction, "pickup")
+        super().__init__(location, direction, "pickup")
 
 class Wall:
     """
