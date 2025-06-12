@@ -33,6 +33,9 @@ class Point:
     def negate(self) -> 'Point':
         """Negates the point by swapping the x and y coordinates"""
         return Point(-self.x, -self.y)
+    def angleTo(self, point: 'Point') -> float:
+        """Calculates the angle to another point in radians"""
+        return math.sqrt((point.x - self.x) ** 2 + (point.y - self.y) ** 2)
 
 class RobotInfo:
     """
@@ -43,6 +46,14 @@ class RobotInfo:
         self.location:Point = location
         self.direction:float = direction  # in radians
         self.action:str | None = action  # action to be performed by the robot, e.g. "move", "rotate", "pickup"
+
+class Start(RobotInfo):
+    """
+        Start class to represent the starting position of the robot
+        robot will only read position and direction
+    """
+    def __init__(self, location:Point, direction:float):
+        super().__init__(location, direction, "start")
 
 class Movement(RobotInfo):
     """
@@ -101,7 +112,7 @@ class Line:
         self.end:Point = end
     def angle(self) -> float:
         """Calculates the angle of the line in radians"""
-        return math.atan2(self.end.y - self.start.y, self.end.x - self.start.x)
+        return self.end.angleTo(self.start)
     def length(self) -> float:
         """Calculates the length of the line"""
         return math.sqrt((self.end.x - self.start.x) ** 2 + (self.end.y - self.start.y) ** 2)
