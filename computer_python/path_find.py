@@ -93,7 +93,7 @@ class track:
             vector.y = 0
         return vector
     
-    def generatepath(self) -> List[Union[Movement, Rotation, Pickup]]:
+    def generatepath(self) -> List[RobotInfo]:
         """Generates a path from the car to the first goal"""
         if(self.goals is None or self.car.front is None):
             return []
@@ -101,23 +101,23 @@ class track:
         
         vector = self.VectorPath()
         if(vector.x == 0 and vector.y == 0):
-            return [Pickup()]
+            return [Pickup(Point(0,0),0)]
         
         if(vector.y > 0):
-            path.append(Rotation(math.pi / 2 - self.car.getRotation()))
-            path.append(Movement(vector.y,math.pi / 2))
+            path.append(Rotation(math.pi / 2 - self.car.getRotation(),Point(0,0),0))
+            path.append(Movement(vector.y,Point(0,0),math.pi / 2))
         elif(vector.y < 0):
-            path.append(Rotation(-math.pi / 2 - self.car.getRotation()))
-            path.append(Movement(vector.y,-math.pi / 2))
+            path.append(Rotation(-math.pi / 2 - self.car.getRotation(),Point(0,0),0))
+            path.append(Movement(vector.y,Point(0,0),-math.pi / 2))
         
         if(vector.x > 0):
-            path.append(Rotation(0 - path[-1].direction))
-            path.append(Movement(vector.x, 0))
+            path.append(Rotation(0 - path[-1].direction,Point(0,0),0))
+            path.append(Movement(vector.x,Point(0,0), 0))
         elif(vector.x < 0):
-            path.append(Rotation(math.pi - path[-1].direction))
-            path.append(Movement(vector.x, math.pi))
+            path.append(Rotation(math.pi - path[-1].direction,Point(0,0),0))
+            path.append(Movement(vector.x,Point(0,0), math.pi))
 
-        return path + [Pickup()]
+        return path + [Pickup(Point(0,0), 0)]
     
     def Draw(self, frame:np.ndarray):
         """Draws the track on the frame"""
@@ -170,4 +170,4 @@ class track:
     
     def testPath(self):
         """Test function to show the path"""
-        return [Movement(10, 0), Rotation(math.pi, Point(0, 0)), Movement(5, math.pi), Pickup()]
+        return [Movement(10, Point(0,0), 0), Rotation(math.pi, Point(0, 0), 0), Movement(5, Point(0,0),  math.pi), Pickup(Point(0,0), 0)]

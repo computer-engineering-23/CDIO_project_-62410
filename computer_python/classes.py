@@ -39,10 +39,10 @@ class RobotInfo:
         RobotInfo class to represent the robot's information
         contains the robot's position, direction, and other relevant information
     """
-    def __init__(self, location:Point, direction:float, action:str = None):
+    def __init__(self, location:Point, direction:float, action:str | None = None):
         self.location:Point = location
         self.direction:float = direction  # in radians
-        self.action:str = action  # action to be performed by the robot, e.g. "move", "rotate", "pickup"
+        self.action:str | None = action  # action to be performed by the robot, e.g. "move", "rotate", "pickup"
 
 class Movement(RobotInfo):
     """
