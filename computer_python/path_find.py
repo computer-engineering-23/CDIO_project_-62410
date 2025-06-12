@@ -108,7 +108,7 @@ class track:
 
         #generate the starting position
         path.append(Start(self.car.front, direction))
-        path.append(Rotation(self.deltaRotation(self.car.front.angleTo(target),path[-1].direction),self.car.front, 0))  # No rotation at the start
+        path.append(Rotation(deltaRotation(self.car.front.angleTo(target),path[-1].direction),self.car.front, 0))  # No rotation at the start
 
         return path
     
