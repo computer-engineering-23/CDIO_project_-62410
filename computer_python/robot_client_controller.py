@@ -27,6 +27,8 @@ print("Modtaget:", data.decode())
 def testPath():
         return [Movement(10, 0), Rotation(math.pi, Point(0, 0)), Movement(5, math.pi), Pickup()]
 
+    
+
 path = testPath()
 
 for step in path:
@@ -40,7 +42,8 @@ for step in path:
             continue
 
     elif isinstance(step, Rotation):
-        cmd = "turn right"
+        angle_degrees = math.degrees(step.angle)
+        cmd = f"rotate {angle_degrees}"
 
     elif isinstance(step, Pickup):
         cmd = "grab"
