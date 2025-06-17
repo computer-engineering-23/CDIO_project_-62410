@@ -230,7 +230,7 @@ class Camera:
         
         # Konverter til gråskala og blur igen
         gray = cv2.GaussianBlur(mask_green, (15, 15), 0)
-        gray = cv2.inRange(gray, 75, 255)  # For at sikre at det er binært
+        gray = cv2.inRange(gray, np.array([75]), np.array([255]))  # For at sikre at det er binært
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
         
         # Find cirkler med Hough Circle Transform

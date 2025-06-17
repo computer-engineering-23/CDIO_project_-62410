@@ -107,63 +107,83 @@ class track:
         return Car([Point(0,0),Point(0,1),Point(1,0)], Point(0, 0))  # Default car if no car is provided
 
     def generatepath(self) -> List[Pickup | Movement | Rotation]:
-        """Generates a path from the car to the first goal"""
-        if(self.goals is None or self.car.front is None):
-            return []
-        path:List[Pickup | Movement | Rotation] = []
-        front = self.car.front
-        self.targets.sort(key=lambda target: math.sqrt((target.x - front.x) ** 2 + (target.y - front.y) ** 2))
-        target = self.targets[0]
-        direction = self.car.getRotation()
-        car = self.car
-        #generate the starting position
+        """Generates a path from the car to the closest target"""
+        path: List[Pickup | Movement | Rotation] = []
 
-        #Make vector from fron  of th 
-        dx = target.x - front.x
+        if not self.targets or self.car.front is None:
+            print("No targets or car front found")
+            return path
+
+        # Copy car to simulate forward steps
+        car = self.car.copy()
+        front = car.front
+        direction = car.getRotation()
+
+        # Find the closest target
+        self.targets.sort(key=lambda t: front.distanceTo(t))
+        target = self.targets[0]
+
+        # Calculate vector to target
         dy = target.y - front.y
-        angle = math.atan2(dx, dy)
-        angle_diff = angle - direction
-        print(f"Target: x={angle_diff} y={target.y}")
-        
-        path.append(Rotation(deltaRotation(angle, direction)))  # Rotate to face the target 
-        car = car.applySelf(path[-1])
-        
-        path.append(Movement(front.distanceTo(target)))
-        
+        dx = target.x - front.x
+        angle_to_target = math.atan2(dy, dx)
+
+        # Compute required rotation
+        rotation_amount = deltaRotation(direction, angle_to_target)
+        path.append(Rotation(rotation_amount))
+        car.applySelf(path[-1])  # apply rotation to simulate robot state
+
+        # Compute forward movement
+        distance = car.front.distanceTo(target)
+        path.append(Movement(distance))
+        car.applySelf(path[-1])  # apply movement to simulate robot state
+
+        # Optional: simulate a pickup
+        # path.append(Pickup())  # uncomment if needed
+
+        # Debug info
+        print(f"[DEBUG] Target: ({target.x:.2f}, {target.y:.2f})")
+        print(f"[DEBUG] From:   ({front.x:.2f}, {front.y:.2f})")
+        print(f"[DEBUG] Angle to target: {angle_to_target:.2f} rad")
+        print(f"[DEBUG] Rotation applied: {rotation_amount:.2f} rad")
+        print(f"[DEBUG] Movement: {distance:.2f} px")
+
         return path
+
 
     def drawCar(self, frame:np.ndarray,car:Car) -> np.ndarray:
         """Draws the car on the frame"""
         for i in range(len(car.triangle)):
             p0 = car.triangle[i]
             p1 = car.triangle[(i + 1) % 3]
-            cv2.line(frame, (int(p0.y), int(p0.x)), (int(p1.y), int(p1.x)), (255, 255, 0), 2)
+            cv2.line(frame, (int(p0.x), int(p0.y)), (int(p1.x), int(p1.y)), (255, 255, 0), 2)
         return frame
     def Draw(self, frame:np.ndarray):
         """Draws the track on the frame"""
         for wall in self.walls:
-            cv2.line(frame, (int(wall.start.y), int(wall.start.x)), (int(wall.end.y), int(wall.end.x)), (0, 0, 255), 1)
+            cv2.line(frame, (int(wall.start.x), int(wall.start.y)), (int(wall.end.x), int(wall.end.y)), (0, 0, 255), 1)
         
         for goal in self.goals:
-            cv2.circle(frame, (int(goal.y), int(goal.x)), 5, (255, 0, 0), -1)
+            cv2.circle(frame, (int(goal.x), int(goal.y)), 5, (255, 0, 0), -1)
         
         for target in self.targets:
-            cv2.circle(frame, (int(target.y), int(target.x)), 5, (0, 255, 0), -1)
+            cv2.circle(frame, (int(target.x), int(target.y)), 5, (0, 255, 0), -1)
         
         for obsticle in self.obsticles:
-            cv2.circle(frame, (int(obsticle.y), int(obsticle.x)), 5, (0, 255, 255), -1)
+            cv2.circle(frame, (int(obsticle.x), int(obsticle.y)), 5, (0, 255, 255), -1)
         
         frame =self.drawCar(frame,self.car)
         
         car:Car = self.car.copy()
         for i in self.generatepath():
+            print("Path step:", type(i), vars(i) if not isinstance(i, Pickup) else "Pickup")
             front = car.front
             car.applySelf(i)
             if isinstance(i, Movement):
-                cv2.arrowedLine(frame, (int(front.y),int(front.x)),(int(car.front.y), int(car.front.x)), (0, 255, 0), 1)
+                cv2.arrowedLine(frame, (int(front.x),int(front.y)),(int(car.front.x), int(car.front.y)), (0, 255, 0), 1)
             if isinstance(i, Rotation):
-                cv2.arrowedLine(frame, (int(front.y),int(front.x)),(int(car.front.y), int(car.front.x)), (255, 255, 255), 1)
-                cv2.putText(frame, f"Rotate: {i.angle:.2f} rad", (int(car.front.y),int(car.front.x)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+                cv2.arrowedLine(frame, (int(front.x),int(front.y)),(int(car.front.x), int(car.front.y)), (255, 255, 255), 1)
+                cv2.putText(frame, f"Rotate: {i.angle:.2f} rad", (int(car.front.x),int(car.front.y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
             frame = self.drawCar(frame,car)
 
         cv2.putText(frame, "walls: red", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
