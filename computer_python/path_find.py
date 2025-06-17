@@ -51,7 +51,8 @@ class track:
             self.goals = self.formatGoals(self.cam.midpointWalls(self.cam.shape[1], self.cam.walls))
         
         if(targets):
-            self.targets = self.formatTargets(self.cam.findCircle(np.copy(frame)))
+            detected = self.cam.findCircle(np.copy(frame))
+            self.targets = self.formatTargets(detected) if detected else []
         
         if(obsticles is not None):
             self.obsticles = self.formatObsticles(self.cam.findEgg(np.copy(frame)))
@@ -116,18 +117,23 @@ class track:
 
         # Copy car to simulate forward steps
         car = self.car.copy()
-        front = car.front
+        car_center = car.getRotationCenter()
         direction = car.getRotation()
+        front = car.front
 
         # Find the closest target
         self.targets.sort(key=lambda t: front.distanceTo(t))
         target = self.targets[0]
 
-        # Calculate vector to target
-        dy = target.y - front.y
-        dx = target.x - front.x
-        angle_to_target = math.atan2(dy, dx)
+        for i in range(len(self.targets)):
+            if car.validTarget(self.targets[i]):
+                target = self.targets[i]
+                break
 
+        # Calculate vector to target
+        dy = target.y - car_center.y
+        dx = target.x - car_center.x
+        angle_to_target = math.atan2(dy, dx)
         # Compute required rotation
         rotation_amount = deltaRotation(direction, angle_to_target)
         path.append(Rotation(rotation_amount))
@@ -174,17 +180,40 @@ class track:
         
         frame =self.drawCar(frame,self.car)
         
-        car:Car = self.car.copy()
-        for i in self.generatepath():
-            print("Path step:", type(i), vars(i) if not isinstance(i, Pickup) else "Pickup")
-            front = car.front
-            car.applySelf(i)
-            if isinstance(i, Movement):
-                cv2.arrowedLine(frame, (int(front.x),int(front.y)),(int(car.front.x), int(car.front.y)), (0, 255, 0), 1)
-            if isinstance(i, Rotation):
-                cv2.arrowedLine(frame, (int(front.x),int(front.y)),(int(car.front.x), int(car.front.y)), (255, 255, 255), 1)
-                cv2.putText(frame, f"Rotate: {i.angle:.2f} rad", (int(car.front.x),int(car.front.y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-            frame = self.drawCar(frame,car)
+        car: Car = self.car.copy()
+
+# Compute path once
+        path = self.generatepath()
+
+# Draw the path step-by-step
+        for step in path:
+            prev_front = car.front.copy()
+            prev_center = car.getRotationCenter().copy()
+            
+            car.applySelf(step)
+            
+            new_front = car.front
+            new_center = car.getRotationCenter()
+
+            if isinstance(step, Movement):
+                # Movement is visualized from the old front to the new front
+                cv2.arrowedLine(frame,
+                                (int(prev_front.x), int(prev_front.y)),
+                                (int(new_front.x), int(new_front.y)),
+                                (0, 255, 0), 1)
+
+            if isinstance(step, Rotation):
+                # Rotation is visualized from center before to front after
+                cv2.arrowedLine(frame,
+                                (int(prev_center.x), int(prev_center.y)),
+                                (int(new_center.x), int(new_center.y)),
+                                (255, 255, 255), 1)
+                cv2.putText(frame,
+                            f"Rotate: {step.angle:.2f} rad",
+                            (int(new_front.x), int(new_front.y)),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+
+            frame = self.drawCar(frame, car)
 
         cv2.putText(frame, "walls: red", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
         cv2.putText(frame, "goals: blue", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
@@ -192,6 +221,8 @@ class track:
         cv2.putText(frame, "obsticles: yellow", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
         cv2.putText(frame, "car: cyan", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
         cv2.putText(frame, "Press 'q' to exit", (10, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+        
+        cv2.circle(frame, (int(self.targets[0].x), int(self.targets[0].y)), 5, (0,0,0), -1)
         
         return frame
     

@@ -9,7 +9,7 @@ from path_find import track
 #         index += 1
 #     cam.close()
 def main():
-    cam:Camera = Camera(debug=False)
+    cam:Camera = Camera(debug=True)
     track_instance = track(cam)
     track_instance.update(walls=True, goals=True, targets=True, obsticles=True, car=True)
     track_instance.test()

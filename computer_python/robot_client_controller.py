@@ -3,6 +3,8 @@
 import socket
 import time
 from classes import Movement, Rotation, Pickup, Point, Dropoff
+from path_find import track
+from image_recognition import Camera
 import math
 
 host = '0.0.0.0'  # Lyt på alle interfaces
@@ -23,22 +25,24 @@ print(f"Forbundet til: {client_address}")
 data = client_socket.recv(1024)
 print("Modtaget:", data.decode())
 
-"""Test function to show the path"""
-def testPath():
-        return [Dropoff(0,0), Movement(10, Point(0,0), 0), Rotation(math.pi, Point(0, 0), 0), Movement(5, math.pi, 0), Pickup(0, 0)]
-
     
+cam = Camera()
+robot_track = track(cam)
 
-path = testPath()
+# Update the track to get latest car and targets
+robot_track.update(walls=False, goals=False, targets=True, obsticles=False, car=True)
+
+# Get the path
+path = robot_track.generatepath()
 
 for step in path:
     if isinstance(step, Movement):
-        if math.isclose(step.direction, 0, abs_tol=0.1):
+        if math.isclose(step.distance, 0, abs_tol=0.1):
             cmd = "drive"
-        elif math.isclose(step.direction, math.pi, abs_tol=0.1):
+        elif math.isclose(step.distance, math.pi, abs_tol=0.1):
             cmd = "backward"
         else:
-            print("Unsupported movement direction:", step.direction)
+            print("Unsupported movement direction:", step.distance)
             continue
 
     elif isinstance(step, Rotation):

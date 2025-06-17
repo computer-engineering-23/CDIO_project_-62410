@@ -35,7 +35,6 @@ class Point:
         return Point(-self.y, -self.x)
     def angleTo(self, point: 'Point') -> float:
         return math.atan2(point.y - self.y, point.x - self.x)
-
     def rotateAround(self, center: 'Point', angle: float) -> 'Point':
         """Rotates the point around a center point by a given angle in radians"""
         cos_angle = math.cos(angle)
@@ -46,6 +45,9 @@ class Point:
     def distanceTo(self, point: 'Point') -> float:
         """Calculates the distance to another point"""
         return math.sqrt((point.y - self.y) ** 2 + (point.x - self.x) ** 2)
+    def copy(self) -> 'Point':
+        """Creates a deep copy of the point"""
+        return Point(self.y, self.x)
 
 class Movement:
     """
@@ -98,7 +100,7 @@ class Line:
         self.end:Point = end
     def angle(self) -> float:
         """Calculates the angle of the line in radians"""
-        return self.end.angleTo(self.start)
+        return self.start.angleTo(self.end)
     def length(self) -> float:
         """Calculates the length of the line"""
         return self.start.distanceTo(self.end)
@@ -212,9 +214,9 @@ class Car:
     
     def getRotation(self) -> float:
         """Calculates the rotation of the car based on its triangle points"""
-        if not self.valid():
-            return 0.0
-        return Line(self.getRotationCenter(), self.triangle[0]).angle()
+        dx = self.front.x - self.getRotationCenter().x
+        dy = self.front.y - self.getRotationCenter().y
+        return math.atan2(dy, dx)
     
     def getWidth(self) -> float:
         """Calculates the width of the car based on the distance between the base points"""
@@ -233,27 +235,46 @@ class Car:
         if not self.valid():
             return 0.0
         return Line(self.front, self.getRotationCenter()).length()
+    
     def apply(self, robotInfo:Pickup | Movement | Rotation) -> 'Car':
         """Applies the robot info to the car and returns a new RobotInfo object"""
         CarCopy = Car(self.triangle.copy(), self.front)
         CarCopy.applySelf(robotInfo)
         return CarCopy
+    
     def applySelf(self, robotInfo:Pickup | Movement | Rotation) -> None:
         """Applies the robot info to the car"""
         if isinstance(robotInfo, Rotation):
             self.rotate(robotInfo.angle)
         if isinstance(robotInfo, Movement):
             self.move(robotInfo.distance)
+    
     def rotate(self, angle:float) -> None:
         """Rotates the car around its rotation center by a given angle in radians"""
         center = self.getRotationCenter()
+        if(self.triangle[0] != self.front):
+            print("invalid triangle points, default action will be taken")
         for i in range(len(self.triangle)):
             self.triangle[i] = self.triangle[i].rotateAround(center, angle)
+        self.front = self.triangle[0]
+    
     def move(self, distance:float) -> None:
-        vector = Point(distance * math.cos(self.getRotation()), distance * math.sin(self.getRotation()))
+        # Move in the direction from rotation center to front
+        center = self.getRotationCenter()
+        dy = self.front.y - center.y
+        dx = self.front.x - center.x
+        norm = math.sqrt(dx**2 + dy**2)
+        if norm == 0:
+            vector = Point(0, 0)
+        else:
+            vector = Point(distance * dy / norm, distance * dx / norm)
         for i in range(len(self.triangle)):
             self.triangle[i] = self.triangle[i].move(vector)
         self.front = self.front.move(vector)
+    
+    def validTarget(self, target:Point) -> bool:
+        """Checks if the target point is valid (not at the same position as the triangle points)"""
+        return self.getRotationCenter().distanceTo(target) > self.front.distanceTo(self.getRotationCenter())
 
 class Arc:
     """
