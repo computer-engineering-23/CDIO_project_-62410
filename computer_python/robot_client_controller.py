@@ -26,68 +26,80 @@ data = client_socket.recv(1024)
 print("Modtaget:", data.decode())
 
     
-cam = Camera()
+cam = Camera(debug=True)
 robot_track = track(cam)
+target:Point | None = None
+t = time.time()
+hasBall = False
+
 while(1):
-
+    if time.time() != t:
+        print("[FPS]:", 1 / (time.time()-t))
+        t = time.time()
     print("generating frame")
-
+    
     # Update the track to get latest car and targets
     frame = robot_track.cam.getFrame()
-    
-    
     
     if(frame is None):
         break
     robot_track.cam.displayFrame(frame,"success",False)
     
     response = robot_track.update(walls=False, goals=False, targets=True, obsticles=False, car=True, frame=frame)
-
+    
     if(response is None): 
         print("noCar")
         robot_track.cam.displayFrame(frame,"fail",True)
-        time.sleep(1)
-        continue
-    
-    # Get the path
-    path = robot_track.generatepath()
-
-    robot_track.Draw(frame)
-    robot_track.cam.displayFrame(frame,"Track")
-
-    print("waiting 1 sec")
-    time.sleep(1)
-    print("moving")
-
-    for step in path:
-        if isinstance(step, Movement):
-            if step.distance > 0:
-                cmd = f"drive {step.distance / 200}"
-            elif step.distance < 0:
-                cmd = f"backward {0-step.distance / 200}"
-            else:
-                print("error movement == ", step.distance)
-                continue
-
-        elif isinstance(step, Rotation):
-            angle_degrees = math.degrees(step.angle)
-            cmd = f"rotate {0-angle_degrees}"
-
-        elif isinstance(step, Pickup):
-            cmd = "grab"
-        elif isinstance(step, Dropoff):
-            cmd = "open"
+        step = Movement(-10)
+    else:
+        if not hasBall:
+            # Get the path
+            path,target = robot_track.generatepath(target)
+            
         else:
-            print("Unknown step:", step)
+            path,target = robot_track.generatepath(target,False)
+        
+        robot_track.Draw(frame,path,target)
+        robot_track.cam.displayFrame(frame,"Track")
+        
+        step = path[0]
+    if isinstance(step, Movement):
+        if step.distance > 0:
+            cmd = f"drive {step.distance / 200}"
+        elif step.distance < 0:
+            cmd = f"backward {0-step.distance / 200}"
+        else:
+            print("error movement == ", step.distance)
             continue
+    
+    elif isinstance(step, Rotation):
+        angle_degrees = math.degrees(step.angle)
+        cmd = f"rotate {0-angle_degrees/4}"
+    
+    elif isinstance(step, Pickup):
+        cmd = "grab"
+    elif isinstance(step, Dropoff):
+        cmd = "open"
+    else:
+        print("Unknown step:", step)
+        continue
 
-        client_socket.sendall(cmd.encode())
-        response = client_socket.recv(1024).decode()
-        if response != "OK":
-            print("Error at:", cmd)
-            print("response: ", response)
-            break
-        print("response: OK")
+    print("sending")
+    client_socket.sendall(cmd.encode())
+    response = client_socket.recv(1024).decode()
+    print("[RESPONSE]:", response)
+    if not response.startswith("OK"):
+        print("[ERROR] at:", cmd)
+        continue
+    elif response == "OK ball caught":
+        temp = time.time()
+        timeToWait = 2.3 
+        robot_track.update(goals=True)
+        target = robot_track.goals[0]
+        hasBall = True
+        time.sleep(time.time() - temp + timeToWait)
+    elif response == "OK ball lost":
+        hasBall = False
 # Luk forbindelsen
 client_socket.close()
 server_socket.close()

@@ -219,18 +219,22 @@ class Camera:
     def findCar(self, frame:np.ndarray) -> Tuple[List[Tuple[List[int | float],str]],Tuple[List[int | float],str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
-        hueWidth = 25
-        huemiddle = 166//2
-        generalWidth = 70
+        huemiddle = 150//2
+        satmiddle = 60
+        brightmiddle = 60
+        
+        hueWidth = 30
+        satWidth = 60
+        brightWidth = 15
         # grøn farveområde (HSV)
-        lower_green = np.array([huemiddle - hueWidth, 0.87 * 255 - generalWidth, 0.59 * 255 - generalWidth])
-        upper_green = np.array([huemiddle + hueWidth, 0.87 * 255 + generalWidth, 0.59 * 255 + generalWidth])
+        lower_green = np.array([max(huemiddle - hueWidth,0), max(satmiddle - satWidth,0), max(brightmiddle - brightWidth,0)])
+        upper_green = np.array([min(huemiddle + hueWidth,360), min(satmiddle + satWidth,255), min(brightmiddle + brightWidth,255)])
         
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
         # Konverter til gråskala og blur igen
         gray = cv2.GaussianBlur(mask_green, (15, 15), 0)
-        gray = cv2.inRange(gray, np.array([75]), np.array([255]))  # For at sikre at det er binært
+        gray = cv2.inRange(gray, np.array([20]), np.array([255]))  # For at sikre at det er binært
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
         
         # Find cirkler med Hough Circle Transform

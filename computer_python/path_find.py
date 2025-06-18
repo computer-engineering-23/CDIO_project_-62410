@@ -61,7 +61,11 @@ class track:
         if(car):
             tempCar:Tuple[List[Tuple[List[int | float], str]], Tuple[List[int | float], str]] | None = self.cam.findCar(frame)
             fails = 0
-            while(tempCar is None): 
+            while(tempCar is None or len(tempCar[0]) <= 2): 
+                if(tempCar is not None):
+                    print("[DEBUG] falied car length:",len(tempCar[0]))
+                else:
+                    print("[DEBUG] no car found")
                 fails += 1
                 tempCar = self.cam.findCar(frame)
                 if(fails == 5):
@@ -99,6 +103,7 @@ class track:
         for obsticle in obsticles:
             realObsticles.append(Point(obsticle[0][1], obsticle[0][0]))
         return realObsticles
+    
     def formatCar(self, car:Union[List[Tuple[List[int | float],str]],None], front:Union[Tuple[List[int | float],str],None]) -> Car:
         triangle:List[Point] = []
         if(car is not None and len(car) != 0):
@@ -114,54 +119,66 @@ class track:
             return Car(triangle,front_point)
         return Car([Point(0,0),Point(0,1),Point(1,0)], Point(0, 0))  # Default car if no car is provided
 
-    def generatepath(self) -> List[Pickup | Movement | Rotation]:
+    def generatepath(self, target:Point | None = None, checkTarget:bool = True) -> tuple[List[Pickup | Movement | Rotation],Point |None]:
         """Generates a path from the car to the closest target"""
         path: List[Pickup | Movement | Rotation] = []
-
-        if not self.targets or self.car.front is None:
-            print("No targets or car front found")
-            return path
-
+        
         # Copy car to simulate forward steps
         car = self.car.copy()
         car_center = car.getRotationCenter()
         direction = car.getRotation()
         front = car.front
-
-        # Find the closest target
-        self.targets.sort(key=lambda t: front.distanceTo(t))
-        target = self.targets[0]
-
-        for i in range(len(self.targets)):
-            if car.validTarget(self.targets[i]):
-                target = self.targets[i]
-                break
-
+        
+        if target is None:
+            if self.targets is None or len(self.targets) == 0 or self.car.front is None:
+                print("[DEBUG] no targets or no car")
+                return path,None
+            # Find the closest target
+            self.targets.sort(key=lambda t: front.distanceTo(t))
+            target = self.targets[0]
+            
+            for i in range(len(self.targets)):
+                if car.validTarget(self.targets[i]):
+                    target = self.targets[i]
+                    print(f"[DEBUG] found destination")
+                    break
+            else:
+                print(f"[DEBUG] no valid targets")
+        elif checkTarget:
+            self.targets.sort(key=lambda t: target.distanceTo(t)) # type: ignore
+            for i in range(len(self.targets)):
+                if car.validTarget(self.targets[i]):
+                    target = self.targets[i]
+                    print(f"[DEBUG] adjusted target")
+                    break
+            else:
+                print(f"[DEBUG] failed to adjust target")
+        
         # Calculate vector to target
         dy = target.y - car_center.y
         dx = target.x - car_center.x
         angle_to_target = math.atan2(dy, dx)
         # Compute required rotation
         rotation_amount = deltaRotation(direction, angle_to_target)
-        path.append(Rotation(rotation_amount))
-        car.applySelf(path[-1])  # apply rotation to simulate robot state
-
+        if(abs(rotation_amount) > 0.1):
+            path.append(Rotation(rotation_amount))
+            car.applySelf(path[-1])  # apply rotation to simulate robot state
+        
         # Compute forward movement
         distance = car.front.distanceTo(target)
+        if(distance < 15):
+            distance = 35
         path.append(Movement(distance))
         car.applySelf(path[-1])  # apply movement to simulate robot state
-
-        # Optional: simulate a pickup
-        # path.append(Pickup())  # uncomment if needed
-
+        
         # Debug info
         print(f"[DEBUG] Target: ({target.x:.2f}, {target.y:.2f})")
         print(f"[DEBUG] From:   ({front.x:.2f}, {front.y:.2f})")
         print(f"[DEBUG] Angle to target: {angle_to_target:.2f} rad")
         print(f"[DEBUG] Rotation applied: {rotation_amount:.2f} rad")
         print(f"[DEBUG] Movement: {distance:.2f} px")
-
-        return path
+        
+        return (path,target)
 
 
     def drawCar(self, frame:np.ndarray,car:Car) -> np.ndarray:
@@ -171,7 +188,7 @@ class track:
             p1 = car.triangle[(i + 1) % 3]
             cv2.line(frame, (int(p0.x), int(p0.y)), (int(p1.x), int(p1.y)), (255, 255, 0), 2)
         return frame
-    def Draw(self, frame:np.ndarray):
+    def Draw(self, frame:np.ndarray,path = None, target = None):
         """Draws the track on the frame"""
         for wall in self.walls:
             cv2.line(frame, (int(wall.start.x), int(wall.start.y)), (int(wall.end.x), int(wall.end.y)), (0, 0, 255), 1)
@@ -190,8 +207,10 @@ class track:
         car: Car = self.car.copy()
 
 # Compute path once
-        path = self.generatepath()
-
+        if(path is None):
+            path,target = self.generatepath()
+        if(target is None):
+            target = Point(0,0)
 # Draw the path step-by-step
         for step in path:
             prev_front = car.front.copy()
@@ -229,7 +248,7 @@ class track:
         cv2.putText(frame, "car: cyan", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
         cv2.putText(frame, "Press 'q' to exit", (10, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
         if(self.targets is not None and len(self.targets) != 0):
-            cv2.circle(frame, (int(self.targets[0].x), int(self.targets[0].y)), 5, (0,0,0), -1)
+            cv2.circle(frame, (int(target.x), int(target.y)), 5, (0,0,0), -1)
         
         return frame
     
