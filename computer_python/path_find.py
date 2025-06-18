@@ -37,8 +37,9 @@ class track:
         self.obsticles = self.formatObsticles(obsticles)
         self.car:Car = self.formatCar(car, front if front is not None else None)
     
-    def update(self, walls:bool = False, goals:bool = False, targets:bool = False, obsticles:bool = False, car:bool = False):
-        frame:np.ndarray | None = self.cam.getFrame()
+    def update(self, walls:bool = False, goals:bool = False, targets:bool = False, obsticles:bool = False, car:bool = False, frame:np.ndarray | None= None):
+        if(frame is None):
+            frame = self.cam.getFrame()
         
         if(frame is None):
             print("No frame received from camera.")
@@ -56,13 +57,19 @@ class track:
         
         if(obsticles is not None):
             self.obsticles = self.formatObsticles(self.cam.findEgg(np.copy(frame)))
+        
         if(car):
-            tempCar = self.cam.findCar(np.copy(frame))
-            if(tempCar is not None and len(tempCar) == 2): 
-                car_,front_ = tempCar
-                self.car = self.formatCar(car_, front_)
-            else:
-                self.car = self.formatCar(None, None)
+            tempCar:Tuple[List[Tuple[List[int | float], str]], Tuple[List[int | float], str]] | None = self.cam.findCar(frame)
+            fails = 0
+            while(tempCar is None): 
+                fails += 1
+                tempCar = self.cam.findCar(frame)
+                if(fails == 5):
+                    return None
+            car_,front_ = tempCar
+            self.car = self.formatCar(car_, front_)
+        
+        return 1
     
     def formatWalls(self, walls:Union[List[List[List[int | float]]],None]) -> List[Wall]:
         realWalls = []
@@ -221,8 +228,8 @@ class track:
         cv2.putText(frame, "obsticles: yellow", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
         cv2.putText(frame, "car: cyan", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
         cv2.putText(frame, "Press 'q' to exit", (10, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-        
-        cv2.circle(frame, (int(self.targets[0].x), int(self.targets[0].y)), 5, (0,0,0), -1)
+        if(self.targets is not None and len(self.targets) != 0):
+            cv2.circle(frame, (int(self.targets[0].x), int(self.targets[0].y)), 5, (0,0,0), -1)
         
         return frame
     
