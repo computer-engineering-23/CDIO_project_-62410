@@ -65,16 +65,16 @@ while(1):
         step = path[0]
     if isinstance(step, Movement):
         if step.distance > 0:
-            cmd = f"drive {step.distance / 200}"
+            cmd = f"drive {step.distance / 100}"
         elif step.distance < 0:
-            cmd = f"backward {0-step.distance / 200}"
+            cmd = f"backward {0-step.distance / 100}"
         else:
             print("error movement == ", step.distance)
             continue
     
     elif isinstance(step, Rotation):
         angle_degrees = math.degrees(step.angle)
-        cmd = f"rotate {0-angle_degrees/4}"
+        cmd = f"rotate {0-angle_degrees/3}"
     
     elif isinstance(step, Pickup):
         cmd = "grab"
@@ -97,7 +97,7 @@ while(1):
         robot_track.update(goals=True)
         target = robot_track.goals[0]
         hasBall = True
-        time.sleep(time.time() - temp + timeToWait)
+        time.sleep(timeToWait)
     elif response == "OK ball lost":
         hasBall = False
 # Luk forbindelsen

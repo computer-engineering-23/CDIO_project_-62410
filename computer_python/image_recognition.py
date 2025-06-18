@@ -50,10 +50,10 @@ class Camera:
                 cv2.putText(frame, names[i], (x - 10, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
         
-        if lines is not None:
-            for i in range (0,len(lines)):
-                (x1, y1, x2,y2) = lines[i][0]
-                cv2.line(frame,(x1,y1),(x2,y2),(0,0,255),3, cv2.LINE_AA)
+        # if lines is not None:
+        #     for i in range (0,len(lines)):
+        #         (x1, y1, x2,y2) = lines[i][0]
+        #         cv2.line(frame,(x1,y1),(x2,y2),(0,0,255),3, cv2.LINE_AA)
         
         if goals is not None:
             for goal in goals:
@@ -74,28 +74,36 @@ class Camera:
     def findCircle(self,frame:np.ndarray) -> Union[List[Tuple[List[Union[int,float]],str]],None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
+        
+        
+        
         # Orange farveområde (kan justeres)
-        lower_orange = np.array([0, 30, 100])
-        upper_orange = np.array([30, 255, 255])
+        # lower_orange = np.array([0, 30, 100])
+        # lower_orange = np.array([40, 30, 100])
+        # upper_orange = np.array([30, 255, 255])
         
         # Hvid farveområde (HSV)
-        lower_white = np.array([0, 0, 0])
+        lower_white = np.array([0, 0, 165])
         upper_white = np.array([180, 35, 255])
         
         # Skab maske kun med orange
-        mask_orange = cv2.inRange(hsv, lower_orange, upper_orange)
+        # mask_orange = cv2.inRange(hsv, lower_orange, upper_orange)
         mask_white = cv2.inRange(hsv, lower_white, upper_white)
         
         # Kombinerer masker
-        mask = cv2.bitwise_or(mask_orange, mask_white)
+        # mask = cv2.bitwise_or(mask_orange, mask_white)
         
         # Brug masken til at finde relevante områder
-        masked = cv2.bitwise_and(frame, frame, mask=mask)
+        # masked = cv2.bitwise_and(frame, frame, mask=mask)
+        masked = cv2.bitwise_and(frame, frame, mask=mask_white)
         self.displayFrame(masked, "masked circle", debug=True)
 
         # Konverter til gråskala og blur igen
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (11, 11), 0)
+        gray = cv2.GaussianBlur(mask_white, (15, 15), 0)
+
+        self.displayFrame(gray, "brur circle", debug=False)
+
 
         # Find cirkler med Hough Circle Transform
         __circles = cv2.HoughCircles(
@@ -104,9 +112,9 @@ class Camera:
             dp=1,
             minDist=1,
             param1=50,
-            param2=15,
-            minRadius=3,
-            maxRadius=7
+            param2=14,
+            minRadius=5,
+            maxRadius=8
         )
         if(__circles is not None):
             circles:List[List[List[Union[int,float]]]] = __circles.tolist()
@@ -223,12 +231,14 @@ class Camera:
         satmiddle = 60
         brightmiddle = 60
         
-        hueWidth = 30
+        hueWidth = 20
         satWidth = 60
         brightWidth = 15
         # grøn farveområde (HSV)
-        lower_green = np.array([max(huemiddle - hueWidth,0), max(satmiddle - satWidth,0), max(brightmiddle - brightWidth,0)])
-        upper_green = np.array([min(huemiddle + hueWidth,360), min(satmiddle + satWidth,255), min(brightmiddle + brightWidth,255)])
+        lower_green = np.array([max(huemiddle - hueWidth,0), 20, 20])
+        upper_green = np.array([min(huemiddle + hueWidth,360), 255, 255])
+        # lower_green = np.array([max(huemiddle - hueWidth,0), max(satmiddle - satWidth,0), max(brightmiddle - brightWidth,0)])
+        # upper_green = np.array([min(huemiddle + hueWidth,360), min(satmiddle + satWidth,255), min(brightmiddle + brightWidth,255)])
         
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
         
