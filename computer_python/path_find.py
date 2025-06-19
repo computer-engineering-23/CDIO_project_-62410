@@ -167,17 +167,19 @@ class track:
         
         # Compute forward movement
         distance = car.front.distanceTo(target)
-        if(distance < 15):
-            distance = 35
-        path.append(Movement(distance))
+
+        # Check if angle to target is "almost straight ahead"
+        angle_offset = abs(deltaRotation(direction, angle_to_target))
+
+        if angle_offset < 0.2 and distance < 50:
+            print("[DEBUG] Deliver condition met")
+            path.append(deliver(distance))
+        else:
+            if distance < 15:
+                distance = 35
+            path.append(Movement(distance))
+
         car.applySelf(path[-1])
-
-        # Replace last Movement with deliver
-        last_step = path[-1]
-
-        if isinstance(last_step, Movement):
-            path.pop()
-            path.append(deliver(last_step.distance))
             
         # Debug info
         print(f"[DEBUG] Target: ({target.x:.2f}, {target.y:.2f})")
