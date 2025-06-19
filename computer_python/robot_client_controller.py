@@ -9,11 +9,17 @@ import math
 import cv2
 host = '0.0.0.0'  # Lyt på alle interfaces
 port = 12345      # Samme port som EV3-klienten bruger
-
-if(input("enable log (y/n): ") == "y"):
-    enableLog()
-    blockTag("Raw_response")
-    printLog("INFO", "Logging enabled")
+while(True):
+    doLog = input("enable log (y/n): ")
+    if(doLog == "y"):
+        enableLog()
+        blockTag("Raw_response")
+        printLog("INFO", "Logging enabled")
+        break
+    elif(doLog == "n"):
+        printLog("Status","logging disabled")
+        break;
+    print("please only use y or n as inputs")
 
 # Opret TCP-socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -59,9 +65,7 @@ while(1):
         step = Movement(-10)
     else:
         if not hasBall:
-            # Get the path
             path,target = robot_track.generatepath(target)
-    
         else:
             if(ballFrames % 10 == 0):
                 robot_track.update(walls=10,goals=True)
@@ -82,17 +86,16 @@ while(1):
         else:
             printLog("ERROR","no movement:", step.distance)
             continue
-    
     elif isinstance(step, Rotation):
         angle_degrees = math.degrees(step.angle)
         cmd = f"rotate {0-angle_degrees/3}"
-    
     else:
         printLog("error","Unknown step:", step)
         continue
 
-    printLog("STATUS"," sending")
+    printLog("command","sending command:", cmd)
     printLog("STATUS", "has ball:",hasBall)
+    
     client_socket.sendall(cmd.encode())
     response = client_socket.recv(1024).decode()
     printLog("RESPONSE","modified",response)

@@ -176,12 +176,10 @@ class track:
             print("[DEBUG] Deliver condition met")
             path.append(deliver(distance))
         else:
-            if distance < 15:
-                distance = 35
             path.append(Movement(distance))
-
+        
         car.applySelf(path[-1])
-            
+        
         # Debug info
         printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})")
         printLog("DEBUG", f"From:   ({front.x:.2f}, {front.y:.2f})")
