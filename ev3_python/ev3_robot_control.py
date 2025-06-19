@@ -140,16 +140,27 @@ while(True):
 
 
 
-    elif command == "deliver":
-        smallMotor.run_forever(speed_sp=250)
-        time.sleep(1.5)
-        smallMotor.stop()
-        leftMotor.run_forever(speed_sp=-250)
-        rightMotor.run_forever(speed_sp=-250)
-        time.sleep(2)
-        leftMotor.stop()
-        rightMotor.stop()
-        s.sendall("OK".encode())
+    elif command.startswith("deliver"):
+        try:    
+            smallMotor.run_forever(speed_sp=250)
+            time.sleep(1.5)
+            smallMotor.stop()
+            run_time = float(command.split()[1])
+            leftMotor.run_forever(speed_sp=-350)
+            rightMotor.run_forever(speed_sp=-350)
+            time.sleep(run_time)
+            leftMotor.stop()
+            rightMotor.stop()
+            time.sleep(1)
+            smallMotor.run_forever(speed_sp=-250)
+            time.sleep(1.5)
+            smallMotor.stop()
+            s.sendall("OK".encode())
+
+       
+        except (IndexError, ValueError):
+            print("Invalid rotate command:", command)
+            s.sendall("ERR".encode())
         
     else:
         print "Unknown command:", command

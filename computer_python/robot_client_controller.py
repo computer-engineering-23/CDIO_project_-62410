@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import socket
 import time
-from classes import Movement, Rotation, Pickup, Point, Dropoff
+from classes import Movement, Rotation, Point
 from path_find import track
 from image_recognition import Camera
 import math
@@ -45,7 +45,7 @@ while(1):
         break
     robot_track.cam.displayFrame(frame,"success",False)
     
-    response = robot_track.update(walls=False, goals=False, targets=True, obsticles=False, car=True, frame=frame)
+    response = robot_track.update(walls=False, goals=True, targets=True, obsticles=False, car=True, frame=frame)
     
     if(response is None): 
         print("noCar")
@@ -76,10 +76,6 @@ while(1):
         angle_degrees = math.degrees(step.angle)
         cmd = f"rotate {0-angle_degrees/3}"
     
-    elif isinstance(step, Pickup):
-        cmd = "grab"
-    elif isinstance(step, Dropoff):
-        cmd = "open"
     else:
         print("Unknown step:", step)
         continue
@@ -89,6 +85,8 @@ while(1):
     client_socket.sendall(cmd.encode())
     response = client_socket.recv(1024).decode()
     print("[RESPONSE]:", response)
+    print(f"[RESPONSE RAW]: {repr(response)}")
+
     if not response.startswith("OK"):
         print("[ERROR] at:", cmd)
         continue

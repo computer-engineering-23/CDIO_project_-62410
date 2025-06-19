@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from typing import List, Tuple, Union
 from image_recognition import Camera
-from classes import Point, Wall, Car, Pickup, Movement, Rotation
+from classes import Point, Wall, Car, Movement, Rotation, deliver
 import math
 
 def deltaRotation(newAngle:float, currentAngle:float) -> float:
@@ -119,9 +119,9 @@ class track:
             return Car(triangle,front_point)
         return Car([Point(0,0),Point(0,1),Point(1,0)], Point(0, 0))  # Default car if no car is provided
 
-    def generatepath(self, target:Point | None = None, checkTarget:bool = True) -> tuple[List[Pickup | Movement | Rotation],Point |None]:
+    def generatepath(self, target:Point | None = None, checkTarget:bool = True) -> tuple[List[Movement | Rotation | deliver],Point |None]:
         """Generates a path from the car to the closest target"""
-        path: List[Pickup | Movement | Rotation] = []
+        path: List[deliver | Movement | Rotation] = []
         
         # Copy car to simulate forward steps
         car = self.car.copy()
@@ -170,8 +170,15 @@ class track:
         if(distance < 15):
             distance = 35
         path.append(Movement(distance))
-        car.applySelf(path[-1])  # apply movement to simulate robot state
-        
+        car.applySelf(path[-1])
+
+        # Replace last Movement with deliver
+        last_step = path[-1]
+
+        if isinstance(last_step, Movement):
+            path.pop()
+            path.append(deliver(last_step.distance))
+            
         # Debug info
         print(f"[DEBUG] Target: ({target.x:.2f}, {target.y:.2f})")
         print(f"[DEBUG] From:   ({front.x:.2f}, {front.y:.2f})")
@@ -270,4 +277,4 @@ class track:
     
     def testPath(self):
         """Test function to show the path"""
-        return [Movement(10), Rotation(math.pi), Movement(5), Pickup()]
+        return [Movement(10), Rotation(math.pi), Movement(5)]

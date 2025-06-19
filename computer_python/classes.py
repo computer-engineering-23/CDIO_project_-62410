@@ -66,15 +66,13 @@ class Rotation:
     def __init__(self, angle:float):
         self.angle:float = angle
 
-class Pickup:
-    """
-        Pickup class to represent a pickup action for the robot
-    """
 
-class Dropoff:
+class deliver(Movement):
     """
-        Dropoff class to represent a dropoff action for the robot
+        deliver class to represent a delivery action for the robot
     """
+    def __init__(self, distance:float):
+        self.distance:float = distance
 
 class Wall:
     """
@@ -236,13 +234,13 @@ class Car:
             return 0.0
         return Line(self.front, self.getRotationCenter()).length()
     
-    def apply(self, robotInfo:Pickup | Movement | Rotation) -> 'Car':
+    def apply(self, robotInfo:Movement | Rotation) -> 'Car':
         """Applies the robot info to the car and returns a new RobotInfo object"""
         CarCopy = Car(self.triangle.copy(), self.front)
         CarCopy.applySelf(robotInfo)
         return CarCopy
     
-    def applySelf(self, robotInfo:Pickup | Movement | Rotation) -> None:
+    def applySelf(self, robotInfo:Movement | Rotation) -> None:
         """Applies the robot info to the car"""
         if isinstance(robotInfo, Rotation):
             self.rotate(robotInfo.angle)
