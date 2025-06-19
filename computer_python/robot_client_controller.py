@@ -88,7 +88,7 @@ while(1):
     client_socket.sendall(cmd.encode())
     response = client_socket.recv(1024).decode()
     print("[RESPONSE]:", response)
-    if not response.startswith("OK"):
+    if not response == "OK":
         print("[ERROR] at:", cmd)
         continue
     elif response == "OK ball caught":
