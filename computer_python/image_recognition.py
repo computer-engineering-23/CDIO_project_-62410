@@ -3,6 +3,7 @@ import numpy as np
 from typing import List,Tuple,Union
 import math
 from classes import Point
+from Log import printLog
 
 # Start kameraet
 class Camera:
@@ -11,11 +12,11 @@ class Camera:
         self.capture = cv2.VideoCapture(1, APIid)
         self.walls:List[List[List[int | float]]] = []
         if not self.capture.isOpened():
-            print("Kunne ikke åbne kamera")
+            printLog("error","Kunne ikke åbne kamera")
             exit(1)
         initial_frame:Union[np.ndarray,None] = self.getFrame()
         if initial_frame is None:
-            print("Kunne ikke hente billede fra kamera")
+            printLog("error","Kunne ikke hente billede fra kamera")
             exit(1)
         self.shape:Tuple[int,...] = np.shape(initial_frame)
     
@@ -51,10 +52,10 @@ class Camera:
                 cv2.putText(frame, names[i], (x - 10, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
         
-        # if lines is not None:
-        #     for i in range (0,len(lines)):
-        #         (x1, y1, x2,y2) = lines[i][0]
-        #         cv2.line(frame,(x1,y1),(x2,y2),(0,0,255),3, cv2.LINE_AA)
+        if lines is not None:
+            for i in range (0,len(lines)):
+                (x1, y1, x2,y2) = lines[i][0]
+                cv2.line(frame,(x1,y1),(x2,y2),(0,0,255),3, cv2.LINE_AA)
         
         if goals is not None:
             for goal in goals:
@@ -67,7 +68,7 @@ class Camera:
     def getFrame(self) -> Union[np.ndarray,None]:
         ret, frame = self.capture.read()
         if not ret:
-            print("Kunne ikke hente billede fra kamera")
+            printLog("error","Kunne ikke hente billede fra kamera")
             return None
         self.shape = np.shape(frame)
         return frame
@@ -212,7 +213,7 @@ class Camera:
         for i in range (frameNumber):
             current = self.getFrame()
             if(current is None):
-                print("Kunne ikke hente billede fra kamera")
+                printLog("error","Kunne ikke hente billede fra kamera")
                 return []
             rawWalls.append(self.findWall(current))
         buffer = np.zeros(self.shape, dtype=np.uint8)

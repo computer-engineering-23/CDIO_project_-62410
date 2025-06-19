@@ -1,0 +1,2660 @@
+ows [Version 10.0.26100.4351]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\DTU\CDIO_project_-62410\computer_python>conda activate base
+
+(base) C:\DTU\CDIO_project_-62410\computer_python>python robot_client_controller.py
+Venter på forbindelse på 0.0.0.0:12345...
+Forbundet til: ('192.168.28.151', 40620)
+Modtaget: EV3 is ready
+generating frame
+[DEBUG] found destination
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (256.00, 340.00)
+[DEBUG] Angle to target: 0.00 rad
+[DEBUG] Rotation applied: 0.16 rad
+[DEBUG] Movement: 135.67 px
+sending
+has ball: False
+[RESPONSE]:
+[ERROR] at: rotate -3.1055105783687984
+[FPS]: 3.1451414311230956
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (257.00, 340.00)
+[DEBUG] Angle to target: -2.74 rad
+[DEBUG] Rotation applied: 2.91 rad
+[DEBUG] Movement: 37.46 px
+sending
+has ball: False
+Traceback (most recent call last):
+  File "C:\DTU\CDIO_project_-62410\computer_python\robot_client_controller.py", line 89, in <module>
+    client_socket.sendall(cmd.encode())
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+(base) C:\DTU\CDIO_project_-62410\computer_python>python robot_client_controller.py
+Venter på forbindelse på 0.0.0.0:12345...
+Forbundet til: ('192.168.28.151', 40624)
+Modtaget: EV3 is ready
+generating frame
+[DEBUG] found destination
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (217.00, 344.00)
+[DEBUG] Angle to target: -2.83 rad
+[DEBUG] Rotation applied: -0.41 rad
+[DEBUG] Movement: 119.87 px
+sending
+has ball: False
+[RESPONSE]:
+[ERROR] at: rotate 7.869182052928068
+[FPS]: 4.509422440115254
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (216.00, 344.00)
+[DEBUG] Angle to target: -2.84 rad
+[DEBUG] Rotation applied: -0.45 rad
+[DEBUG] Movement: 118.03 px
+sending
+has ball: False
+Traceback (most recent call last):
+  File "C:\DTU\CDIO_project_-62410\computer_python\robot_client_controller.py", line 89, in <module>
+    client_socket.sendall(cmd.encode())
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+(base) C:\DTU\CDIO_project_-62410\computer_python>
+(base) C:\DTU\CDIO_project_-62410\computer_python>python robot_client_controller.py
+Venter på forbindelse på 0.0.0.0:12345...
+Forbundet til: ('192.168.28.151', 40628)
+Modtaget: EV3 is ready
+generating frame
+[DEBUG] found destination
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (221.00, 343.00)
+[DEBUG] Angle to target: -2.85 rad
+[DEBUG] Rotation applied: -0.54 rad
+[DEBUG] Movement: 121.77 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.5364718949325744
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (221.00, 343.00)
+[DEBUG] Angle to target: -2.85 rad
+[DEBUG] Rotation applied: -0.54 rad
+[DEBUG] Movement: 121.77 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.420286739257817
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (254.00, 339.00)
+[DEBUG] Angle to target: -2.74 rad
+[DEBUG] Rotation applied: 2.88 rad
+[DEBUG] Movement: 36.76 px
+sending
+has ball: False
+[RESPONSE]: OK ball lost
+Ball lost
+[FPS]: 2.981115285601987
+generating frame
+[DEBUG] found destination
+[DEBUG] Target: (266.50, 359.50)
+[DEBUG] From:   (255.00, 342.00)
+[DEBUG] Angle to target: 0.39 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 16.16 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.411238754548052
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (253.00, 343.00)
+[DEBUG] Angle to target: -0.08 rad
+[DEBUG] Rotation applied: 0.01 rad
+[DEBUG] Movement: 140.06 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.989278911098355
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (245.00, 315.00)
+[DEBUG] Angle to target: -0.11 rad
+[DEBUG] Rotation applied: -0.43 rad
+[DEBUG] Movement: 137.99 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 0.6572155042102461
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (240.00, 308.00)
+[DEBUG] Angle to target: -0.12 rad
+[DEBUG] Rotation applied: -0.56 rad
+[DEBUG] Movement: 136.97 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 14.223138562122532
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (394.50, 330.50)
+[DEBUG] From:   (294.00, 276.00)
+[DEBUG] Angle to target: 0.20 rad
+[DEBUG] Rotation applied: -0.58 rad
+[DEBUG] Movement: 99.67 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.991406691617924
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (393.50, 330.50)
+[DEBUG] From:   (296.00, 275.00)
+[DEBUG] Angle to target: 0.21 rad
+[DEBUG] Rotation applied: -0.60 rad
+[DEBUG] Movement: 96.36 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.704339689616107
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (297.00, 280.00)
+[DEBUG] Angle to target: 0.08 rad
+[DEBUG] Rotation applied: -0.64 rad
+[DEBUG] Movement: 85.13 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.137648122334288
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (301.00, 284.00)
+[DEBUG] Angle to target: 0.09 rad
+[DEBUG] Rotation applied: -0.54 rad
+[DEBUG] Movement: 84.82 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.065688546745525
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (303.00, 288.00)
+[DEBUG] Angle to target: 0.10 rad
+[DEBUG] Rotation applied: -0.47 rad
+[DEBUG] Movement: 85.56 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.634907562776838
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (306.00, 294.00)
+[DEBUG] Angle to target: 0.12 rad
+[DEBUG] Rotation applied: -0.37 rad
+[DEBUG] Movement: 85.34 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.108090268051783
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (307.00, 300.00)
+[DEBUG] Angle to target: 0.12 rad
+[DEBUG] Rotation applied: -0.27 rad
+[DEBUG] Movement: 85.87 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 7.572504089289132
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (308.00, 307.00)
+[DEBUG] Angle to target: 0.14 rad
+[DEBUG] Rotation applied: -0.16 rad
+[DEBUG] Movement: 86.09 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 6.467571197493342
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (308.00, 311.00)
+[DEBUG] Angle to target: 0.15 rad
+[DEBUG] Rotation applied: -0.09 rad
+[DEBUG] Movement: 86.72 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 6.723160201263426
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (308.00, 314.00)
+[DEBUG] Angle to target: 0.15 rad
+[DEBUG] Rotation applied: -0.05 rad
+[DEBUG] Movement: 86.10 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 0.9950051703781339
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (308.00, 314.00)
+[DEBUG] Angle to target: 0.15 rad
+[DEBUG] Rotation applied: -0.05 rad
+[DEBUG] Movement: 86.10 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.291981026443647
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (392.50, 330.50)
+[DEBUG] From:   (346.00, 323.00)
+[DEBUG] Angle to target: 0.14 rad
+[DEBUG] Rotation applied: -0.01 rad
+[DEBUG] Movement: 47.10 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.1199833376502348
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (402.50, 332.50)
+[DEBUG] From:   (376.00, 329.00)
+[DEBUG] Angle to target: 0.13 rad
+[DEBUG] Rotation applied: -0.00 rad
+[DEBUG] Movement: 26.73 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.673404884759275
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (443.50, 325.50)
+[DEBUG] From:   (413.00, 338.00)
+[DEBUG] Angle to target: -0.02 rad
+[DEBUG] Rotation applied: 0.16 rad
+[DEBUG] Movement: 29.83 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.992749491416879
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (460.50, 334.50)
+[DEBUG] From:   (436.00, 345.00)
+[DEBUG] Angle to target: 0.02 rad
+[DEBUG] Rotation applied: 0.15 rad
+[DEBUG] Movement: 23.49 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 8.866156945392744
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (470.50, 338.50)
+[DEBUG] From:   (443.00, 346.00)
+[DEBUG] Angle to target: 0.05 rad
+[DEBUG] Rotation applied: 0.12 rad
+[DEBUG] Movement: 26.61 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 10.691545522443226
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (447.00, 346.00)
+[DEBUG] Angle to target: -2.98 rad
+[DEBUG] Rotation applied: 3.12 rad
+[DEBUG] Movement: 201.44 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 7.533495942552725
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (449.00, 347.00)
+[DEBUG] Angle to target: -2.98 rad
+[DEBUG] Rotation applied: 3.13 rad
+[DEBUG] Movement: 203.27 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.2679404806458108
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (448.00, 345.00)
+[DEBUG] Angle to target: -2.98 rad
+[DEBUG] Rotation applied: 3.10 rad
+[DEBUG] Movement: 202.56 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.7437040590771011
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (437.00, 310.00)
+[DEBUG] Angle to target: -2.94 rad
+[DEBUG] Rotation applied: 2.39 rad
+[DEBUG] Movement: 205.77 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.316667634580582
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (399.00, 322.00)
+[DEBUG] Angle to target: -3.14 rad
+[DEBUG] Rotation applied: -1.00 rad
+[DEBUG] Movement: 278.83 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.2956750952083307
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (371.00, 286.00)
+[DEBUG] Angle to target: -2.95 rad
+[DEBUG] Rotation applied: 1.38 rad
+[DEBUG] Movement: 215.24 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 3.3979061536205655
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (351.00, 297.00)
+[DEBUG] Angle to target: -2.92 rad
+[DEBUG] Rotation applied: 0.70 rad
+[DEBUG] Movement: 224.14 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.027733555591116
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (103.50, 291.50)
+[DEBUG] From:   (345.00, 302.00)
+[DEBUG] Angle to target: -2.90 rad
+[DEBUG] Rotation applied: 0.83 rad
+[DEBUG] Movement: 216.64 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 11.490897534594847
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (333.00, 317.00)
+[DEBUG] Angle to target: -2.93 rad
+[DEBUG] Rotation applied: 0.31 rad
+[DEBUG] Movement: 225.29 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.0984815024722
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (333.00, 319.00)
+[DEBUG] Angle to target: -2.94 rad
+[DEBUG] Rotation applied: 0.27 rad
+[DEBUG] Movement: 226.61 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 10.394882737665956
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (330.00, 324.00)
+[DEBUG] Angle to target: -2.94 rad
+[DEBUG] Rotation applied: 0.17 rad
+[DEBUG] Movement: 226.40 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 8.874204468517265
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (329.00, 330.00)
+[DEBUG] Angle to target: -2.95 rad
+[DEBUG] Rotation applied: 0.08 rad
+[DEBUG] Movement: 227.78 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 9.697319442710429
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (103.50, 291.50)
+[DEBUG] From:   (367.00, 339.00)
+[DEBUG] Angle to target: -2.88 rad
+[DEBUG] Rotation applied: 2.15 rad
+[DEBUG] Movement: 225.25 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 0.4327426456363894
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (328.00, 334.00)
+[DEBUG] Angle to target: -2.95 rad
+[DEBUG] Rotation applied: 0.00 rad
+[DEBUG] Movement: 227.50 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.9294056168590412
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (230.00, 325.00)
+[DEBUG] Angle to target: -2.95 rad
+[DEBUG] Rotation applied: -0.12 rad
+[DEBUG] Movement: 129.04 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 0.4323990863576739
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (104.50, 291.50)
+[DEBUG] From:   (229.00, 347.00)
+[DEBUG] Angle to target: -2.97 rad
+[DEBUG] Rotation applied: -0.49 rad
+[DEBUG] Movement: 123.92 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 8.713789184798303
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (483.50, 429.50)
+[DEBUG] From:   (136.00, 392.00)
+[DEBUG] Angle to target: 0.24 rad
+[DEBUG] Rotation applied: 2.45 rad
+[DEBUG] Movement: 216.60 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.348929207704247
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (483.50, 429.50)
+[DEBUG] From:   (134.00, 395.00)
+[DEBUG] Angle to target: 0.23 rad
+[DEBUG] Rotation applied: 2.43 rad
+[DEBUG] Movement: 221.36 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.722652511875748
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (483.50, 429.50)
+[DEBUG] From:   (132.00, 395.00)
+[DEBUG] Angle to target: 0.23 rad
+[DEBUG] Rotation applied: 2.46 rad
+[DEBUG] Movement: 221.67 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.874349063943561
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (484.50, 429.50)
+[DEBUG] From:   (140.00, 407.00)
+[DEBUG] Angle to target: 0.24 rad
+[DEBUG] Rotation applied: 2.18 rad
+[DEBUG] Movement: 222.82 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.7830946480853953
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (483.50, 429.50)
+[DEBUG] From:   (157.00, 416.00)
+[DEBUG] Angle to target: 0.26 rad
+[DEBUG] Rotation applied: 1.81 rad
+[DEBUG] Movement: 226.62 px
+sending
+has ball: False
+[RESPONSE]: OK ball caught
+[FPS]: 0.3935817973823734
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (175.00, 417.00)
+[DEBUG] Angle to target: -2.05 rad
+[DEBUG] Rotation applied: -2.51 rad
+[DEBUG] Movement: 333.37 px
+sending
+has ball: True
+[RESPONSE]: OKOK
+[FPS]: 23.11089560627266
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (216.00, 407.00)
+[DEBUG] Angle to target: -2.02 rad
+[DEBUG] Rotation applied: 3.00 rad
+[DEBUG] Movement: 332.19 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.4870750141995799
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (216.00, 407.00)
+[DEBUG] Angle to target: -2.02 rad
+[DEBUG] Rotation applied: 3.00 rad
+[DEBUG] Movement: 332.19 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.4630035860871955
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (193.00, 418.00)
+[DEBUG] Angle to target: -2.03 rad
+[DEBUG] Rotation applied: -2.83 rad
+[DEBUG] Movement: 332.15 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.5589861006056709
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (220.00, 404.00)
+[DEBUG] Angle to target: -2.02 rad
+[DEBUG] Rotation applied: 2.93 rad
+[DEBUG] Movement: 332.28 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.5392980663648481
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (239.00, 373.00)
+[DEBUG] Angle to target: -1.99 rad
+[DEBUG] Rotation applied: 2.27 rad
+[DEBUG] Movement: 335.32 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.5009671124509332
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (233.00, 391.00)
+[DEBUG] Angle to target: -2.01 rad
+[DEBUG] Rotation applied: 2.63 rad
+[DEBUG] Movement: 332.82 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.9617555550982304
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (243.00, 367.00)
+[DEBUG] Angle to target: -2.00 rad
+[DEBUG] Rotation applied: 2.16 rad
+[DEBUG] Movement: 337.75 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.7277788076141987
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (239.00, 337.00)
+[DEBUG] Angle to target: -1.99 rad
+[DEBUG] Rotation applied: 1.64 rad
+[DEBUG] Movement: 343.38 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.0994687637808322
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (205.00, 385.00)
+[DEBUG] Angle to target: -2.16 rad
+[DEBUG] Rotation applied: -2.31 rad
+[DEBUG] Movement: 324.75 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.537508726969573
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (205.00, 305.00)
+[DEBUG] Angle to target: -1.99 rad
+[DEBUG] Rotation applied: 0.80 rad
+[DEBUG] Movement: 357.45 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.7427998372839888
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (187.00, 305.00)
+[DEBUG] Angle to target: -2.00 rad
+[DEBUG] Rotation applied: 0.51 rad
+[DEBUG] Movement: 363.89 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 3.5231892883992657
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (197.00, 302.00)
+[DEBUG] Angle to target: -1.99 rad
+[DEBUG] Rotation applied: 0.68 rad
+[DEBUG] Movement: 357.10 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.65130138170216
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (198.00, 303.00)
+[DEBUG] Angle to target: -1.99 rad
+[DEBUG] Rotation applied: 0.70 rad
+[DEBUG] Movement: 357.80 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.328840018948913
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (191.00, 303.00)
+[DEBUG] Angle to target: -1.99 rad
+[DEBUG] Rotation applied: 0.60 rad
+[DEBUG] Movement: 360.02 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.7273505988219675
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (187.00, 303.00)
+[DEBUG] Angle to target: -1.99 rad
+[DEBUG] Rotation applied: 0.53 rad
+[DEBUG] Movement: 361.06 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.951414958469682
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (178.00, 340.00)
+[DEBUG] Angle to target: -2.07 rad
+[DEBUG] Rotation applied: -2.70 rad
+[DEBUG] Movement: 330.78 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.383773348531058
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (171.00, 305.00)
+[DEBUG] Angle to target: -2.00 rad
+[DEBUG] Rotation applied: 0.51 rad
+[DEBUG] Movement: 361.69 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.6638669129889239
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (167.00, 307.00)
+[DEBUG] Angle to target: -2.01 rad
+[DEBUG] Rotation applied: 0.19 rad
+[DEBUG] Movement: 365.65 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.05470849590305
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (178.00, 301.00)
+[DEBUG] Angle to target: -2.00 rad
+[DEBUG] Rotation applied: 0.40 rad
+[DEBUG] Movement: 360.05 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 9.723194187833675
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (183.00, 300.00)
+[DEBUG] Angle to target: -2.00 rad
+[DEBUG] Rotation applied: 0.48 rad
+[DEBUG] Movement: 358.56 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.838095755090564
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (178.00, 301.00)
+[DEBUG] Angle to target: -2.00 rad
+[DEBUG] Rotation applied: 0.40 rad
+[DEBUG] Movement: 360.05 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.540501911427085
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (178.00, 301.00)
+[DEBUG] Angle to target: -2.05 rad
+[DEBUG] Rotation applied: 0.16 rad
+[DEBUG] Movement: 366.15 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.823645781815342
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (171.00, 302.00)
+[DEBUG] Angle to target: -2.06 rad
+[DEBUG] Rotation applied: 0.01 rad
+[DEBUG] Movement: 364.59 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 12.080055528514526
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (167.00, 304.00)
+[DEBUG] Angle to target: -2.01 rad
+[DEBUG] Rotation applied: 0.20 rad
+[DEBUG] Movement: 362.68 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 0.27145416530269867
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (167.00, 305.00)
+[DEBUG] Angle to target: -2.06 rad
+[DEBUG] Rotation applied: -0.09 rad
+[DEBUG] Movement: 365.40 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.911422632498236
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (117.00, 158.00)
+[DEBUG] Angle to target: -2.17 rad
+[DEBUG] Rotation applied: -0.05 rad
+[DEBUG] Movement: 213.01 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 0.2712040106833962
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (116.00, 153.00)
+[DEBUG] Angle to target: -2.10 rad
+[DEBUG] Rotation applied: 0.19 rad
+[DEBUG] Movement: 206.66 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 0.46204514737389774
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 94.00)
+[DEBUG] Angle to target: -2.17 rad
+[DEBUG] Rotation applied: 0.40 rad
+[DEBUG] Movement: 150.64 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.886542825149657
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (110.00, 93.00)
+[DEBUG] Angle to target: -2.17 rad
+[DEBUG] Rotation applied: 0.43 rad
+[DEBUG] Movement: 149.47 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.030100462798063
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 94.00)
+[DEBUG] Angle to target: -2.17 rad
+[DEBUG] Rotation applied: 0.40 rad
+[DEBUG] Movement: 150.64 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.524228982056118
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (110.00, 94.00)
+[DEBUG] Angle to target: -2.18 rad
+[DEBUG] Rotation applied: 0.40 rad
+[DEBUG] Movement: 151.06 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.33783338360256
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (110.00, 93.00)
+[DEBUG] Angle to target: -2.18 rad
+[DEBUG] Rotation applied: 0.41 rad
+[DEBUG] Movement: 150.23 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.058247638389244
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.18 rad
+[DEBUG] Rotation applied: 0.37 rad
+[DEBUG] Movement: 152.32 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.280782818681083
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (110.00, 94.00)
+[DEBUG] Angle to target: -2.18 rad
+[DEBUG] Rotation applied: 0.39 rad
+[DEBUG] Movement: 151.58 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.547580879824353
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (110.00, 95.00)
+[DEBUG] Angle to target: -2.19 rad
+[DEBUG] Rotation applied: 0.37 rad
+[DEBUG] Movement: 153.24 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.082667952793023
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 94.00)
+[DEBUG] Angle to target: -2.19 rad
+[DEBUG] Rotation applied: 0.35 rad
+[DEBUG] Movement: 152.16 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.789447240342649
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (110.00, 96.00)
+[DEBUG] Angle to target: -2.19 rad
+[DEBUG] Rotation applied: 0.35 rad
+[DEBUG] Movement: 154.52 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.947140361623449
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.20 rad
+[DEBUG] Rotation applied: 0.33 rad
+[DEBUG] Movement: 153.59 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.248832712070964
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 94.00)
+[DEBUG] Angle to target: -2.20 rad
+[DEBUG] Rotation applied: 0.33 rad
+[DEBUG] Movement: 152.63 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.76887125923929
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (108.00, 96.00)
+[DEBUG] Angle to target: -2.20 rad
+[DEBUG] Rotation applied: 0.30 rad
+[DEBUG] Movement: 154.51 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.270290633965051
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.29 rad
+[DEBUG] Rotation applied: 0.11 rad
+[DEBUG] Movement: 158.00 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.4022810553906195
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.21 rad
+[DEBUG] Rotation applied: 0.30 rad
+[DEBUG] Movement: 154.29 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 10.68835782252598
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.21 rad
+[DEBUG] Rotation applied: 0.29 rad
+[DEBUG] Movement: 154.56 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.5819113400141065
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.21 rad
+[DEBUG] Rotation applied: 0.29 rad
+[DEBUG] Movement: 154.56 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.986791189749256
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.21 rad
+[DEBUG] Rotation applied: 0.29 rad
+[DEBUG] Movement: 154.56 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.421281468734882
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.21 rad
+[DEBUG] Rotation applied: 0.28 rad
+[DEBUG] Movement: 154.81 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.930855107045363
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.22 rad
+[DEBUG] Rotation applied: 0.27 rad
+[DEBUG] Movement: 155.18 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.472563489661075
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.22 rad
+[DEBUG] Rotation applied: 0.27 rad
+[DEBUG] Movement: 155.18 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.641485532776697
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.22 rad
+[DEBUG] Rotation applied: 0.27 rad
+[DEBUG] Movement: 155.18 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.415123544121808
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (108.00, 96.00)
+[DEBUG] Angle to target: -2.22 rad
+[DEBUG] Rotation applied: 0.24 rad
+[DEBUG] Movement: 155.94 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.725895032866221
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 95.00)
+[DEBUG] Angle to target: -2.22 rad
+[DEBUG] Rotation applied: 0.26 rad
+[DEBUG] Movement: 155.41 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.790406348277224
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (108.00, 96.00)
+[DEBUG] Angle to target: -2.23 rad
+[DEBUG] Rotation applied: 0.23 rad
+[DEBUG] Movement: 156.14 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.37386803331198
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (117.00, 92.00)
+[DEBUG] Angle to target: -2.32 rad
+[DEBUG] Rotation applied: 0.29 rad
+[DEBUG] Movement: 160.17 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.451643865537429
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (118.00, 90.00)
+[DEBUG] Angle to target: -2.32 rad
+[DEBUG] Rotation applied: 0.36 rad
+[DEBUG] Movement: 158.66 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.824944900348443
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 96.00)
+[DEBUG] Angle to target: -2.23 rad
+[DEBUG] Rotation applied: 0.23 rad
+[DEBUG] Movement: 156.87 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.25222239057724
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 97.00)
+[DEBUG] Angle to target: -2.24 rad
+[DEBUG] Rotation applied: 0.21 rad
+[DEBUG] Movement: 157.96 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.098534684664681
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 97.00)
+[DEBUG] Angle to target: -2.24 rad
+[DEBUG] Rotation applied: 0.21 rad
+[DEBUG] Movement: 157.96 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.757847484384652
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 97.00)
+[DEBUG] Angle to target: -2.24 rad
+[DEBUG] Rotation applied: 0.20 rad
+[DEBUG] Movement: 158.23 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.330824230477223
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 96.00)
+[DEBUG] Angle to target: -2.24 rad
+[DEBUG] Rotation applied: 0.21 rad
+[DEBUG] Movement: 157.24 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.2875765652592355
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 97.00)
+[DEBUG] Angle to target: -2.24 rad
+[DEBUG] Rotation applied: 0.19 rad
+[DEBUG] Movement: 158.29 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.054893751860423
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 97.00)
+[DEBUG] Angle to target: -2.24 rad
+[DEBUG] Rotation applied: 0.19 rad
+[DEBUG] Movement: 158.29 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.715431403974209
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 99.00)
+[DEBUG] Angle to target: -2.25 rad
+[DEBUG] Rotation applied: 0.16 rad
+[DEBUG] Movement: 160.19 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.860507653787913
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 99.00)
+[DEBUG] Angle to target: -2.25 rad
+[DEBUG] Rotation applied: 0.16 rad
+[DEBUG] Movement: 160.29 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.469953160341235
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (108.00, 98.00)
+[DEBUG] Angle to target: -2.25 rad
+[DEBUG] Rotation applied: 0.15 rad
+[DEBUG] Movement: 158.96 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.398301232277807
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 98.00)
+[DEBUG] Angle to target: -2.25 rad
+[DEBUG] Rotation applied: 0.16 rad
+[DEBUG] Movement: 159.46 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.686071194113614
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (108.00, 99.00)
+[DEBUG] Angle to target: -2.25 rad
+[DEBUG] Rotation applied: 0.14 rad
+[DEBUG] Movement: 159.82 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.773593620299283
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 99.00)
+[DEBUG] Angle to target: -2.26 rad
+[DEBUG] Rotation applied: 0.14 rad
+[DEBUG] Movement: 160.45 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.098847436419774
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 99.00)
+[DEBUG] Angle to target: -2.26 rad
+[DEBUG] Rotation applied: 0.14 rad
+[DEBUG] Movement: 160.45 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.486352764787777
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 99.00)
+[DEBUG] Angle to target: -2.26 rad
+[DEBUG] Rotation applied: 0.14 rad
+[DEBUG] Movement: 160.45 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.940163448741952
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (119.00, 92.00)
+[DEBUG] Angle to target: -2.32 rad
+[DEBUG] Rotation applied: 0.30 rad
+[DEBUG] Movement: 161.53 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.340815129309059
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (119.00, 92.00)
+[DEBUG] Angle to target: -2.17 rad
+[DEBUG] Rotation applied: 0.83 rad
+[DEBUG] Movement: 144.09 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.011262058557545
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 101.00)
+[DEBUG] Angle to target: -2.26 rad
+[DEBUG] Rotation applied: 0.11 rad
+[DEBUG] Movement: 162.34 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 3.9007165675438147
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (109.00, 99.00)
+[DEBUG] Angle to target: -2.26 rad
+[DEBUG] Rotation applied: 0.13 rad
+[DEBUG] Movement: 160.56 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.550346351586612
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (114.00, 99.00)
+[DEBUG] Angle to target: -2.17 rad
+[DEBUG] Rotation applied: 0.73 rad
+[DEBUG] Movement: 152.46 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.887062980696603
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (110.00, 100.00)
+[DEBUG] Angle to target: -2.27 rad
+[DEBUG] Rotation applied: 0.11 rad
+[DEBUG] Movement: 162.24 px
+sending
+has ball: True
+Traceback (most recent call last):
+  File "C:\DTU\CDIO_project_-62410\computer_python\robot_client_controller.py", line 90, in <module>
+    response = client_socket.recv(1024).decode()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+(base) C:\DTU\CDIO_project_-62410\computer_python>python robot_client_controller.py
+Venter på forbindelse på 0.0.0.0:12345...
+Forbundet til: ('192.168.28.151', 40634)
+Modtaget: EV3 is ready
+generating frame
+[DEBUG] found destination
+[DEBUG] Target: (484.50, 428.50)
+[DEBUG] From:   (249.00, 286.00)
+[DEBUG] Angle to target: 0.38 rad
+[DEBUG] Rotation applied: -0.64 rad
+[DEBUG] Movement: 256.91 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.4082552266949007
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (483.50, 428.50)
+[DEBUG] From:   (249.00, 286.00)
+[DEBUG] Angle to target: 0.38 rad
+[DEBUG] Rotation applied: -0.64 rad
+[DEBUG] Movement: 255.98 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 3.8862524287317224
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (483.50, 428.50)
+[DEBUG] From:   (249.00, 286.00)
+[DEBUG] Angle to target: 0.45 rad
+[DEBUG] Rotation applied: -0.45 rad
+[DEBUG] Movement: 267.16 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.7949369867022735
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (484.50, 428.50)
+[DEBUG] From:   (250.00, 294.00)
+[DEBUG] Angle to target: 0.39 rad
+[DEBUG] Rotation applied: -0.49 rad
+[DEBUG] Movement: 259.55 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.958415691763527
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (485.50, 428.50)
+[DEBUG] From:   (250.00, 298.00)
+[DEBUG] Angle to target: 0.39 rad
+[DEBUG] Rotation applied: -0.43 rad
+[DEBUG] Movement: 260.75 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.130232910859796
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (485.50, 428.50)
+[DEBUG] From:   (252.00, 302.00)
+[DEBUG] Angle to target: 0.39 rad
+[DEBUG] Rotation applied: -0.37 rad
+[DEBUG] Movement: 259.17 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.067414440721952
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (485.50, 428.50)
+[DEBUG] From:   (251.00, 307.00)
+[DEBUG] Angle to target: 0.40 rad
+[DEBUG] Rotation applied: -0.28 rad
+[DEBUG] Movement: 260.49 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 6.097214004840785
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (485.50, 428.50)
+[DEBUG] From:   (250.00, 311.00)
+[DEBUG] Angle to target: 0.40 rad
+[DEBUG] Rotation applied: -0.21 rad
+[DEBUG] Movement: 261.09 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 6.32075903890436
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (266.50, 315.50)
+[DEBUG] From:   (250.00, 314.00)
+[DEBUG] Angle to target: 0.22 rad
+[DEBUG] Rotation applied: 0.03 rad
+[DEBUG] Movement: 16.57 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.058950188078158
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (266.50, 318.50)
+[DEBUG] From:   (250.00, 317.00)
+[DEBUG] Angle to target: 0.25 rad
+[DEBUG] Rotation applied: 0.04 rad
+[DEBUG] Movement: 16.57 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 3.892379877650413
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (483.50, 427.50)
+[DEBUG] From:   (251.00, 319.00)
+[DEBUG] Angle to target: 0.41 rad
+[DEBUG] Rotation applied: -0.09 rad
+[DEBUG] Movement: 256.57 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 0.3779145243451578
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (487.50, 430.50)
+[DEBUG] From:   (250.00, 314.00)
+[DEBUG] Angle to target: 0.40 rad
+[DEBUG] Rotation applied: -0.98 rad
+[DEBUG] Movement: 256.87 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.931294295572417
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (487.50, 430.50)
+[DEBUG] From:   (366.00, 370.00)
+[DEBUG] Angle to target: 0.41 rad
+[DEBUG] Rotation applied: -0.09 rad
+[DEBUG] Movement: 135.73 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 0.6872140911605179
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (484.50, 428.50)
+[DEBUG] From:   (372.00, 375.00)
+[DEBUG] Angle to target: 0.42 rad
+[DEBUG] Rotation applied: -0.04 rad
+[DEBUG] Movement: 124.57 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 0.7507210444754766
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (484.50, 428.50)
+[DEBUG] From:   (423.00, 401.00)
+[DEBUG] Angle to target: 0.52 rad
+[DEBUG] Rotation applied: 0.11 rad
+[DEBUG] Movement: 66.70 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 6.539907069573081
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (484.50, 438.50)
+[DEBUG] From:   (478.00, 420.00)
+[DEBUG] Angle to target: 0.46 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.599214220783564
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (484.50, 438.50)
+[DEBUG] From:   (484.00, 420.00)
+[DEBUG] Angle to target: 0.46 rad
+[DEBUG] Rotation applied: -0.22 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.727552666041243
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (484.50, 438.50)
+[DEBUG] From:   (484.00, 419.00)
+[DEBUG] Angle to target: 0.46 rad
+[DEBUG] Rotation applied: -0.24 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.721454381718917
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (484.50, 438.50)
+[DEBUG] From:   (485.00, 420.00)
+[DEBUG] Angle to target: 0.47 rad
+[DEBUG] Rotation applied: -0.22 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.6525941559054145
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (484.50, 438.50)
+[DEBUG] From:   (484.00, 420.00)
+[DEBUG] Angle to target: 0.46 rad
+[DEBUG] Rotation applied: -0.22 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.524536333363178
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (492.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.44 rad
+[DEBUG] Rotation applied: -0.20 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.647874996296965
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (492.50, 438.50)
+[DEBUG] From:   (485.00, 420.00)
+[DEBUG] Angle to target: 0.44 rad
+[DEBUG] Rotation applied: -0.18 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.040964179778954
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (484.00, 419.00)
+[DEBUG] Angle to target: 0.45 rad
+[DEBUG] Rotation applied: -0.20 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.090217999424753
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 420.00)
+[DEBUG] Angle to target: 0.45 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.9972287287657
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 420.00)
+[DEBUG] Angle to target: 0.45 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.857464480773062
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (492.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.45 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.1146680584449316
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (492.50, 438.50)
+[DEBUG] From:   (484.00, 419.00)
+[DEBUG] Angle to target: 0.45 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.258825201807382
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (492.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.46 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 6.000494997803984
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (492.50, 438.50)
+[DEBUG] From:   (484.00, 419.00)
+[DEBUG] Angle to target: 0.46 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.621124965156775
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (484.00, 419.00)
+[DEBUG] Angle to target: 0.47 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.397616161304188
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (484.00, 420.00)
+[DEBUG] Angle to target: 0.48 rad
+[DEBUG] Rotation applied: -0.18 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.840160516191555
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (484.00, 420.00)
+[DEBUG] Angle to target: 0.48 rad
+[DEBUG] Rotation applied: -0.18 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.73992131102672
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (484.00, 419.00)
+[DEBUG] Angle to target: 0.48 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 6.235575886691415
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (484.00, 419.00)
+[DEBUG] Angle to target: 0.48 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.488015952561019
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.49 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.666653606656822
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (484.00, 419.00)
+[DEBUG] Angle to target: 0.49 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.076190591453157
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.49 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.118394253755841
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.51 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.501895484680023
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.51 rad
+[DEBUG] Rotation applied: -0.19 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.122613833718865
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 418.00)
+[DEBUG] Angle to target: 0.75 rad
+[DEBUG] Rotation applied: -0.17 rad
+[DEBUG] Movement: 17.82 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.566332631288379
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 418.00)
+[DEBUG] Angle to target: 0.75 rad
+[DEBUG] Rotation applied: -0.17 rad
+[DEBUG] Movement: 17.82 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.866397378355206
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.75 rad
+[DEBUG] Rotation applied: -0.16 rad
+[DEBUG] Movement: 17.27 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 6.034804803897448
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.75 rad
+[DEBUG] Rotation applied: -0.16 rad
+[DEBUG] Movement: 17.27 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.601816384859898
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: 0.75 rad
+[DEBUG] Rotation applied: -0.16 rad
+[DEBUG] Movement: 17.27 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.525407920494695
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (491.50, 438.50)
+[DEBUG] From:   (483.00, 433.00)
+[DEBUG] Angle to target: 0.44 rad
+[DEBUG] Rotation applied: -0.03 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.283997871908263
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (101.50, 114.50)
+[DEBUG] From:   (485.00, 419.00)
+[DEBUG] Angle to target: -2.46 rad
+[DEBUG] Rotation applied: 3.07 rad
+[DEBUG] Movement: 363.35 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.304381926694322
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (101.50, 114.50)
+[DEBUG] From:   (602.00, 420.00)
+[DEBUG] Angle to target: -2.48 rad
+[DEBUG] Rotation applied: 2.50 rad
+[DEBUG] Movement: 389.93 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.6593630707306641
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (513.50, 390.50)
+[DEBUG] From:   (495.00, 377.00)
+[DEBUG] Angle to target: -0.24 rad
+[DEBUG] Rotation applied: -0.24 rad
+[DEBUG] Movement: 35.00 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 4.12905664686622
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (513.50, 390.50)
+[DEBUG] From:   (462.00, 365.00)
+[DEBUG] Angle to target: 0.11 rad
+[DEBUG] Rotation applied: -0.95 rad
+[DEBUG] Movement: 43.83 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.9722026365225624
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (513.50, 390.50)
+[DEBUG] From:   (607.00, 404.00)
+[DEBUG] Angle to target: -2.65 rad
+[DEBUG] Rotation applied: 2.25 rad
+[DEBUG] Movement: 21.62 px
+sending
+has ball: False
+[RESPONSE]: OK ball lost
+Ball lost
+[FPS]: 10.641930327556897
+generating frame
+[DEBUG] found destination
+[DEBUG] Target: (101.50, 114.50)
+[DEBUG] From:   (614.00, 469.00)
+[DEBUG] Angle to target: -2.55 rad
+[DEBUG] Rotation applied: -3.00 rad
+[DEBUG] Movement: 539.99 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.7609489794247564
+generating frame
+[DEBUG] adjusted target
+[DEBUG] Target: (101.50, 114.50)
+[DEBUG] From:   (465.00, 368.00)
+[DEBUG] Angle to target: -2.57 rad
+[DEBUG] Rotation applied: -0.25 rad
+[DEBUG] Movement: 441.09 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 1.4332356726117375
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (101.50, 114.50)
+[DEBUG] From:   (456.00, 368.00)
+[DEBUG] Angle to target: -2.47 rad
+[DEBUG] Rotation applied: 1.62 rad
+[DEBUG] Movement: 409.85 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 5.944628537251156
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (101.50, 114.50)
+[DEBUG] From:   (464.00, 368.00)
+[DEBUG] Angle to target: -2.48 rad
+[DEBUG] Rotation applied: 1.72 rad
+[DEBUG] Movement: 414.83 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.3631039943929646
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (101.50, 114.50)
+[DEBUG] From:   (480.00, 368.00)
+[DEBUG] Angle to target: -2.39 rad
+[DEBUG] Rotation applied: 1.64 rad
+[DEBUG] Movement: 370.72 px
+sending
+has ball: False
+[RESPONSE]: OK
+[FPS]: 2.167864487795146
+generating frame
+[DEBUG] failed to adjust target
+[DEBUG] Target: (101.50, 114.50)
+[DEBUG] From:   (476.00, 367.00)
+[DEBUG] Angle to target: -2.39 rad
+[DEBUG] Rotation applied: 1.57 rad
+[DEBUG] Movement: 372.82 px
+sending
+has ball: False
+[RESPONSE]: OK ball caught
+[FPS]: 0.24229419916710906
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (437.00, 356.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: 1.11 rad
+[DEBUG] Movement: 543.93 px
+sending
+has ball: True
+[RESPONSE]: OKOK
+[FPS]: 28.072069177843815
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (434.00, 396.00)
+[DEBUG] Angle to target: -2.41 rad
+[DEBUG] Rotation applied: -2.47 rad
+[DEBUG] Movement: 546.68 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 3.6068926730520836
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (435.00, 396.00)
+[DEBUG] Angle to target: -2.43 rad
+[DEBUG] Rotation applied: -2.23 rad
+[DEBUG] Movement: 534.79 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.751872036568618
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (434.00, 396.00)
+[DEBUG] Angle to target: -2.43 rad
+[DEBUG] Rotation applied: -2.28 rad
+[DEBUG] Movement: 534.22 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.031660410826793
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (443.00, 366.00)
+[DEBUG] Angle to target: -2.38 rad
+[DEBUG] Rotation applied: 1.22 rad
+[DEBUG] Movement: 570.55 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.9779424004934594
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (456.00, 384.00)
+[DEBUG] Angle to target: -2.46 rad
+[DEBUG] Rotation applied: -1.61 rad
+[DEBUG] Movement: 582.70 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.9156409252909
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (471.00, 373.00)
+[DEBUG] Angle to target: -2.41 rad
+[DEBUG] Rotation applied: 1.82 rad
+[DEBUG] Movement: 586.01 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.380988441632829
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (483.00, 370.00)
+[DEBUG] Angle to target: -2.38 rad
+[DEBUG] Rotation applied: 1.97 rad
+[DEBUG] Movement: 541.42 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.115370629546973
+generating frame
+[DEBUG] falied car length: 2
+[DEBUG] falied car length: 2
+[DEBUG] falied car length: 2
+[DEBUG] falied car length: 2
+[DEBUG] falied car length: 2
+noCar
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.2907051299555983
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (477.00, 363.00)
+[DEBUG] Angle to target: -2.34 rad
+[DEBUG] Rotation applied: 1.50 rad
+[DEBUG] Movement: 538.73 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.246751810692762
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (444.00, 373.00)
+[DEBUG] Angle to target: -2.46 rad
+[DEBUG] Rotation applied: -1.86 rad
+[DEBUG] Movement: 559.04 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.6079747006238416
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (440.00, 380.00)
+[DEBUG] Angle to target: -2.45 rad
+[DEBUG] Rotation applied: -2.14 rad
+[DEBUG] Movement: 541.17 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.9572186923702934
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (433.00, 350.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: 1.03 rad
+[DEBUG] Movement: 540.06 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.1719518497536665
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (437.00, 378.00)
+[DEBUG] Angle to target: -2.40 rad
+[DEBUG] Rotation applied: 3.08 rad
+[DEBUG] Movement: 578.28 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 3.10801073571671
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (454.00, 362.00)
+[DEBUG] Angle to target: -2.40 rad
+[DEBUG] Rotation applied: 1.47 rad
+[DEBUG] Movement: 570.25 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.50821402861012
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (454.00, 365.00)
+[DEBUG] Angle to target: -2.40 rad
+[DEBUG] Rotation applied: 1.49 rad
+[DEBUG] Movement: 573.86 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.6255111832785714
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (431.00, 392.00)
+[DEBUG] Angle to target: -2.40 rad
+[DEBUG] Rotation applied: -2.75 rad
+[DEBUG] Movement: 532.41 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.808957205015574
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (404.00, 372.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: 0.39 rad
+[DEBUG] Movement: 560.90 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.5407093949278556
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (390.00, 368.00)
+[DEBUG] Angle to target: -2.34 rad
+[DEBUG] Rotation applied: 0.20 rad
+[DEBUG] Movement: 548.71 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.298173058582633
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (405.00, 353.00)
+[DEBUG] Angle to target: -2.38 rad
+[DEBUG] Rotation applied: 0.33 rad
+[DEBUG] Movement: 548.47 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 14.803756789857657
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (416.00, 351.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: 0.48 rad
+[DEBUG] Movement: 547.36 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.555619723272306
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (414.00, 351.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: 0.76 rad
+[DEBUG] Movement: 540.29 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.513844082841015
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (408.00, 355.00)
+[DEBUG] Angle to target: -2.33 rad
+[DEBUG] Rotation applied: 0.59 rad
+[DEBUG] Movement: 542.19 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.3803780804807415
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (405.00, 357.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: 0.29 rad
+[DEBUG] Movement: 549.62 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.564730075756571
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (397.00, 362.00)
+[DEBUG] Angle to target: -2.33 rad
+[DEBUG] Rotation applied: 0.37 rad
+[DEBUG] Movement: 546.10 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.430056421112302
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (391.00, 367.00)
+[DEBUG] Angle to target: -2.33 rad
+[DEBUG] Rotation applied: 0.24 rad
+[DEBUG] Movement: 548.02 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.509686572261777
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (388.00, 371.00)
+[DEBUG] Angle to target: -2.39 rad
+[DEBUG] Rotation applied: -0.30 rad
+[DEBUG] Movement: 547.62 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.214629120288427
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (387.00, 372.00)
+[DEBUG] Angle to target: -2.36 rad
+[DEBUG] Rotation applied: -0.09 rad
+[DEBUG] Movement: 550.85 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 5.914976611164309
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (386.00, 372.00)
+[DEBUG] Angle to target: -2.39 rad
+[DEBUG] Rotation applied: -0.34 rad
+[DEBUG] Movement: 545.87 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 0.17883633482864467
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (384.00, 373.00)
+[DEBUG] Angle to target: -2.36 rad
+[DEBUG] Rotation applied: -0.14 rad
+[DEBUG] Movement: 548.62 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.975288911358386
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (211.00, 204.00)
+[DEBUG] Angle to target: -2.30 rad
+[DEBUG] Rotation applied: 0.12 rad
+[DEBUG] Movement: 307.23 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 17.590310513160322
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (206.00, 200.00)
+[DEBUG] Angle to target: -2.30 rad
+[DEBUG] Rotation applied: 0.11 rad
+[DEBUG] Movement: 301.00 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.435492467132322
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (214.00, 189.00)
+[DEBUG] Angle to target: -2.27 rad
+[DEBUG] Rotation applied: 0.60 rad
+[DEBUG] Movement: 289.16 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.559769143799413
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (208.00, 199.00)
+[DEBUG] Angle to target: -2.30 rad
+[DEBUG] Rotation applied: 0.14 rad
+[DEBUG] Movement: 301.32 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.244697043298034
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (599.00, 404.00)
+[DEBUG] Angle to target: -2.50 rad
+[DEBUG] Rotation applied: 1.37 rad
+[DEBUG] Movement: 720.46 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 18.87574592945285
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (593.00, 433.00)
+[DEBUG] Angle to target: -1.57 rad
+[DEBUG] Rotation applied: 2.20 rad
+[DEBUG] Movement: 714.26 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.8056915153716537
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (569.00, 466.00)
+[DEBUG] Angle to target: -1.57 rad
+[DEBUG] Rotation applied: 2.26 rad
+[DEBUG] Movement: 715.47 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.083982274019335
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (198.00, 214.00)
+[DEBUG] Angle to target: -2.36 rad
+[DEBUG] Rotation applied: -0.41 rad
+[DEBUG] Movement: 299.70 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.9275639590966933
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (234.00, 237.00)
+[DEBUG] Angle to target: -2.21 rad
+[DEBUG] Rotation applied: 2.11 rad
+[DEBUG] Movement: 285.00 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.36621952768299
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (206.00, 269.00)
+[DEBUG] Angle to target: -2.33 rad
+[DEBUG] Rotation applied: -1.19 rad
+[DEBUG] Movement: 317.49 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 1.9881977682035608
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (211.00, 275.00)
+[DEBUG] Angle to target: -2.33 rad
+[DEBUG] Rotation applied: -1.32 rad
+[DEBUG] Movement: 319.20 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.8420929948908373
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (227.00, 286.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: -1.64 rad
+[DEBUG] Movement: 320.21 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 3.108757106115521
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (226.00, 287.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: -1.61 rad
+[DEBUG] Movement: 318.87 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.5319559300158705
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (214.00, 281.00)
+[DEBUG] Angle to target: -2.34 rad
+[DEBUG] Rotation applied: -1.40 rad
+[DEBUG] Movement: 319.36 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.5745367673552266
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (201.00, 269.00)
+[DEBUG] Angle to target: -2.38 rad
+[DEBUG] Rotation applied: -1.33 rad
+[DEBUG] Movement: 291.09 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.850485410500634
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (194.00, 257.00)
+[DEBUG] Angle to target: -2.30 rad
+[DEBUG] Rotation applied: -0.83 rad
+[DEBUG] Movement: 318.87 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 2.9020360521055535
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (189.00, 245.00)
+[DEBUG] Angle to target: -2.35 rad
+[DEBUG] Rotation applied: -0.86 rad
+[DEBUG] Movement: 296.81 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.3363632604110665
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (188.00, 236.00)
+[DEBUG] Angle to target: -2.29 rad
+[DEBUG] Rotation applied: -0.47 rad
+[DEBUG] Movement: 310.00 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 3.984466078444784
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (189.00, 229.00)
+[DEBUG] Angle to target: -2.34 rad
+[DEBUG] Rotation applied: -0.54 rad
+[DEBUG] Movement: 300.52 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.592765145442142
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (189.00, 222.00)
+[DEBUG] Angle to target: -2.33 rad
+[DEBUG] Rotation applied: -0.42 rad
+[DEBUG] Movement: 299.58 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 4.985183406746744
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (191.00, 219.00)
+[DEBUG] Angle to target: -2.33 rad
+[DEBUG] Rotation applied: -0.37 rad
+[DEBUG] Movement: 300.41 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.062223546784261
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (191.00, 216.00)
+[DEBUG] Angle to target: -2.27 rad
+[DEBUG] Rotation applied: -0.10 rad
+[DEBUG] Movement: 303.61 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 6.2210092907910814
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (192.00, 212.00)
+[DEBUG] Angle to target: -2.32 rad
+[DEBUG] Rotation applied: -0.23 rad
+[DEBUG] Movement: 298.81 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 0.3268462866204564
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (194.00, 212.00)
+[DEBUG] Angle to target: -2.27 rad
+[DEBUG] Rotation applied: -0.00 rad
+[DEBUG] Movement: 302.42 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 8.849265357447276
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (102.00, 133.00)
+[DEBUG] Angle to target: -2.18 rad
+[DEBUG] Rotation applied: -0.15 rad
+[DEBUG] Movement: 183.53 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 0.32547609456684434
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (102.00, 125.00)
+[DEBUG] Angle to target: -2.18 rad
+[DEBUG] Rotation applied: 0.02 rad
+[DEBUG] Movement: 177.28 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 7.178585609639214
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (106.00, 97.00)
+[DEBUG] Angle to target: -2.28 rad
+[DEBUG] Rotation applied: 0.06 rad
+[DEBUG] Movement: 157.88 px
+sending
+has ball: True
+[RESPONSE]: OK
+[FPS]: 0.5478645997358058
+generating frame
+[DEBUG] using provided target: (0.00, -20.00)
+[DEBUG] Target: (0.00, -20.00)
+[DEBUG] From:   (104.00, 97.00)
+[DEBUG] Angle to target: -2.28 rad
+[DEBUG] Rotation applied: 0.03 rad
+[DEBUG] Movement: 156.54 px
+sending
+has ball: True
+Traceback (most recent call last):
+  File "C:\DTU\CDIO_project_-62410\computer_python\robot_client_controller.py", line 90, in <module>
+    response = client_socket.recv(1024).decode()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+(base) C:\DTU\CDIO_project_-62410\computer_python>python robot_client_controller.py
+Venter på forbindelse på 0.0.0.0:12345...
