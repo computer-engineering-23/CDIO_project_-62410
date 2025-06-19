@@ -166,21 +166,15 @@ class track:
             path.append(Rotation(rotation_amount))
             car.applySelf(path[-1])  # apply rotation to simulate robot state
         
-        # Compute forward movement
+             # Compute forward movement
         distance = car.front.distanceTo(target)
         if(distance < 15):
             distance = 35
         path.append(Movement(distance))
-        car.applySelf(path[-1])
-
-        # Replace last Movement with deliver
-        last_step = path[-1]
-
-        if isinstance(last_step, Movement):
-            path.pop()
-            path.append(deliver(last_step.distance))
-            
+        car.applySelf(path[-1])  # apply movement to simulate robot state
+        
         # Debug info
+        printLog("DEBUG", f"Delivery condition: ")
         printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})")
         printLog("DEBUG", f"From:   ({front.x:.2f}, {front.y:.2f})")
         printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad")
