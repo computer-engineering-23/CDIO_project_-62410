@@ -68,7 +68,8 @@ try:
                 path,target = robot_track.generatepath(target)
             else:
                 if(ballFrames % 10 == 0):
-                    robot_track.update(walls=10,goals=True)
+                    robot_track.update(walls=10 + (ballFrames//10),goals=True)
+                    target = robot_track.goals[0]
                 ballFrames += 1
                 path,target = robot_track.generatepath(target,False)
             
@@ -78,25 +79,27 @@ try:
                 printLog("RETRY", "failed to follow path (empty)")
                 continue
             step = path[0]
+        
         if isinstance(step, Movement):
             if step.distance > 0:
-                cmd = f"drive {step.distance / 100}"
+                if(step.distance < 400 and hasBall):
+                    cmd = f"deliver {step.distance / 100}"
+                else:
+                    cmd = f"drive {step.distance / 100}"
             elif step.distance < 0:
                 cmd = f"backward {0-step.distance / 100}"
             else:
                 printLog("ERROR","no movement:", step.distance)
                 continue
+            printLog("status","create movement:",step.distance)
         elif isinstance(step, Rotation):
             angle_degrees = math.degrees(step.angle)
             cmd = f"rotate {0-angle_degrees/3}"
-        
-        elif isinstance(step, deliver):
-            cmd = f"deliver {step.distance / 50}"
-
+            printLog("status","create rotate:",step.angle)
         else:
             printLog("error","Unknown step:", step)
             continue
-
+        
         printLog("command","sending command:", cmd)
         printLog("STATUS", "has ball:",hasBall)
         
@@ -104,6 +107,8 @@ try:
         response = client_socket.recv(1024).decode()
         printLog("RESPONSE","modified",response)
         printLog("Raw_response",f"{repr(response)}")
+        while(response.startswith("OKOK")): response = response[2:len(response)]
+        while(response.endswith("OK") and len(response) > 2): response = response[0:len(response) - 2]
         if not response.startswith("OK"):
             printLog("ERROR", "at:", cmd)
             continue
