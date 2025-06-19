@@ -110,7 +110,7 @@ while(1):
     elif response == "OK ball caught":
         robot_track.update(goals=True)
         robot_track.update(walls=True, goals=True, targets=False, obsticles=False, car=False, frame=frame)
-        target = robot_track.goals[0].move(Point(-30, 0))
+        target = robot_track.goals[0].move(Point(0, -50))
         hasBall = True
         ballFrames = 0
         time.sleep(2.3)
