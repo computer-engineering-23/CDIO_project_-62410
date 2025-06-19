@@ -7,7 +7,7 @@ noTag = []
 def enableLog():
   global logFile, startTime
   tim = time.gmtime()
-  logFile = open(f"log.{tim.tm_mday:02d}-{tim.tm_hour:02d}-{tim.tm_min:02d}.txt", "x")
+  logFile = open(f"../logs/log.{tim.tm_mday:02d}-{tim.tm_hour:02d}-{tim.tm_min:02d}.txt", "x")
   startTime = time.time()
 
 def blockTag(tag:str):
