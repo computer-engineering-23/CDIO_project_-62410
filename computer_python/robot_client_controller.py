@@ -55,7 +55,7 @@ while(1):
         if not hasBall:
             # Get the path
             path,target = robot_track.generatepath(target)
-            
+    
         else:
             path,target = robot_track.generatepath(target,False)
         
@@ -88,17 +88,20 @@ while(1):
     client_socket.sendall(cmd.encode())
     response = client_socket.recv(1024).decode()
     print("[RESPONSE]:", response)
-    if not response == "OK":
+    if not response.startswith("OK"):
         print("[ERROR] at:", cmd)
         continue
     elif response == "OK ball caught":
         temp = time.time()
         timeToWait = 2.3 
         robot_track.update(goals=True)
-        target = robot_track.goals[0]
+        target = robot_track.goals[0].move(Point(-20, 0))
         hasBall = True
         time.sleep(timeToWait)
+
     elif response == "OK ball lost":
+        print("Ball lost")
+        target = None
         hasBall = False
 # Luk forbindelsen
 client_socket.close()

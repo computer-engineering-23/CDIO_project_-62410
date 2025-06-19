@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from typing import List,Tuple,Union
 import math
+from classes import Point
 
 # Start kameraet
 class Camera:
@@ -408,6 +409,7 @@ class Camera:
         self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=leftLines, goals=[goals[1]]), "left lines", debug=True)
         
         return goals
+    
 
     def Test(self, useOldWall = False):
         if(useOldWall):

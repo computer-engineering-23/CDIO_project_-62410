@@ -247,7 +247,7 @@ class track:
         cv2.putText(frame, "obsticles: yellow", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
         cv2.putText(frame, "car: cyan", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
         cv2.putText(frame, "Press 'q' to exit", (10, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-        if(self.targets is not None and len(self.targets) != 0):
+        if(target is not None):
             cv2.circle(frame, (int(target.x), int(target.y)), 5, (0,0,0), -1)
         
         return frame
