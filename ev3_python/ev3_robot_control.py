@@ -7,6 +7,7 @@ import time
 import threading
 
 host = '192.168.28.172' # IP-address to computer
+
 port = 12345            # Port the server is listening to
 
 s = socket.socket()
@@ -63,7 +64,6 @@ while(True):
     command = data.strip()
 
     print ("recieved:", command)
-    
     
     if command.startswith("drive "):
         try:    

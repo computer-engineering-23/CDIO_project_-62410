@@ -63,4 +63,3 @@ for step in path:
 # Luk forbindelsen
 client_socket.close()
 server_socket.close()
-
