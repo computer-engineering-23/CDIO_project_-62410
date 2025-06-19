@@ -23,7 +23,7 @@ def printLog(tag:str,message:str,*following):
   if(tag.casefold() in noTag):
     return
   
-  string = f"[{tag.upper()}] " + message
+  string = f"[{tag.upper()}]: " + message
   for i in following:
     string += " " + str(i)
   print(string)

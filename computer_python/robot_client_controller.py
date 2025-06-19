@@ -4,7 +4,7 @@ import time
 from classes import Movement, Rotation, Point
 from path_find import track
 from image_recognition import Camera
-from Log import enableLog, printLog, closeLog
+from Log import enableLog, printLog, closeLog, blockTag
 import math
 import cv2
 host = '0.0.0.0'  # Lyt på alle interfaces
@@ -12,6 +12,7 @@ port = 12345      # Samme port som EV3-klienten bruger
 
 if(input("enable log (y/n): ") == "y"):
     enableLog()
+    blockTag("Raw_response")
     printLog("INFO", "Logging enabled")
 
 # Opret TCP-socket
@@ -95,7 +96,7 @@ while(1):
     client_socket.sendall(cmd.encode())
     response = client_socket.recv(1024).decode()
     printLog("RESPONSE","modified",response)
-    printLog("RESPONSE","raw",f"{repr(response)}")
+    printLog("Raw_response",f"{repr(response)}")
     if not response.startswith("OK"):
         printLog("ERROR", "at:", cmd)
         continue
@@ -113,3 +114,4 @@ while(1):
 # Luk forbindelsen
 client_socket.close()
 server_socket.close()
+closeLog()
