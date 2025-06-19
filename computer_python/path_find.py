@@ -166,21 +166,15 @@ class track:
             path.append(Rotation(rotation_amount))
             car.applySelf(path[-1])  # apply rotation to simulate robot state
         
-        # Compute forward movement
+             # Compute forward movement
         distance = car.front.distanceTo(target)
-
-        # Check if angle to target is "almost straight ahead"
-        angle_offset = abs(deltaRotation(direction, angle_to_target))
-
-        if angle_offset < 3 and distance < 100:
-            print("[DEBUG] Deliver condition met")
-            path.append(deliver(distance))
-        else:
-            path.append(Movement(distance))
-        
-        car.applySelf(path[-1])
+        if(distance < 15):
+            distance = 35
+        path.append(Movement(distance))
+        car.applySelf(path[-1])  # apply movement to simulate robot state
         
         # Debug info
+        printLog("DEBUG", f"Delivery condition: ")
         printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})")
         printLog("DEBUG", f"From:   ({front.x:.2f}, {front.y:.2f})")
         printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad")
