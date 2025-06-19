@@ -43,82 +43,101 @@ target:Point | None = None
 t = time.time()
 hasBall = False
 ballFrames = 0
-
-while(1):
-    if time.time() != t:
-        printLog("FPS",str(1 / (time.time()-t)))
-        t = time.time()
-    printLog("STATUS", "generating frame")
-    
-    # Update the track to get latest car and targets
-    frame = robot_track.cam.getFrame()
-    
-    if(frame is None):
-        break
-    robot_track.cam.displayFrame(frame,"success",False)
-    
-    response = robot_track.update(walls=False, goals=True, targets=True, obsticles=False, car=True, frame=frame)
-    
-    if(response is None): 
-        printLog("RETRY","no car")
-        robot_track.cam.displayFrame(frame,"fail",True)
-        step = Movement(-10)
-    else:
-        if not hasBall:
-            path,target = robot_track.generatepath(target)
-        else:
-            if(ballFrames % 10 == 0):
-                robot_track.update(walls=10,goals=True)
-            ballFrames += 1
-            path,target = robot_track.generatepath(target,False)
+try:
+    while(1):
+        if time.time() != t:
+            printLog("FPS",str(1 / (time.time()-t)))
+            t = time.time()
+        printLog("STATUS", "generating frame")
         
-        robot_track.Draw(frame,path,target)
-        robot_track.cam.displayFrame(frame,"Track")
-        if(path is None or len(path) < 1):
-            printLog("RETRY", "failed to follow path (empty)")
-            continue
-        step = path[0]
-    if isinstance(step, Movement):
-        if step.distance > 0:
-            cmd = f"drive {step.distance / 100}"
-        elif step.distance < 0:
-            cmd = f"backward {0-step.distance / 100}"
+        # Update the track to get latest car and targets
+        frame = robot_track.cam.getFrame()
+        
+        if(frame is None):
+            break
+        robot_track.cam.displayFrame(frame,"success",False)
+        
+        response = robot_track.update(walls=False, goals=True, targets=True, obsticles=False, car=True, frame=frame)
+        
+        if(response is None): 
+            printLog("RETRY","no car")
+            robot_track.cam.displayFrame(frame,"fail",True)
+            step = Movement(-10)
         else:
-            printLog("ERROR","no movement:", step.distance)
+            if not hasBall:
+                path,target = robot_track.generatepath(target)
+            else:
+                if(ballFrames % 10 == 0):
+                    robot_track.update(walls=10,goals=True)
+                ballFrames += 1
+                path,target = robot_track.generatepath(target,False)
+            
+            robot_track.Draw(frame,path,target)
+            robot_track.cam.displayFrame(frame,"Track")
+            if(path is None or len(path) < 1):
+                printLog("RETRY", "failed to follow path (empty)")
+                continue
+            step = path[0]
+        if isinstance(step, Movement):
+            if step.distance > 0:
+                cmd = f"drive {step.distance / 100}"
+            elif step.distance < 0:
+                cmd = f"backward {0-step.distance / 100}"
+            else:
+                printLog("ERROR","no movement:", step.distance)
+                continue
+        elif isinstance(step, Rotation):
+            angle_degrees = math.degrees(step.angle)
+            cmd = f"rotate {0-angle_degrees/3}"
+        
+        elif isinstance(step, deliver):
+            cmd = f"deliver {step.distance / 50}"
+
+        else:
+            printLog("error","Unknown step:", step)
             continue
-    elif isinstance(step, Rotation):
-        angle_degrees = math.degrees(step.angle)
-        cmd = f"rotate {0-angle_degrees/3}"
-    
-    elif isinstance(step, deliver):
-        cmd = f"deliver {step.distance / 50}"
 
-    else:
-        printLog("error","Unknown step:", step)
-        continue
+        printLog("command","sending command:", cmd)
+        printLog("STATUS", "has ball:",hasBall)
+        
+        client_socket.sendall(cmd.encode())
+        response = client_socket.recv(1024).decode()
+        printLog("RESPONSE","modified",response)
+        printLog("Raw_response",f"{repr(response)}")
+        if not response.startswith("OK"):
+            printLog("ERROR", "at:", cmd)
+            continue
+        elif response == "OK ball caught":
+            robot_track.update(goals=True)
+            robot_track.update(walls=True, goals=True, targets=False, obsticles=False, car=False, frame=frame)
+            target = robot_track.goals[0].move(Point(0, -50))
+            hasBall = True
+            ballFrames = 0
+            time.sleep(2.3)
+        elif response == "OK ball lost":
+            printLog("STATUS", "Ball lost")
+            target = None
+            hasBall = False
+except Exception as e:
+    printLog("ERROR", "An error occurred:\n","\t", str(e))
+    printLog("ERROR", "Stack trace:\n", e.__traceback__)
+    # Luk forbindelsen
+finally:
+    printLog("STATUS", "Closing connection without error")
 
-    printLog("command","sending command:", cmd)
-    printLog("STATUS", "has ball:",hasBall)
-    
-    client_socket.sendall(cmd.encode())
-    response = client_socket.recv(1024).decode()
-    printLog("RESPONSE","modified",response)
-    printLog("Raw_response",f"{repr(response)}")
-    if not response.startswith("OK"):
-        printLog("ERROR", "at:", cmd)
-        continue
-    elif response == "OK ball caught":
-        robot_track.update(goals=True)
-        robot_track.update(walls=True, goals=True, targets=False, obsticles=False, car=False, frame=frame)
-        target = robot_track.goals[0].move(Point(0, -50))
-        hasBall = True
-        ballFrames = 0
-        time.sleep(2.3)
-    elif response == "OK ball lost":
-        printLog("STATUS", "Ball lost")
-        target = None
-        hasBall = False
-# Luk forbindelsen
-client_socket.close()
-server_socket.close()
+try:
+    client_socket.close()
+except Exception as e:
+    printLog("ERROR", "Failed to close client socket:", str(e))
+finally:
+    printLog("STATUS", "Client socket closed")
+
+try:
+    server_socket.close()
+except Exception as e:
+    printLog("ERROR", "Failed to close server socket:", str(e))
+finally:
+    printLog("STATUS", "Server socket closed")
+
+printLog("STATUS", "closing log")
 closeLog()
