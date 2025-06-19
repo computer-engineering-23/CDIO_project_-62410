@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import socket
 import time
-from classes import Movement, Rotation, Point
+from classes import Movement, Rotation, Point, deliver
 from path_find import track
 from image_recognition import Camera
 from Log import enableLog, printLog, closeLog, blockTag
@@ -87,6 +87,9 @@ while(1):
         angle_degrees = math.degrees(step.angle)
         cmd = f"rotate {0-angle_degrees/3}"
     
+    elif isinstance(step, deliver):
+        cmd = f"deliver {step.distance / 50}"
+
     else:
         printLog("error","Unknown step:", step)
         continue
