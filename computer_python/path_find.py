@@ -4,6 +4,7 @@ from typing import List, Tuple, Union
 from image_recognition import Camera
 from classes import Point, Wall, Car, Movement, Rotation, deliver
 import math
+from Log import printLog
 
 def deltaRotation(newAngle:float, currentAngle:float) -> float:
     """Generates the rotation needed to turn the car to the new angle"""
@@ -37,16 +38,16 @@ class track:
         self.obsticles = self.formatObsticles(obsticles)
         self.car:Car = self.formatCar(car, front if front is not None else None)
     
-    def update(self, walls:bool = False, goals:bool = False, targets:bool = False, obsticles:bool = False, car:bool = False, frame:np.ndarray | None= None):
+    def update(self, walls:bool | int = False, goals:bool = False, targets:bool = False, obsticles:bool = False, car:bool = False, frame:np.ndarray | None= None):
         if(frame is None):
             frame = self.cam.getFrame()
         
         if(frame is None):
-            print("No frame received from camera.")
+            printLog("error","No frame received from camera.")
             return
         
         if(walls):
-            self.walls = self.formatWalls(self.cam.generateWall(40))
+            self.walls = self.formatWalls(self.cam.generateWall(walls if type(walls) == int else 40))
         
         if(goals):
             self.goals = self.formatGoals(self.cam.midpointWalls(self.cam.shape[1], self.cam.walls))
@@ -63,9 +64,9 @@ class track:
             fails = 0
             while(tempCar is None or len(tempCar[0]) <= 2): 
                 if(tempCar is not None):
-                    print("[DEBUG] falied car length:",len(tempCar[0]))
+                    printLog("DEBUG", "falied car length:",len(tempCar[0]))
                 else:
-                    print("[DEBUG] no car found")
+                    printLog("DEBUG", "no car found")
                 fails += 1
                 tempCar = self.cam.findCar(frame)
                 if(fails == 5):
@@ -131,7 +132,7 @@ class track:
         
         if target is None:
             if self.targets is None or len(self.targets) == 0 or self.car.front is None:
-                print("[DEBUG] no targets or no car")
+                printLog("DEBUG", "no targets or no car")
                 return path,None
             # Find the closest target
             self.targets.sort(key=lambda t: front.distanceTo(t))
@@ -140,21 +141,21 @@ class track:
             for i in range(len(self.targets)):
                 if car.validTarget(self.targets[i]):
                     target = self.targets[i]
-                    print(f"[DEBUG] found destination")
+                    printLog(f"DEBUG", "found destination")
                     break
             else:
-                print(f"[DEBUG] no valid targets")
+                printLog("DEBUG", "no valid targets")
         elif checkTarget:
             self.targets.sort(key=lambda t: target.distanceTo(t)) # type: ignore
             for i in range(len(self.targets)):
                 if car.validTarget(self.targets[i]):
                     target = self.targets[i]
-                    print(f"[DEBUG] adjusted target")
+                    printLog("DEBUG", "adjusted target")
                     break
             else:
-                print(f"[DEBUG] failed to adjust target")
+                printLog(f"DEBUG", "failed to adjust target")
         else:
-            print(f"[DEBUG] using provided target: ({target.x:.2f}, {target.y:.2f})")
+            printLog("DEBUG", f"using provided target: ({target.x:.2f}, {target.y:.2f})")
         # Calculate vector to target
         dy = target.y - car_center.y
         dx = target.x - car_center.x
@@ -182,11 +183,11 @@ class track:
         car.applySelf(path[-1])
             
         # Debug info
-        print(f"[DEBUG] Target: ({target.x:.2f}, {target.y:.2f})")
-        print(f"[DEBUG] From:   ({front.x:.2f}, {front.y:.2f})")
-        print(f"[DEBUG] Angle to target: {angle_to_target:.2f} rad")
-        print(f"[DEBUG] Rotation applied: {rotation_amount:.2f} rad")
-        print(f"[DEBUG] Movement: {distance:.2f} px")
+        printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})")
+        printLog("DEBUG", f"From:   ({front.x:.2f}, {front.y:.2f})")
+        printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad")
+        printLog("DEBUG", f"Rotation applied: {rotation_amount:.2f} rad")
+        printLog("DEBUG", f"Movement: {distance:.2f} px")
         
         return (path,target)
 
@@ -268,7 +269,7 @@ class track:
             self.update(walls=False, goals=False, targets=True, obsticles=True, car=True)
             frame:np.ndarray | None = self.cam.getFrame()
             if(frame is None):
-                print("No frame received from camera.")
+                printLog("error","No frame received from camera.")
                 break
             self.Draw(frame)
             self.cam.displayFrame(frame,"Track")

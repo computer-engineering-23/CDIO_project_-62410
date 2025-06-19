@@ -1,6 +1,7 @@
 import math
 import numpy as np
 from typing import List,Union,Tuple
+from Log import printLog
 
 def __sgn(y:float) -> int:
     """Returns the sign of a number"""
@@ -251,7 +252,7 @@ class Car:
         """Rotates the car around its rotation center by a given angle in radians"""
         center = self.getRotationCenter()
         if(self.triangle[0] != self.front):
-            print("invalid triangle points, default action will be taken")
+            printLog("ERROR","invalid triangle points, default action will be taken")
         for i in range(len(self.triangle)):
             self.triangle[i] = self.triangle[i].rotateAround(center, angle)
         self.front = self.triangle[0]
