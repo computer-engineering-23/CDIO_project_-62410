@@ -17,20 +17,24 @@ def blockTag(tag:str):
   global noTag
   noTag.append(tag.casefold())
 
-def printLog(tag:str,message:str,*following):
+def printLog(tag:str,message:str,*following,printable:bool=True,producer:str="unkown"):
   global logFile, startTime, noTag
   
   if(tag.casefold() in noTag):
     return
   
-  string = f"[{tag.upper()}]: " + message
+  string = f"[{tag.upper()}]:\t" + message
   for i in following:
     string += " " + str(i)
-  print(string)
+  
+  if(printable):
+    print(string)
+  
   if(logFile is None):
     return
-  timeString:str = f"{"{"}{(time.time() - startTime):3.5f}{"}"} "
-  logFile.write(timeString + string + "\n")
+  producer = "<" + producer + ">"
+  timeString:str = f"{"{"}{(time.time() - startTime):3.5f}{"}"}"
+  logFile.write(producer + " " + timeString + " " + string + "\n")
 
 def closeLog():
   global logFile

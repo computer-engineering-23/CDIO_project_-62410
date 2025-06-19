@@ -12,11 +12,11 @@ class Camera:
         self.capture = cv2.VideoCapture(1, APIid)
         self.walls:List[List[List[int | float]]] = []
         if not self.capture.isOpened():
-            printLog("error","Kunne ikke åbne kamera")
+            printLog("error","Kunne ikke åbne kamera", producer="Camera")
             exit(1)
         initial_frame:Union[np.ndarray,None] = self.getFrame()
         if initial_frame is None:
-            printLog("error","Kunne ikke hente billede fra kamera")
+            printLog("error","Kunne ikke hente billede fra kamera", producer="Camera")
             exit(1)
         self.shape:Tuple[int,...] = np.shape(initial_frame)
     
@@ -68,7 +68,7 @@ class Camera:
     def getFrame(self) -> Union[np.ndarray,None]:
         ret, frame = self.capture.read()
         if not ret:
-            printLog("error","Kunne ikke hente billede fra kamera")
+            printLog("error","Kunne ikke hente billede fra kamera", producer="Camera")
             return None
         self.shape = np.shape(frame)
         return frame
@@ -213,7 +213,7 @@ class Camera:
         for i in range (frameNumber):
             current = self.getFrame()
             if(current is None):
-                printLog("error","Kunne ikke hente billede fra kamera")
+                printLog("error","Kunne ikke hente billede fra kamera", producer="generateWall")
                 return []
             rawWalls.append(self.findWall(current))
         buffer = np.zeros(self.shape, dtype=np.uint8)

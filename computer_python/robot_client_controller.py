@@ -14,29 +14,28 @@ while(True):
     if(doLog == "y"):
         enableLog()
         blockTag("Raw_response")
-        printLog("INFO", "Logging enabled")
+        printLog("INFO", "Logging enabled",producer="init Client")
         break
     elif(doLog == "n"):
-        printLog("Status","logging disabled")
+        printLog("Status","logging disabled",producer="init Client")
         break
-    print("please only use y or n as inputs")
+    printLog("INFO","please only use y or n as inputs",producer="init Client")
 
 # Opret TCP-socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((host, port))
 server_socket.listen(1)
 
-printLog("status",f"Venter på forbindelse på {host}:{port}...")
+printLog("status",f"Venter på forbindelse på {host}:{port}...",producer="init Client")
 
 # Accepter forbindelse fra klient
 client_socket, client_address = server_socket.accept()
-printLog("status", f"Forbundet til: {client_address}")
+printLog("status", f"Forbundet til: {client_address}",producer="init Client")
 
 # Modtag data fra klienten
 data = client_socket.recv(1024)
-printLog("status","Modtaget:", data.decode())
+printLog("status","Modtaget:", data.decode(),producer="init Client")
 
-    
 cam = Camera(debug=True)
 robot_track = track(cam)
 target:Point | None = None
@@ -45,10 +44,11 @@ hasBall = False
 ballFrames = 0
 try:
     while(1):
+        #client loop
         if time.time() != t:
-            printLog("FPS",str(1 / (time.time()-t)))
+            printLog("FPS",str(1 / (time.time()-t)),producer="client Loop")
             t = time.time()
-        printLog("STATUS", "generating frame")
+        printLog("STATUS", "generating frame",producer="client Loop")
         
         # Update the track to get latest car and targets
         frame = robot_track.cam.getFrame()
@@ -60,7 +60,7 @@ try:
         response = robot_track.update(walls=False, goals=True, targets=True, obsticles=False, car=True, frame=frame)
         
         if(response is None): 
-            printLog("RETRY","no car")
+            printLog("RETRY","no car",producer="client Loop")
             robot_track.cam.displayFrame(frame,"fail",True)
             step = Movement(-10)
         else:
@@ -76,10 +76,11 @@ try:
             robot_track.Draw(frame,path,target)
             robot_track.cam.displayFrame(frame,"Track")
             if(path is None or len(path) < 1):
-                printLog("RETRY", "failed to follow path (empty)")
+                printLog("RETRY", "failed to follow path (empty)",producer="client Loop")
                 continue
             step = path[0]
         
+        #client sender
         if isinstance(step, Movement):
             if step.distance > 0:
                 if(step.distance < 400 and hasBall):
@@ -89,28 +90,30 @@ try:
             elif step.distance < 0:
                 cmd = f"backward {0-step.distance / 100}"
             else:
-                printLog("ERROR","no movement:", step.distance)
+                printLog("ERROR","no movement:", step.distance,producer="client sender")
                 continue
-            printLog("status","create movement:",step.distance)
+            printLog("status","create movement:",step.distance,producer="client sender")
         elif isinstance(step, Rotation):
             angle_degrees = math.degrees(step.angle)
             cmd = f"rotate {0-angle_degrees/3}"
-            printLog("status","create rotate:",step.angle)
+            printLog("status","create rotate:",step.angle,producer="client sender")
         else:
-            printLog("error","Unknown step:", step)
+            printLog("error","Unknown step:", step,producer="client sender")
             continue
         
-        printLog("command","sending command:", cmd)
-        printLog("STATUS", "has ball:",hasBall)
-        
+        printLog("command","sending command:", cmd,producer="client sender")
+        printLog("STATUS", "has ball:",hasBall,producer="client sender")
         client_socket.sendall(cmd.encode())
+        
+        #client reciever
         response = client_socket.recv(1024).decode()
-        printLog("RESPONSE","modified",response)
-        printLog("Raw_response",f"{repr(response)}")
+        printLog("RESPONSE","modified",response,producer="client reciever")
+        printLog("Raw_response",f"{repr(response)}",producer="client reciever")
         while(response.startswith("OKOK")): response = response[2:len(response)]
         while(response.endswith("OK") and len(response) > 2): response = response[0:len(response) - 2]
         if not response.startswith("OK"):
-            printLog("ERROR", "at:", cmd)
+            printLog("ERROR", "at:", cmd,producer="client reciever")
+            printLog("ERROR", "received unexpected response:", response,producer="client reciever")
             continue
         elif response == "OK ball caught":
             robot_track.update(goals=True)
@@ -120,29 +123,29 @@ try:
             ballFrames = 0
             time.sleep(2.3)
         elif response == "OK ball lost":
-            printLog("STATUS", "Ball lost")
+            printLog("STATUS", "Ball lost",producer="client reciever")
             target = None
             hasBall = False
 except Exception as e:
-    printLog("ERROR", "An error occurred:\n","\t", str(e))
-    printLog("ERROR", "Stack trace:\n", e.__traceback__)
+    printLog("ERROR", "An error occurred:\n","\t", str(e),producer="client cleanup")
+    printLog("ERROR", "Stack trace:\n", e.__traceback__,producer="client cleanup")
     # Luk forbindelsen
 finally:
-    printLog("STATUS", "Closing connection without error")
+    printLog("STATUS", "Closing connection without error",producer="client cleanup")
 
 try:
     client_socket.close()
 except Exception as e:
-    printLog("ERROR", "Failed to close client socket:", str(e))
+    printLog("ERROR", "Failed to close client socket:", str(e),producer="client cleanup")
 finally:
-    printLog("STATUS", "Client socket closed")
+    printLog("STATUS", "Client socket closed",producer="client cleanup")
 
 try:
     server_socket.close()
 except Exception as e:
-    printLog("ERROR", "Failed to close server socket:", str(e))
+    printLog("ERROR", "Failed to close server socket:", str(e),producer="client cleanup")
 finally:
-    printLog("STATUS", "Server socket closed")
+    printLog("STATUS", "Server socket closed",producer="client cleanup")
 
-printLog("STATUS", "closing log")
+printLog("STATUS", "closing log",producer="client cleanup")
 closeLog()

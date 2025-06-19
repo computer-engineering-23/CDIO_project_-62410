@@ -43,7 +43,7 @@ class track:
             frame = self.cam.getFrame()
         
         if(frame is None):
-            printLog("error","No frame received from camera.")
+            printLog("error","No frame received from camera.",producer="update track")
             return
         
         if(walls):
@@ -64,9 +64,9 @@ class track:
             fails = 0
             while(tempCar is None or len(tempCar[0]) <= 2): 
                 if(tempCar is not None):
-                    printLog("DEBUG", "falied car length:",len(tempCar[0]))
+                    printLog("DEBUG", "falied car length:",len(tempCar[0]),producer="update track")
                 else:
-                    printLog("DEBUG", "no car found")
+                    printLog("DEBUG", "no car found",producer="update track")
                 fails += 1
                 tempCar = self.cam.findCar(frame)
                 if(fails == 5):
@@ -132,7 +132,7 @@ class track:
         
         if target is None:
             if self.targets is None or len(self.targets) == 0 or self.car.front is None:
-                printLog("DEBUG", "no targets or no car")
+                printLog("DEBUG", "no targets or no car",producer="pathGenerator")
                 return path,None
             # Find the closest target
             self.targets.sort(key=lambda t: front.distanceTo(t))
@@ -141,21 +141,21 @@ class track:
             for i in range(len(self.targets)):
                 if car.validTarget(self.targets[i]):
                     target = self.targets[i]
-                    printLog(f"DEBUG", "found destination")
+                    printLog(f"DEBUG", "found destination",producer="pathGenerator")
                     break
             else:
-                printLog("DEBUG", "no valid targets")
+                printLog("DEBUG", "no valid targets",producer="pathGenerator")
         elif checkTarget:
             self.targets.sort(key=lambda t: target.distanceTo(t)) # type: ignore
             for i in range(len(self.targets)):
                 if car.validTarget(self.targets[i]):
                     target = self.targets[i]
-                    printLog("DEBUG", "adjusted target")
+                    printLog("DEBUG", "adjusted target",producer="pathGenerator")
                     break
             else:
-                printLog(f"DEBUG", "failed to adjust target")
+                printLog(f"DEBUG", "failed to adjust target",producer="pathGenerator")
         else:
-            printLog("DEBUG", f"using provided target: ({target.x:.2f}, {target.y:.2f})")
+            printLog("DEBUG", f"using provided target: ({target.x:.2f}, {target.y:.2f})",producer="pathGenerator")
         # Calculate vector to target
         dy = target.y - car_center.y
         dx = target.x - car_center.x
@@ -174,11 +174,11 @@ class track:
         car.applySelf(path[-1])  # apply movement to simulate robot state
         
         # Debug info
-        printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})")
-        printLog("DEBUG", f"From:   ({front.x:.2f}, {front.y:.2f})")
-        printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad")
-        printLog("DEBUG", f"Rotation applied: {rotation_amount:.2f} rad")
-        printLog("DEBUG", f"Movement: {distance:.2f} px")
+        printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})",producer="pathGenerator")
+        printLog("DEBUG", f"From:   ({front.x:.2f}, {front.y:.2f})",producer="pathGenerator")
+        printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad",producer="pathGenerator")
+        printLog("DEBUG", f"Rotation applied: {rotation_amount:.2f} rad",producer="pathGenerator")
+        printLog("DEBUG", f"Movement: {distance:.2f} px",producer="pathGenerator")
         
         return (path,target)
 
@@ -260,7 +260,7 @@ class track:
             self.update(walls=False, goals=False, targets=True, obsticles=True, car=True)
             frame:np.ndarray | None = self.cam.getFrame()
             if(frame is None):
-                printLog("error","No frame received from camera.")
+                printLog("error","No frame received from camera.",producer="test track")
                 break
             self.Draw(frame)
             self.cam.displayFrame(frame,"Track")

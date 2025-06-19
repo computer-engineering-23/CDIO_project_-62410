@@ -4,10 +4,10 @@ import Log
 
 def main():
     Log.enableLog()
-    Log.printLog("INFO", "Logging enabled")
+    Log.printLog("INFO", "Logging enabled",producer="main")
     Log.blockTag("DEBUG")
-    Log.printLog("debug", "not visible")
-    Log.printLog("INFO", "Starting main function")
+    Log.printLog("debug", "not visible", producer="missing")
+    Log.printLog("INFO", "Starting main function", producer="test main")
     Log.blockTag("info")
     Log.closeLog()
 # def main():
