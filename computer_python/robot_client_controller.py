@@ -18,7 +18,7 @@ while(True):
         break
     elif(doLog == "n"):
         printLog("Status","logging disabled")
-        break;
+        break
     print("please only use y or n as inputs")
 
 # Opret TCP-socket

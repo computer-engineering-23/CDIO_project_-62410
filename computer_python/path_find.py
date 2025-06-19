@@ -172,7 +172,7 @@ class track:
         # Check if angle to target is "almost straight ahead"
         angle_offset = abs(deltaRotation(direction, angle_to_target))
 
-        if angle_offset < 0.2 and distance < 50:
+        if angle_offset < 3 and distance < 100:
             print("[DEBUG] Deliver condition met")
             path.append(deliver(distance))
         else:
