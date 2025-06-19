@@ -2,9 +2,9 @@ import math
 import numpy as np
 from typing import List,Union,Tuple
 
-def __sgn(x:float) -> int:
+def __sgn(y:float) -> int:
     """Returns the sign of a number"""
-    if x >= 0:
+    if y >= 0:
         return 1
     else:
         return -1
@@ -13,90 +13,68 @@ def pointAverage(points:List['Point']) -> 'Point':
     """Calculates the average of a list of points"""
     if not points or len(points) == 0:
         return Point(0, 0)
-    x_sum = sum(point.x for point in points)
     y_sum = sum(point.y for point in points)
-    return Point(x_sum // len(points), y_sum // len(points))
+    x_sum = sum(point.x for point in points)
+    return Point(y_sum // len(points), x_sum // len(points))
 
 class Point:
     """Point class to represent a point in 2D space"""
-    def __init__(self, x:Union[int,float], y:Union[int,float]):
-        self.x:Union[int,float] = x
+    def __init__(self, y:Union[int,float], x:Union[int,float]):
         self.y:Union[int,float] = y
+        self.x:Union[int,float] = x
     def __eq__(self, other: object) -> bool:
         """Checks if two points are equal"""
         if(isinstance(other,Point)):
-            return self.x == other.x and self.y == other.y
+            return self.y == other.y and self.x == other.x
         return False
     def move(self, point: 'Point') -> 'Point':
         """Moves the point by a given point"""
-        return Point(self.x + point.x, self.y + point.y)
+        return Point(self.y + point.y, self.x + point.x)
     def negate(self) -> 'Point':
-        """Negates the point by swapping the x and y coordinates"""
-        return Point(-self.x, -self.y)
+        """Negates the point by swapping the y and y coordinates"""
+        return Point(-self.y, -self.x)
     def angleTo(self, point: 'Point') -> float:
-        """Calculates the angle to another point in radians"""
-        return math.sqrt((point.x - self.x) ** 2 + (point.y - self.y) ** 2)
+        return math.atan2(point.y - self.y, point.x - self.x)
     def rotateAround(self, center: 'Point', angle: float) -> 'Point':
         """Rotates the point around a center point by a given angle in radians"""
         cos_angle = math.cos(angle)
         sin_angle = math.sin(angle)
-        x_new = cos_angle * (self.x - center.x) - sin_angle * (self.y - center.y) + center.x
-        y_new = sin_angle * (self.x - center.x) + cos_angle * (self.y - center.y) + center.y
-        return Point(x_new, y_new)
+        y_new = cos_angle * (self.y - center.y) - sin_angle * (self.x - center.x) + center.y
+        x_new = sin_angle * (self.y - center.y) + cos_angle * (self.x - center.x) + center.x
+        return Point(y_new, x_new)
     def distanceTo(self, point: 'Point') -> float:
         """Calculates the distance to another point"""
-        return math.sqrt((point.x - self.x) ** 2 + (point.y - self.y) ** 2)
+        return math.sqrt((point.y - self.y) ** 2 + (point.x - self.x) ** 2)
+    def copy(self) -> 'Point':
+        """Creates a deep copy of the point"""
+        return Point(self.y, self.x)
 
-class RobotInfo:
-    """
-        RobotInfo class to represent the robot's information
-        contains the robot's position, direction, and other relevant information
-    """
-    def __init__(self, location:Point, direction:float, action:str | None = None):
-        self.location:Point = location
-        self.direction:float = direction  # in radians
-        self.action:str | None = action  # action to be performed by the robot, e.g. "move", "rotate", "pickup"
-
-class Start(RobotInfo):
-    """
-        Start class to represent the starting position of the robot
-        robot will only read position and direction
-    """
-    def __init__(self, location:Point, direction:float):
-        super().__init__(location, direction, "start")
-
-class Movement(RobotInfo):
+class Movement:
     """
         Movement class to represent a movement in 2D space for the robot
         robot will only read distance
     """
-    def __init__(self, distance:float, location:Point, direction:float):
-        super().__init__(location, direction, "move")
+    def __init__(self, distance:float):
         self.distance:float = distance
 
-class Rotation(RobotInfo):
+class Rotation:
     """
         Rotation class to represent an angle change in radians for the robot
         possitive angle is counter-clockwise, negative angle is clockwise
         robot will only read angle
     """
-    def __init__(self, angle:float, location:Point, direction:float):
-        super().__init__(location, direction,"rotate")
+    def __init__(self, angle:float):
         self.angle:float = angle
 
-class Pickup(RobotInfo):
+class Pickup:
     """
         Pickup class to represent a pickup action for the robot
     """
-    def __init__(self, location:Point, direction:float):
-        super().__init__(location, direction, "pickup")
 
-class Dropoff(RobotInfo):
+class Dropoff:
     """
         Dropoff class to represent a dropoff action for the robot
     """
-    def __init__(self, location:Point, direction:float):
-        super().__init__(location, direction, "dropoff")
 
 class Wall:
     """
@@ -122,7 +100,7 @@ class Line:
         self.end:Point = end
     def angle(self) -> float:
         """Calculates the angle of the line in radians"""
-        return self.end.angleTo(self.start)
+        return self.start.angleTo(self.end)
     def length(self) -> float:
         """Calculates the length of the line"""
         return self.start.distanceTo(self.end)
@@ -136,31 +114,31 @@ class Line:
         col:Point = Point(0, 0)
         func1 = self._asFunction()
         func2 = wall._asLine()._asFunction()
-        col.x = (func1[1] * func2[2] - func2[1] * func1[2]) / (func1[0] * func2[1] - func2[0] * func1[1])
-        col.y = (func1[2] * func2[0] - func2[2] * func1[0]) / (func1[0] * func2[1] - func2[0] * func1[1])
-        if col.x < min(self.start.x, self.end.x) or col.x > max(self.start.x, self.end.x):
-            return False
+        col.y = (func1[1] * func2[2] - func2[1] * func1[2]) / (func1[0] * func2[1] - func2[0] * func1[1])
+        col.x = (func1[2] * func2[0] - func2[2] * func1[0]) / (func1[0] * func2[1] - func2[0] * func1[1])
         if col.y < min(self.start.y, self.end.y) or col.y > max(self.start.y, self.end.y):
             return False
-        if col.x < min(wall.start.x, wall.end.x) or col.x > max(wall.start.x, wall.end.x):
+        if col.x < min(self.start.x, self.end.x) or col.x > max(self.start.x, self.end.x):
             return False
         if col.y < min(wall.start.y, wall.end.y) or col.y > max(wall.start.y, wall.end.y):
+            return False
+        if col.x < min(wall.start.x, wall.end.x) or col.x > max(wall.start.x, wall.end.x):
             return False
         return True  # returns True if the line intersects with the wall
     
     def _asFunction(self) ->List[float]:
         """Converts the line to a function of y = mx + b"""
         out = []
-        if self.start.x < self.end.x:
+        if self.start.y < self.end.y:
             self.start, self.end = self.end, self.start
-        if(self.start.x == self.end.x):
+        if(self.start.y == self.end.y):
             return [0,0,0]
         
-        out.append(self.end.y - self.start.y)  # a
-        out.append(self.start.x - self.end.x)  # b
-        out.append(self.start.y * (self.end.x - self.start.x) - (self.end.y - self.start.y) * self.start.x)  # c
+        out.append(self.end.x - self.start.x)  # a
+        out.append(self.start.y - self.end.y)  # b
+        out.append(self.start.x * (self.end.y - self.start.y) - (self.end.x - self.start.x) * self.start.y)  # c
         
-        return out  # returns [a, b, c] for the line equation ax + by + c = 0
+        return out  # returns [a, b, c] for the line equation ay + bx + c = 0
     
     def Shift(self, offset:int, angle:Union[float,None] = None) -> List['Line']:
         """Shifts the line by a given offset in both directions"""
@@ -174,14 +152,14 @@ class Line:
         
         out = []
         
-        offset_x = offset * math.cos(angle)
-        offset_y = offset * math.sin(angle)
+        offset_y = offset * math.cos(angle)
+        offset_x = offset * math.sin(angle)
         
-        new_start = Point(self.start.x + offset_x, self.start.y + offset_y)
-        new_end = Point(self.end.x + offset_x, self.end.y + offset_y)
+        new_start = Point(self.start.y + offset_y, self.start.x + offset_x)
+        new_end = Point(self.end.y + offset_y, self.end.x + offset_x)
         out.append(Line(new_start, new_end))
-        new_start = Point(self.start.x - offset_x, self.start.y - offset_y)
-        new_end = Point(self.end.x - offset_x, self.end.y - offset_y)
+        new_start = Point(self.start.y - offset_y, self.start.x - offset_x)
+        new_end = Point(self.end.y - offset_y, self.end.x - offset_x)
         out.append(Line(new_start, new_end))
         return out  # returns a list of two lines shifted by the offset in both directions
     
@@ -198,27 +176,23 @@ class Car:
         car is represented by a triangle formed by three points
         front is the point in front of the car, used to determine the direction
     """
-    def __init__(self, car:List[Tuple[List[int | float], str]], front:Union[Tuple[List[int | float], str],None] = None):
-        self.triangle:List[Point] = []
-        for point in car:
-            self.triangle.append(Point(point[0][1], point[0][0]))
-        self.front:Point = Point(front[0][1], front[0][0]) if front is not None and len(front) == 2 else Point(0, 0)
-        
-        while(len(self.triangle) < 3):
-            self.triangle.append(Point(0, 0))
-        if(len(self.triangle) > 3):
-            self.triangle = self.triangle[0:3]
+    def __init__(self, triangle:List[Point], front:Point):
+        self.triangle:List[Point] = triangle
+        self.front:Point = front
         
         self.valid()
-        self.offset:int = 10
-    
+    def copy(self) -> 'Car':
+        """Creates a deep copy of the car with independent points"""
+        new_triangle = [Point(p.y, p.x) for p in self.triangle]
+        new_front = Point(self.front.y, self.front.x)
+        return Car(new_triangle, new_front)
     def area(self) -> float:
         """Calculates the area of the triangle formed by the car's points"""
-        x1, y1 = self.triangle[0].x, self.triangle[0].y
-        x2, y2 = self.triangle[1].x, self.triangle[1].y
-        x3, y3 = self.triangle[2].x, self.triangle[2].y
+        y1, x1 = self.triangle[0].y, self.triangle[0].x
+        y2, x2 = self.triangle[1].y, self.triangle[1].x
+        y3, x3 = self.triangle[2].y, self.triangle[2].x
         
-        return abs((x1*(y2 - y3) + x2*(y3 - y1) + x3*(y1 - y2)) / 2.0)
+        return abs((y1*(x2 - x3) + y2*(x3 - x1) + y3*(x1 - x2)) / 2.0)
     
     def valid(self) -> bool:
         """Checks if the front point is valid (not at the same position as the triangle points)"""
@@ -240,9 +214,9 @@ class Car:
     
     def getRotation(self) -> float:
         """Calculates the rotation of the car based on its triangle points"""
-        if not self.valid():
-            return 0.0
-        return Line(self.getRotationCenter(), self.triangle[0]).angle()
+        dx = self.front.x - self.getRotationCenter().x
+        dy = self.front.y - self.getRotationCenter().y
+        return math.atan2(dy, dx)
     
     def getWidth(self) -> float:
         """Calculates the width of the car based on the distance between the base points"""
@@ -261,6 +235,46 @@ class Car:
         if not self.valid():
             return 0.0
         return Line(self.front, self.getRotationCenter()).length()
+    
+    def apply(self, robotInfo:Pickup | Movement | Rotation) -> 'Car':
+        """Applies the robot info to the car and returns a new RobotInfo object"""
+        CarCopy = Car(self.triangle.copy(), self.front)
+        CarCopy.applySelf(robotInfo)
+        return CarCopy
+    
+    def applySelf(self, robotInfo:Pickup | Movement | Rotation) -> None:
+        """Applies the robot info to the car"""
+        if isinstance(robotInfo, Rotation):
+            self.rotate(robotInfo.angle)
+        if isinstance(robotInfo, Movement):
+            self.move(robotInfo.distance)
+    
+    def rotate(self, angle:float) -> None:
+        """Rotates the car around its rotation center by a given angle in radians"""
+        center = self.getRotationCenter()
+        if(self.triangle[0] != self.front):
+            print("invalid triangle points, default action will be taken")
+        for i in range(len(self.triangle)):
+            self.triangle[i] = self.triangle[i].rotateAround(center, angle)
+        self.front = self.triangle[0]
+    
+    def move(self, distance:float) -> None:
+        # Move in the direction from rotation center to front
+        center = self.getRotationCenter()
+        dy = self.front.y - center.y
+        dx = self.front.x - center.x
+        norm = math.sqrt(dx**2 + dy**2)
+        if norm == 0:
+            vector = Point(0, 0)
+        else:
+            vector = Point(distance * dy / norm, distance * dx / norm)
+        for i in range(len(self.triangle)):
+            self.triangle[i] = self.triangle[i].move(vector)
+        self.front = self.front.move(vector)
+    
+    def validTarget(self, target:Point) -> bool:
+        """Checks if the target point is valid (not at the same position as the triangle points)"""
+        return self.getRotationCenter().distanceTo(target) > self.front.distanceTo(self.getRotationCenter())
 
 class Arc:
     """
@@ -285,11 +299,11 @@ class Arc:
         """Generates start and end points of the arc"""
         return[
             Point(
-                self.center.x + self.radius * math.cos(self.start), #x0
-                self.center.y + self.radius * math.sin(self.start)  #y0
+                self.center.y + self.radius * math.cos(self.start), #y0
+                self.center.x + self.radius * math.sin(self.start)  #x0
             ),Point(
-                self.center.x + self.radius * math.cos(self.end),   #x1
-                self.center.y + self.radius * math.sin(self.end)    #y1
+                self.center.y + self.radius * math.cos(self.end),   #y1
+                self.center.x + self.radius * math.sin(self.end)    #x1
             )
         ]
     
@@ -298,14 +312,13 @@ class Arc:
         # Calculate the distance from the center of the arc to the line segment defined by the wall
         line = wall._asLine()
         
-        polarradius = math.sqrt((line.start.x - self.center.x) ** 2 + (line.start.y - self.center.y) ** 2)
+        polarradius = math.sqrt((line.start.y - self.center.y) ** 2 + (line.start.x - self.center.x) ** 2)
         if (line.angle() >= self.start and line.angle() <= self.end and polarradius < self.radius):
             return True  # returns True if the start is within the arc
         
-        polarradius = math.sqrt((line.end.x - self.center.x) ** 2 + (line.end.y - self.center.y) ** 2)
+        polarradius = math.sqrt((line.end.y - self.center.y) ** 2 + (line.end.x - self.center.x) ** 2)
         if (line.angle() >= self.start and line.angle() <= self.end and polarradius < self.radius):
             return True  # returns True if the end is within the arc
-        
         #chack if the arc's radius intersects with the wall
         arcPoints = self.points()
         arcLines = [Line(arcPoints[0], self.center), Line(arcPoints[1], self.center)]
@@ -316,10 +329,10 @@ class Arc:
         # Check if the line segment intersects with the arc
         line = line.move(self.center.negate())  # move the line to the origin
         
-        deltaX = line.end.x - line.start.x
-        deltaY = line.end.y - line.start.y
-        deltaR = math.sqrt(deltaX ** 2 + deltaY ** 2)
-        delta = line.start.x * line.end.y - line.end.x * line.start.y
+        deltay = line.end.y - line.start.y
+        deltax = line.end.x - line.start.x
+        deltaR = math.sqrt(deltay ** 2 + deltax ** 2)
+        delta = line.start.y * line.end.x - line.end.y * line.start.x
         
         # Check if the line segment intersects with the arc
         discriminant = self.radius ** 2 * deltaR ** 2 - delta ** 2
@@ -328,15 +341,15 @@ class Arc:
             return False
         
         # Calculate the intersection points
-        x0 = (delta * deltaY + __sgn(deltaY) * deltaX * math.sqrt(discriminant))/(deltaR ** 2)
-        y0 = (-delta * deltaX + abs(deltaY) * math.sqrt(discriminant))/(deltaR ** 2)
-        x1 = (delta * deltaY - __sgn(deltaY) * deltaX * math.sqrt(discriminant))/(deltaR ** 2)
-        y1 = (-delta * deltaX - abs(deltaY) * math.sqrt(discriminant))/(deltaR ** 2)
+        y0 = (delta * deltax + __sgn(deltax) * deltay * math.sqrt(discriminant))/(deltaR ** 2)
+        x0 = (-delta * deltay + abs(deltax) * math.sqrt(discriminant))/(deltaR ** 2)
+        y1 = (delta * deltax - __sgn(deltax) * deltay * math.sqrt(discriminant))/(deltaR ** 2)
+        x1 = (-delta * deltay - abs(deltax) * math.sqrt(discriminant))/(deltaR ** 2)
         
-        intersections = [Point(x0, y0).move(self.center), Point(x1, y1).move(self.center)]
+        intersections = [Point(y0, x0).move(self.center), Point(y1, x1).move(self.center)]
         for intersection in intersections:
             # Check if the intersection point is within the arc's angle range
-            angle = math.atan2(intersection.y - self.center.y, intersection.x - self.center.x)
+            angle = math.atan2(intersection.x - self.center.x, intersection.y - self.center.y)
             if self.start <= angle <= self.end:
                 return True
         
