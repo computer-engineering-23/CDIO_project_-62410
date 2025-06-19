@@ -34,7 +34,7 @@ printLog("status", f"Forbundet til: {client_address}",producer="init Client")
 
 # Modtag data fra klienten
 data = client_socket.recv(1024)
-printLog("status","Modtaget:", data.decode(),producer="init Client")
+printLog("status","Modtaget", data.decode(),producer="init Client")
 
 cam = Camera(debug=True)
 robot_track = track(cam)
@@ -90,19 +90,19 @@ try:
             elif step.distance < 0:
                 cmd = f"backward {0-step.distance / 100}"
             else:
-                printLog("ERROR","no movement:", step.distance,producer="client sender")
+                printLog("ERROR","no movement", step.distance,producer="client sender")
                 continue
-            printLog("status","create movement:",step.distance,producer="client sender")
+            printLog("status","create movement",step.distance,producer="client sender")
         elif isinstance(step, Rotation):
             angle_degrees = math.degrees(step.angle)
             cmd = f"rotate {0-angle_degrees/3}"
-            printLog("status","create rotate:",step.angle,producer="client sender")
+            printLog("status","create rotate",step.angle,producer="client sender")
         else:
-            printLog("error","Unknown step:", step,producer="client sender")
+            printLog("error","Unknown step", step,producer="client sender")
             continue
         
-        printLog("command","sending command:", cmd,producer="client sender")
-        printLog("STATUS", "has ball:",hasBall,producer="client sender")
+        printLog("command","sending command", cmd,producer="client sender")
+        printLog("STATUS", "has ball",hasBall,producer="client sender")
         client_socket.sendall(cmd.encode())
         
         #client reciever
@@ -112,8 +112,8 @@ try:
         while(response.startswith("OKOK")): response = response[2:len(response)]
         while(response.endswith("OK") and len(response) > 2): response = response[0:len(response) - 2]
         if not response.startswith("OK"):
-            printLog("ERROR", "at:", cmd,producer="client reciever")
-            printLog("ERROR", "received unexpected response:", response,producer="client reciever")
+            printLog("ERROR", "at", cmd,producer="client reciever")
+            printLog("ERROR", "received unexpected response", response,producer="client reciever")
             continue
         elif response == "OK ball caught":
             robot_track.update(goals=True)
@@ -136,14 +136,14 @@ finally:
 try:
     client_socket.close()
 except Exception as e:
-    printLog("ERROR", "Failed to close client socket:", str(e),producer="client cleanup")
+    printLog("ERROR", "Failed to close client socket", str(e),producer="client cleanup")
 finally:
     printLog("STATUS", "Client socket closed",producer="client cleanup")
 
 try:
     server_socket.close()
 except Exception as e:
-    printLog("ERROR", "Failed to close server socket:", str(e),producer="client cleanup")
+    printLog("ERROR", "Failed to close server socket", str(e),producer="client cleanup")
 finally:
     printLog("STATUS", "Server socket closed",producer="client cleanup")
 

@@ -64,7 +64,7 @@ class track:
             fails = 0
             while(tempCar is None or len(tempCar[0]) <= 2): 
                 if(tempCar is not None):
-                    printLog("DEBUG", "falied car length:",len(tempCar[0]),producer="update track")
+                    printLog("DEBUG", "falied car length",len(tempCar[0]),producer="update track")
                 else:
                     printLog("DEBUG", "no car found",producer="update track")
                 fails += 1
