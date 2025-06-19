@@ -85,6 +85,7 @@ while(1):
         continue
 
     print("sending")
+    print("has ball:",hasBall)
     client_socket.sendall(cmd.encode())
     response = client_socket.recv(1024).decode()
     print("[RESPONSE]:", response)

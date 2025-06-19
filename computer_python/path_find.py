@@ -153,7 +153,8 @@ class track:
                     break
             else:
                 print(f"[DEBUG] failed to adjust target")
-        
+        else:
+            print(f"[DEBUG] using provided target: ({target.x:.2f}, {target.y:.2f})")
         # Calculate vector to target
         dy = target.y - car_center.y
         dx = target.x - car_center.x
