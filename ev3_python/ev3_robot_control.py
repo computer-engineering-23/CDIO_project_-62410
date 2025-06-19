@@ -151,7 +151,7 @@ while(True):
 
     elif command.startswith("deliver"):
         try:    
-            smallMotor.run_forever(speed_sp=250)
+            smallMotor.run_forever(speed_sp=-250)
             time.sleep(1.5)
             smallMotor.stop()
             run_time = float(command.split()[1])
@@ -161,7 +161,7 @@ while(True):
             leftMotor.stop()
             rightMotor.stop()
             time.sleep(1)
-            smallMotor.run_forever(speed_sp=-250)
+            smallMotor.run_forever(speed_sp=250)
             time.sleep(1.5)
             smallMotor.stop()
             s.sendall("OK".encode())
