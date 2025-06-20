@@ -83,7 +83,7 @@ class Wall:
         wall is represented by two points: start and end
         can generate the angle of the wall
     """
-    def __init__(self, wall:List[List[Union[int,float]]]):
+    def __init__(self, wall:List[tuple[Union[int,float],int | float,int | float,int | float]]):
         self.start = Point(wall[0][0], wall[0][1])
         self.end = Point(wall[0][2], wall[0][3])
     def _asLine(self) -> 'Line':

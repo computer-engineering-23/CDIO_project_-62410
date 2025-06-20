@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from typing import List, Tuple, Union
 import math
-from classes import Point, Wall
+from classes import Point, Wall, Line
 from Log import printLog
 
 # Start kameraet
@@ -10,7 +10,7 @@ class Camera:
     def __init__(self, APIid:int = cv2.CAP_DSHOW, debug:bool = False):
         self.debug = debug
         self.capture = cv2.VideoCapture(1, APIid)
-        self.walls:List[List[List[int | float]]] = []
+        self.walls:List[List[tuple[int | float,int | float,int | float,int | float]]] = []
         if not self.capture.isOpened():
             printLog("error","Kunne ikke åbne kamera", producer="Camera")
             exit(1)
@@ -29,7 +29,7 @@ class Camera:
             return
         pass
 
-    def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:Union[List[list[tuple[int,int,int,int]]],None] = None, goals:Union[List[Tuple[int,int]],None] = None, name:Union[str,None] = None, debug:bool = False) -> None:
+    def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, name:Union[str,None] = None, debug:bool = False) -> None:
         if(debug == True and not self.debug):
             return
         data = np.zeros(np.shape(frame), dtype=np.uint8)
@@ -41,7 +41,7 @@ class Camera:
             self.displayFrame(frame, "with camera", debug)
             self.displayFrame(data, "without camera", True)
 
-    def drawToFrame(self, frame:np.ndarray, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:Union[List[list[tuple[int,int,int,int]]],None] = None, goals:Union[List[Tuple[int,int]],None] = None) -> np.ndarray:
+    def drawToFrame(self, frame:np.ndarray, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None) -> np.ndarray:
         if circles is not None:
             names:List[str] = [a[1] for a in circles]
             _circles:List[List[Union[int,float]]] = [a[0] for a in circles]
@@ -55,13 +55,13 @@ class Camera:
         
         if lines is not None:
             for i in range (0,len(lines)):
-                (x1, y1, x2, y2) = lines[i][0]
-                cv2.line(frame,(x1,y1),(x2,y2),(0,0,255),3, cv2.LINE_AA)
+                (x1, y1, x2, y2) = (lines[i].start.x, lines[i].start.y, lines[i].end.x, lines[i].end.y)
+                cv2.line(frame,(int(x1),int(y1)),(int(x2),int(y2)),(0,0,255),3, cv2.LINE_AA)
         
         if goals is not None:
             for goal in goals:
-                cv2.circle(frame, goal, 5, (255, 0, 0), 0)
-                cv2.putText(frame, "goal", (goal[0] - 10, goal[1] - 10),
+                cv2.circle(frame, (int(goal.x),int(goal.y)), 5, (255, 0, 0), 0)
+                cv2.putText(frame, "goal", (int(goal.x) - 10, int(goal.y) - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         for i,corner in enumerate(self.corners):
@@ -131,7 +131,7 @@ class Camera:
             return [*zip(circles[0],names)]
         return __circles
 
-    def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[List[Union[int,float]]]]:
+    def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[tuple[Union[int,float],int | float,int | float,int | float]]]:
         if(not noMask):
             hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             hueMid = 0
@@ -157,11 +157,11 @@ class Camera:
         else:
             edges:np.ndarray = frame
             edges:np.ndarray = cv2.cvtColor(edges, cv2.COLOR_BGR2GRAY)
-        linesP:List[List[List[Union[int,float]]]] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5).tolist()
+        linesP:List[List[tuple[Union[int,float],int | float,int | float,int | float]]] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5).tolist()
         self.walls = linesP
         return linesP
 
-    def generateWall(self, frameNumber) ->List[List[List[int | float]]]:
+    def generateWall(self, frameNumber) ->List[List[tuple[int | float,int | float,int | float,int | float]]]:
         rawWalls = []
         for i in range (frameNumber):
             current = self.getFrame()
@@ -180,7 +180,22 @@ class Camera:
         self.corners = self.findCorners(self.walls)
         return self.walls
 
-    def findCorners(self,walls:List[List[List[Union[int,float]]]]) -> tuple[Point|None,Point|None,Point|None,Point|None]:
+    def polygonArea(self, corners:list[Point]) -> float:
+        area = 0.0
+        for i in range(len(corners)):
+            j = (i + 1) % len(corners)
+            area += corners[i].x * corners[j].y
+            area -= corners[j].x * corners[i].y
+        area = abs(area) / 2.0
+        return area
+
+    def findCorners(self,walls:List[List[tuple[Union[int,float],int | float,int | float,int | float]]]) -> tuple[Point|None,Point|None,Point|None,Point|None]:
+        old = self.corners
+        if(not any (corner is None for corner in self.corners)):
+            oldArea = self.polygonArea([c for c in old if c is not None])
+        else:
+            oldArea = -1
+        
         wallClass:list[Wall] = []
         for wall in walls:
             wallClass.append(Wall(wall))
@@ -213,8 +228,32 @@ class Camera:
         x3 = float(np.median(np.array([p.x for p in split[3]])))
         y3 = float(np.median(np.array([p.y for p in split[3]])))
         corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (
-            Point(x0, y0), Point(x1, y1), Point(x2, y2), Point(x3, y3)
+            Point(x0, y0), Point(x2, y2), Point(x3, y3),Point(x1, y1)
         )
+        
+        margin = 0.05
+        
+        for i in range(0,4):
+            if(corners[i] is None):
+                printLog("error","Kunne ikke finde hjørner, et eller flere hjørner er None", producer="findCorners")
+                return old
+        
+        newArea = self.polygonArea([c for c in corners if c is not None])
+        if(oldArea != -1 and (newArea < oldArea * (1 - margin))):
+            printLog("error","Kunne ikke finde hjørner, for lille område", producer="findCorners")
+            return old
+        
+        for i in range(0,4):
+            j = (i + 1) % 4
+            old1 = old[i]
+            old2 = old[j]
+            if(old1 is None or old2 is None):
+                break
+            if(Line(corners[i], corners[(i + 1) % 4]).length() < Line(old1, old2).length() * (1 - margin)):
+                printLog("error","Kunne ikke finde hjørner, for lille afstand mellem hjørner", producer="findCorners")
+                return old
+        
+        self.corners = corners
         return corners
 
     def findCar(self, frame:np.ndarray) -> Tuple[List[Tuple[List[int | float],str]],Tuple[List[int | float],str]] | None:
@@ -281,11 +320,11 @@ class Camera:
                 circles[0].remove(circles[0][closest[0]])
                 circles[0].append(front)
             if(len(circles[0]) > 1):
-                lines:List[List[Tuple[int,int,int,int]]] = []
+                lines:List[Line] = []
                 for i in range (0,len(circles[0])):
                     (x0, y0, r) = circles[0][i]
                     (x1, y1, r) = circles[0][(i+1) % len(circles[0])]
-                    lines.append([(int(x0), int(y0), int(x1), int(y1))])
+                    lines.append(Line(Point(x0, y0), Point(x1, y1)))
                 self.displayWithDetails(frame, lines= lines, name="car", debug=True)
             names = ["car"]*len(circles[0])
             circles_ = [*zip(circles[0],names)]
@@ -297,7 +336,40 @@ class Camera:
     def close(self):
         self.capture.release()
     
-    def midpointWalls(self, width, lines:List[List[List[Union[int,float]]]]) -> List[Tuple[int,int]]:
+    def makeWalls(self, corners:tuple[Point|None,Point|None,Point|None,Point|None]) -> List[Wall]|None:
+        if corners is None or len(corners) < 4:
+            printLog("error","Kunne ikke lave vægge, hjørner mangler", producer="makeWalls")
+            return None
+        
+        output:List[Wall] = []
+        for i in range(0,4):
+            corner1 = corners[i]
+            corner2 = corners[(i + 1) % 4]
+            if corner1 is None or corner2 is None:
+                printLog("error","Kunne ikke lave væg, et eller flere hjørner er None", producer="makeWalls")
+                return None
+            output.append(Wall([(corner1.x, corner1.y, corner2.x, corner2.y)]))
+        return output
+    
+    def makeGoals(self, corners:tuple[Point | None,Point  | None,Point  | None,Point  | None]) -> tuple[Point,Point] | None:
+        if corners is None or len(corners) < 4:
+            printLog("error","Kunne ikke lave mål, hjørner mangler", producer="makeGoals")
+            return None
+        if(corners[0] is None or corners[1] is None or corners[2] is None or corners[3] is None):
+            printLog("error","Kunne ikke lave mål, et eller flere hjørner er None", producer="makeGoals")
+            return None
+        return ( \
+            Point( \
+                (corners[0].x + corners[1].x) / 2, \
+                (corners[0].y + corners[1].y) / 2  \
+            ), \
+            Point( \
+                (corners[2].x + corners[3].x) / 2, \
+                (corners[2].y + corners[3].y) / 2  \
+            ) \
+        )
+    
+    def midpointWalls(self, width, lines:List[List[tuple[int | float,int | float,int | float,int | float]]]) -> List[Tuple[int,int]]:
         if(lines is None or len(lines) == 0):
             return [(0,0),(0,0)]
         veritcalLines = []
@@ -366,19 +438,22 @@ class Camera:
         leftMidY = (leftTop + leftBottom) // 2
         leftMidX = (leftIner + leftOut) // 2
         goals = [(rightMidX,rightMidY), (leftMidX,leftMidY)]
-        self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=rightLines, goals=[goals[0]]), "right lines", debug=True)
-        self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=leftLines, goals=[goals[1]]), "left lines", debug=True)
         return goals
 
-    def Test(self, useOldWall = False):
-        if(useOldWall):
-            walls = self.generateWall(40)
+    def Test(self, generateWalls = False):
+        if(generateWalls):
+            self.walls = self.generateWall(40)
         else:
-            walls = self.generateWall(40)
+            if(self.walls is None or len(self.walls) == 0):
+                self.walls = self.generateWall(40)
+        self.corners = self.findCorners(self.walls)
+        goals:tuple[Point, Point] | None = self.makeGoals(self.corners)
         frame:Union[np.ndarray,None] = self.getFrame()
         if(frame is None): return
-        goals = self.midpointWalls(self.shape[1], walls)
-        self.displayWithDetails(frame, lines=walls, goals=goals)
+        walls:list[Wall]|None = self.makeWalls(self.corners)
+        if walls is None or len(walls) == 0: walls = []
+        lines:list[Line] = [wall._asLine() for wall in walls]
+        self.displayWithDetails(frame, lines=lines, goals=goals)
 
     def setDebug(self, debug:bool):
         self.debug = debug
