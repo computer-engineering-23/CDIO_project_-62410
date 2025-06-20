@@ -3,24 +3,20 @@ import numpy as np
 from typing import List, Tuple, Union
 from image_recognition import Camera
 from classes import Point, Wall, Car, Movement, Rotation, deliver
-import math
 from Log import printLog
+import math
 
 def deltaRotation(newAngle:float, currentAngle:float) -> float:
     """Generates the rotation needed to turn the car to the new angle"""
-    if(newAngle < 0):
-        newAngle += 2 * math.pi
-    if(currentAngle < 0):
-        currentAngle += 2 * math.pi
     rotation = newAngle - currentAngle
-    if(rotation > math.pi):
+    if rotation > math.pi:
         rotation -= 2 * math.pi
-    elif(rotation < -math.pi):
+    elif rotation < -math.pi:
         rotation += 2 * math.pi
     return rotation
 
 class track:
-    def __init__(self,cam:Camera ,
+    def __init__(self, cam:Camera,
             walls:Union[List[List[List[Union[int,float]]]],None] = None, 
             goals:Union[List[Tuple[int,int]],None] = None, 
             targets:Union[List[Tuple[List[int | float],str]],None] = None, 
@@ -88,14 +84,14 @@ class track:
         if(goals is None or len(goals) == 0):
             return []
         for goal in goals:
-            realGoals.append(Point(goal[1], goal[0]))
+            realGoals.append(Point(goal[0], goal[1]))
         return realGoals
     def formatTargets(self, targets:Union[List[Tuple[List[int | float],str]],None]) -> List[Point]:
         realTargets = []
         if(targets is None or len(targets) == 0):
             return []
         for target in targets:
-            realTargets.append(Point(target[0][1], target[0][0]))
+            realTargets.append(Point(target[0][0], target[0][1]))
         return realTargets
     def formatObsticles(self, obsticles:Union[List[Tuple[List[int | float],str]],None]) -> List[Point]:
         realObsticles = []

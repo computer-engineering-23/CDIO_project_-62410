@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from typing import List,Tuple,Union
+from typing import List, Tuple, Union
 import math
 from classes import Point, Wall
 from Log import printLog
@@ -55,7 +55,7 @@ class Camera:
         
         if lines is not None:
             for i in range (0,len(lines)):
-                (x1, y1, x2,y2) = lines[i][0]
+                (x1, y1, x2, y2) = lines[i][0]
                 cv2.line(frame,(x1,y1),(x2,y2),(0,0,255),3, cv2.LINE_AA)
         
         if goals is not None:
@@ -64,7 +64,6 @@ class Camera:
                 cv2.putText(frame, "goal", (goal[0] - 10, goal[1] - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        #replace
         for i,corner in enumerate(self.corners):
             if(corner is not None):
                 cv2.circle(frame, (int(corner.x), int(corner.y)), 5, (0, 0, 255), 0)
@@ -82,39 +81,15 @@ class Camera:
     
     def findCircle(self,frame:np.ndarray) -> Union[List[Tuple[List[Union[int,float]],str]],None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        
-        
-        
-        
-        # Orange farveområde (kan justeres)
-        # lower_orange = np.array([0, 30, 100])
-        # lower_orange = np.array([40, 30, 100])
-        # upper_orange = np.array([30, 255, 255])
-        
         # Hvid farveområde (HSV)
         lower_white = np.array([0, 0, 165])
         upper_white = np.array([180, 35, 255])
-        
-        # Skab maske kun med orange
-        # mask_orange = cv2.inRange(hsv, lower_orange, upper_orange)
         mask_white = cv2.inRange(hsv, lower_white, upper_white)
-        
-        # Kombinerer masker
-        # mask = cv2.bitwise_or(mask_orange, mask_white)
-        
-        # Brug masken til at finde relevante områder
-        # masked = cv2.bitwise_and(frame, frame, mask=mask)
         masked = cv2.bitwise_and(frame, frame, mask=mask_white)
         self.displayFrame(masked, "masked circle", debug=True)
-
-        # Konverter til gråskala og blur igen
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(mask_white, (15, 15), 0)
-
         self.displayFrame(gray, "brur circle", debug=False)
-
-
-        # Find cirkler med Hough Circle Transform
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
@@ -128,31 +103,18 @@ class Camera:
         if(__circles is not None):
             circles:List[List[List[Union[int,float]]]] = __circles.tolist()
             names = ["ball"]*len(circles[0])
-            if(len(circles[0]) == 1):
-                return [*zip(circles[0],names)]
-            else:
-                return [*zip(circles[0],names)]
+            return [*zip(circles[0],names)]
         return __circles
     
     def findEgg(self, frame:np.ndarray) -> Union[List[Tuple[List[int | float], str]],None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        
-        # Hvid farveområde (HSV)
         lower_white = np.array([0, 0, 0])
         upper_white = np.array([180, 35, 255])
-        
         mask_white = cv2.inRange(hsv, lower_white, upper_white)
-        
-        # Brug masken til at finde relevante områder
         masked = cv2.bitwise_and(frame, frame, mask=mask_white)
         self.displayFrame(masked, "masked egg", debug=True)
-
-
-        # Konverter til gråskala og blur igen
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
-
-        # Find cirkler med Hough Circle Transform
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
@@ -166,60 +128,37 @@ class Camera:
         if(__circles is not None):
             circles = __circles.tolist()
             names = ["eggs"]*len(circles[0])
-            if(len(circles[0]) == 1):
-                return [*zip(circles[0],names)]
-            else:
-                return [*zip(circles[0],names)]
+            return [*zip(circles[0],names)]
         return __circles
 
     def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[List[Union[int,float]]]]:
         if(not noMask):
             hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            
             hueMid = 0
             hueWidth = 15
-            
             minSaturation = 0
             maxSaturation = 255
-            
             minBrightness = 0
             maxBrightness = 255
-            
-            
             hue0 = hueMid - hueWidth if hueMid - hueWidth >= 0 else (hueMid - hueWidth + 180)
             hue1 = (hueMid + hueWidth) % 180
-            
-            # Rød farveområde (HSV)
             lower_red0 = np.array([hue0, minSaturation, minBrightness])
             upper_red0 = np.array([180 , maxSaturation, maxBrightness])
-
             lower_red1 = np.array([0   , minSaturation, minBrightness])
             upper_red1 = np.array([hue1, maxSaturation, maxBrightness])
-
-            # Skab maske
             mask0:np.ndarray = cv2.inRange(hsv, lower_red0, upper_red0)
             mask1:np.ndarray = cv2.inRange(hsv, lower_red1, upper_red1)
-            
             mask:np.ndarray = cv2.bitwise_or(mask0,mask1)
-
-
-            # Brug masken til at finde relevante områder
             masked:np.ndarray = cv2.bitwise_and(frame, frame, mask=mask)
             masked:np.ndarray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
             edges = masked
-            # edges:np.ndarray = cv2.Canny(masked, 50, 200, None, 3)
             self.displayFrame(masked, "walls masked", debug = True)
             self.displayFrame(edges, "walls edges", debug = True)
-        
         else:
             edges:np.ndarray = frame
             edges:np.ndarray = cv2.cvtColor(edges, cv2.COLOR_BGR2GRAY)
-        
-
         linesP:List[List[List[Union[int,float]]]] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5).tolist()
-        
         self.walls = linesP
-
         return linesP
 
     def generateWall(self, frameNumber) ->List[List[List[int | float]]]:
@@ -234,13 +173,11 @@ class Camera:
         for walls in rawWalls:
             if walls is not None:
                 for i in range (0,len(walls)):
-                    (x1, y1, x2,y2) = walls[i][0]
+                    (x1, y1, x2, y2) = walls[i][0]
                     cv2.line(buffer,(x1,y1),(x2,y2),(255,255,255),1, cv2.LINE_AA)
         self.displayFrame(buffer, "walls", True)
         self.walls = self.findWall(buffer,True)
-        
         self.corners = self.findCorners(self.walls)
-        
         return self.walls
 
     def findCorners(self,walls:List[List[List[Union[int,float]]]]) -> tuple[Point|None,Point|None,Point|None,Point|None]:
@@ -248,18 +185,13 @@ class Camera:
         for wall in walls:
             wallClass.append(Wall(wall))
         intersects:List[Point] = []
-        
         for i in range (0,len(wallClass)):
             for j in range (i+1, len(wallClass)):
                 if wallClass[i]._asLine()._intersects(wallClass[j],30):
                     intersection = wallClass[i].intersect(wallClass[j])
                     if(type(intersection) != bool):
                         intersects.append(intersection)
-        #topright,bottomright,topleft,bottomleft
         split:tuple[list[Point],list[Point],list[Point],list[Point]] = ([],[],[],[])
-        # distance:tuple[float,float,float,float] = (0,0,0,0)
-        # optimal:tuple[Point,Point,Point,Point] = (Point(0,0),Point(0,self.shape[1]),Point(self.shape[0],0),Point(self.shape[0],self.shape[1]))
-        
         for intersect in intersects:
             if(intersect.x < self.shape[1] / 2 and intersect.y < self.shape[0] / 2): # top-left
                 split[0].append(intersect)
@@ -269,71 +201,36 @@ class Camera:
                 split[2].append(intersect)
             elif(intersect.x >= self.shape[1] / 2 and intersect.y >= self.shape[0] / 2): # bottom-right
                 split[3].append(intersect)
-        
         if(any(len(split[i]) == 0 for i in range(0,4))):
             printLog("error","Kunne ikke finde alle hjørner", producer="findCorners")
             return (None,None,None,None)
-        
         x0 = float(np.median(np.array([p.x for p in split[0]])))
         y0 = float(np.median(np.array([p.y for p in split[0]])))
-        
         x1 = float(np.median(np.array([p.x for p in split[1]])))
         y1 = float(np.median(np.array([p.y for p in split[1]])))
-        
         x2 = float(np.median(np.array([p.x for p in split[2]])))
         y2 = float(np.median(np.array([p.y for p in split[2]])))
-        
         x3 = float(np.median(np.array([p.x for p in split[3]])))
         y3 = float(np.median(np.array([p.y for p in split[3]])))
-        
-        corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (Point(x0,y0), Point(x1,y1), Point(x2,y2), Point(x3,y3))
-        
-        # distance = \
-        #     (math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2), distance[1], distance[2], distance[3]) if i == 0 else \
-        #     (distance[0], math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2), distance[2], distance[3]) if i == 1 else \
-        #     (distance[0], distance[1], math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2), distance[3]) if i == 2 else \
-        #     (distance[0], distance[1], distance[2], math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2))
-        # break
-        # dist = math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2)
-        # if(corners[i] is None or distance[i] > dist):
-        #     distance = \
-        #         (dist, distance[1], distance[2], distance[3]) if i == 0 else \
-        #         (distance[0], dist, distance[2], distance[3]) if i == 1 else \
-        #         (distance[0], distance[1], dist, distance[3]) if i == 2 else \
-        #         (distance[0], distance[1], distance[2], dist)
-        #     corners = \
-        #         (intersect, corners[1], corners[2], corners[3]) if i == 0 else \
-        #         (corners[0], intersect, corners[2], corners[3]) if i == 1 else \
-        #         (corners[0], corners[1], intersect, corners[3]) if i == 2 else \
-        #         (corners[0], corners[1], corners[2], intersect)
-        #     break
-        
+        corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (
+            Point(x0, y0), Point(x1, y1), Point(x2, y2), Point(x3, y3)
+        )
         return corners
 
     def findCar(self, frame:np.ndarray) -> Tuple[List[Tuple[List[int | float],str]],Tuple[List[int | float],str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        
         huemiddle = 150//2
         satmiddle = 60
         brightmiddle = 60
-        
         hueWidth = 20
         satWidth = 60
         brightWidth = 15
-        # grøn farveområde (HSV)
         lower_green = np.array([max(huemiddle - hueWidth,0), 20, 20])
         upper_green = np.array([min(huemiddle + hueWidth,360), 255, 255])
-        # lower_green = np.array([max(huemiddle - hueWidth,0), max(satmiddle - satWidth,0), max(brightmiddle - brightWidth,0)])
-        # upper_green = np.array([min(huemiddle + hueWidth,360), min(satmiddle + satWidth,255), min(brightmiddle + brightWidth,255)])
-        
         mask_green = cv2.inRange(hsv, lower_green, upper_green)
-        
-        # Konverter til gråskala og blur igen
         gray = cv2.GaussianBlur(mask_green, (15, 15), 0)
-        gray = cv2.inRange(gray, np.array([20]), np.array([255]))  # For at sikre at det er binært
+        gray = cv2.inRange(gray, np.array([20]), np.array([255]))
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
-        
-        # Find cirkler med Hough Circle Transform
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
@@ -368,25 +265,28 @@ class Camera:
                 for j in range (0, len(circles[0])):
                     if(i == j):
                         continue
-                    (y0, x0, r) = circles[0][i]
-                    (y1, x1, r) = circles[0][j]
-                    currentDistance = math.sqrt((y0 - y1) ** 2 + (x0 - x1) ** 2)
+                    (x0, y0, r) = circles[0][i]
+                    (x1, y1, r) = circles[0][j]
+                    currentDistance = math.sqrt((x0 - x1) ** 2 + (y0 - y1) ** 2)
                     if(currentDistance < distance):
                         distance = currentDistance
                         closest = (i,j)
             if(closest is not None):
-                front = [(circles[0][closest[0]][0] + circles[0][closest[1]][0]) // 2, (circles[0][closest[0]][1] + circles[0][closest[1]][1]) // 2, 5]
+                front = [
+                    (circles[0][closest[0]][0] + circles[0][closest[1]][0]) // 2,
+                    (circles[0][closest[0]][1] + circles[0][closest[1]][1]) // 2,
+                    5
+                ]
                 circles[0].remove(circles[0][closest[1]])
                 circles[0].remove(circles[0][closest[0]])
                 circles[0].append(front)
             if(len(circles[0]) > 1):
                 lines:List[List[Tuple[int,int,int,int]]] = []
                 for i in range (0,len(circles[0])):
-                    (y0, x0, r) = circles[0][i]
-                    (y1, x1, r) = circles[0][(i+1) % len(circles[0])]
-                    lines.append([(int(y0), int(x0), int(y1), int(x1))])
+                    (x0, y0, r) = circles[0][i]
+                    (x1, y1, r) = circles[0][(i+1) % len(circles[0])]
+                    lines.append([(int(x0), int(y0), int(x1), int(y1))])
                 self.displayWithDetails(frame, lines= lines, name="car", debug=True)
-                
             names = ["car"]*len(circles[0])
             circles_ = [*zip(circles[0],names)]
             if(front is not None):
@@ -398,20 +298,17 @@ class Camera:
         self.capture.release()
     
     def midpointWalls(self, width, lines:List[List[List[Union[int,float]]]]) -> List[Tuple[int,int]]:
-        
         if(lines is None or len(lines) == 0):
             return [(0,0),(0,0)]
-
         veritcalLines = []
         for i in range (0,len(lines)):
-            (y1, x1, y2,x2) = lines[i][0]
-            if(y1 == y2): # For at undgå division med 0
+            (x1, y1, x2, y2) = lines[i][0]
+            if(x1 == x2): # For at undgå division med 0
                 veritcalLines.append(lines[i])
                 break
-            a = abs(x1 - x2) / abs(y1 - y2)
+            a = abs(y1 - y2) / abs(x1 - x2)
             if(a < -4 or a > 4):
                 veritcalLines.append(lines[i])
-        
         rightLines = []
         leftLines = []
         for i in range (0,len(veritcalLines)):
@@ -420,81 +317,58 @@ class Camera:
                 rightLines.append(veritcalLines[i])
             elif(x1 < (width // 3) and x2 < (width // 3)):
                 leftLines.append(veritcalLines[i])
-        
         rightTop = -1
         rightBottom = -1    
         rightIner = -1
         rightOut = -1
         for i in range (0,len(rightLines)):
-            (y1, x1, y2, x2) = rightLines[i][0]
+            (x1, y1, x2, y2) = rightLines[i][0]
             if(y1 > rightBottom or rightBottom == -1):
                 rightBottom = y1
-            
             if(y2 > rightBottom):
                 rightBottom = y2
-            
             if(y1 < rightTop or rightTop == -1):
                 rightTop = y1
-            
             if(y2 < rightTop):
                 rightTop = y2
-            
             if(x1 > rightIner or rightIner == -1):
                 rightIner = x1
-            
             if(x2 > rightIner):
                 rightIner = x2
-            
             if(x1 < rightOut or rightOut == -1):
                 rightOut = x1
-            
             if(x2 < rightOut):
                 rightOut = x2
-        
         rightMidY = (rightTop + rightBottom) // 2
         rightMidX = (rightIner + rightOut) // 2
-
         leftTop = -1
         leftBottom = -1    
         leftIner = -1
         leftOut = -1
         for i in range (0,len(leftLines)):
-            (y1, x1, y2, x2) = leftLines[i][0]
+            (x1, y1, x2, y2) = leftLines[i][0]
             if(y1 > leftBottom or leftBottom == -1):
                 leftBottom = y1
-            
             if(y2 > leftBottom):
                 leftBottom = y2
-            
             if(y1 < leftTop or leftTop == -1):
                 leftTop = y1
-            
             if(y2 < leftTop):
                 leftTop = y2
-            
             if(x1 > leftIner or leftIner == -1):
                 leftIner = x1
-            
             if(x2 > leftIner):
                 leftIner = x2
-            
             if(x1 < leftOut or leftOut == -1):
                 leftOut = x1
-            
             if(x2 < leftOut):
                 leftOut = x2
-        
         leftMidY = (leftTop + leftBottom) // 2
         leftMidX = (leftIner + leftOut) // 2
-
-
-        goals = [(rightMidY,rightMidX), (leftMidY,leftMidX)]
-
+        goals = [(rightMidX,rightMidY), (leftMidX,leftMidY)]
         self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=rightLines, goals=[goals[0]]), "right lines", debug=True)
         self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=leftLines, goals=[goals[1]]), "left lines", debug=True)
-        
         return goals
-    
 
     def Test(self, useOldWall = False):
         if(useOldWall):
@@ -503,26 +377,8 @@ class Camera:
             walls = self.generateWall(40)
         frame:Union[np.ndarray,None] = self.getFrame()
         if(frame is None): return
-        # eggs = self.findEgg(np.copy(frame))
-        # circles = self.findCircle(np.copy(frame))
-        # __car = self.findCar(np.copy(frame))# type: ignore
-        # car, front = __car if __car is not None else (None, None)
-        goals = self.midpointWalls(self.shape[1], walls)# type: ignore
-        # if(circles is None):
-        #     circles = []
-        # if(eggs is None):
-        #     eggs = []
-        # if(car is None):
-        #     car = []
-        # if(walls is None):
-        #     walls = []
-        # if(goals is None):
-        #     goals = []
-        # if(front is None):
-        #     front = []
-        # else:
-        #     front = [front]
-        self.displayWithDetails(frame, lines=walls, goals=goals)# type: ignore
+        goals = self.midpointWalls(self.shape[1], walls)
+        self.displayWithDetails(frame, lines=walls, goals=goals)
 
     def setDebug(self, debug:bool):
         self.debug = debug

@@ -3,9 +3,9 @@ import numpy as np
 from typing import List,Union,Tuple
 from Log import printLog
 
-def __sgn(y:float) -> int:
+def __sgn(x:float) -> int:
     """Returns the sign of a number"""
-    if y >= 0:
+    if x >= 0:
         return 1
     else:
         return -1
@@ -14,41 +14,43 @@ def pointAverage(points:List['Point']) -> 'Point':
     """Calculates the average of a list of points"""
     if not points or len(points) == 0:
         return Point(0, 0)
-    y_sum = sum(point.y for point in points)
     x_sum = sum(point.x for point in points)
-    return Point(y_sum // len(points), x_sum // len(points))
+    y_sum = sum(point.y for point in points)
+    return Point(x_sum // len(points), y_sum // len(points))
 
 class Point:
     """Point class to represent a point in 2D space"""
-    def __init__(self, y:Union[int,float], x:Union[int,float]):
-        self.y:Union[int,float] = y
-        self.x:Union[int,float] = x
+    def __init__(self, x:Union[int,float], y:Union[int,float]):
+        self.x = x
+        self.y = y
+
     def __eq__(self, other: object) -> bool:
-        """Checks if two points are equal"""
-        if(isinstance(other,Point)):
-            return self.y == other.y and self.x == other.x
-        return False
+        if not isinstance(other, Point):
+            return False
+        return self.x == other.x and self.y == other.y
+
     def move(self, point: 'Point') -> 'Point':
-        """Moves the point by a given point"""
-        return Point(self.y + point.y, self.x + point.x)
+        return Point(self.x + point.x, self.y + point.y)
+
     def negate(self) -> 'Point':
-        """Negates the point by swapping the y and y coordinates"""
-        return Point(-self.y, -self.x)
+        return Point(-self.x, -self.y)
+
     def angleTo(self, point: 'Point') -> float:
         return math.atan2(point.y - self.y, point.x - self.x)
+
     def rotateAround(self, center: 'Point', angle: float) -> 'Point':
-        """Rotates the point around a center point by a given angle in radians"""
-        cos_angle = math.cos(angle)
-        sin_angle = math.sin(angle)
-        y_new = cos_angle * (self.y - center.y) - sin_angle * (self.x - center.x) + center.y
-        x_new = sin_angle * (self.y - center.y) + cos_angle * (self.x - center.x) + center.x
-        return Point(y_new, x_new)
+        s, c = math.sin(angle), math.cos(angle)
+        x_shifted = self.x - center.x
+        y_shifted = self.y - center.y
+        x_new = x_shifted * c - y_shifted * s + center.x
+        y_new = x_shifted * s + y_shifted * c + center.y
+        return Point(x_new, y_new)
+
     def distanceTo(self, point: 'Point') -> float:
-        """Calculates the distance to another point"""
-        return math.sqrt((point.y - self.y) ** 2 + (point.x - self.x) ** 2)
+        return math.hypot(self.x - point.x, self.y - point.y)
+
     def copy(self) -> 'Point':
-        """Creates a deep copy of the point"""
-        return Point(self.y, self.x)
+        return Point(self.x, self.y)
 
 class Movement:
     """
@@ -82,8 +84,8 @@ class Wall:
         can generate the angle of the wall
     """
     def __init__(self, wall:List[List[Union[int,float]]]):
-        self.start:Point = Point(wall[0][1], wall[0][0])
-        self.end:Point = Point(wall[0][3], wall[0][2])
+        self.start = Point(wall[0][0], wall[0][1])
+        self.end = Point(wall[0][2], wall[0][3])
     def _asLine(self) -> 'Line':
         """Converts the wall to a Line object"""
         return Line(self.start, self.end)
