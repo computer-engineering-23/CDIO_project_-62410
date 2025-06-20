@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from typing import List,Tuple,Union
 import math
-from classes import Point
+from classes import Point, Wall
 from Log import printLog
 
 # Start kameraet
@@ -19,6 +19,7 @@ class Camera:
             printLog("error","Kunne ikke hente billede fra kamera", producer="Camera")
             exit(1)
         self.shape:Tuple[int,...] = np.shape(initial_frame)
+        self.corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (None,None,None,None)
     
     def displayFrame(self,frame:np.ndarray,name:str = "detection window", debug:bool = False):
         if(debug == True and not self.debug):
@@ -63,6 +64,12 @@ class Camera:
                 cv2.putText(frame, "goal", (goal[0] - 10, goal[1] - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
+        #replace
+        for i,corner in enumerate(self.corners):
+            if(corner is not None):
+                cv2.circle(frame, (int(corner.x), int(corner.y)), 5, (0, 0, 255), 0)
+                cv2.putText(frame, "corner" + str(i), (int(corner.x) - 10, int(corner.y) - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         return frame
 
     def getFrame(self) -> Union[np.ndarray,None]:
@@ -169,19 +176,25 @@ class Camera:
         if(not noMask):
             hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             
-            hueMid = 170
-            hueWidth = 25
-            sat = 30
-            bri = 60
-            hue0 = hueMid - hueWidth
+            hueMid = 0
+            hueWidth = 15
+            
+            minSaturation = 0
+            maxSaturation = 255
+            
+            minBrightness = 0
+            maxBrightness = 255
+            
+            
+            hue0 = hueMid - hueWidth if hueMid - hueWidth >= 0 else (hueMid - hueWidth + 180)
             hue1 = (hueMid + hueWidth) % 180
             
             # Rød farveområde (HSV)
-            lower_red0 = np.array([hue0, sat, bri])
-            upper_red0 = np.array([180 , 200, 200])
+            lower_red0 = np.array([hue0, minSaturation, minBrightness])
+            upper_red0 = np.array([180 , maxSaturation, maxBrightness])
 
-            lower_red1 = np.array([0   , sat, bri])
-            upper_red1 = np.array([hue1, 200, 200])
+            lower_red1 = np.array([0   , minSaturation, minBrightness])
+            upper_red1 = np.array([hue1, maxSaturation, maxBrightness])
 
             # Skab maske
             mask0:np.ndarray = cv2.inRange(hsv, lower_red0, upper_red0)
@@ -193,7 +206,8 @@ class Camera:
             # Brug masken til at finde relevante områder
             masked:np.ndarray = cv2.bitwise_and(frame, frame, mask=mask)
             masked:np.ndarray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-            edges:np.ndarray = cv2.Canny(masked, 50, 200, None, 3)
+            edges = masked
+            # edges:np.ndarray = cv2.Canny(masked, 50, 200, None, 3)
             self.displayFrame(masked, "walls masked", debug = True)
             self.displayFrame(edges, "walls edges", debug = True)
         
@@ -224,7 +238,77 @@ class Camera:
                     cv2.line(buffer,(x1,y1),(x2,y2),(255,255,255),1, cv2.LINE_AA)
         self.displayFrame(buffer, "walls", True)
         self.walls = self.findWall(buffer,True)
+        
+        self.corners = self.findCorners(self.walls)
+        
         return self.walls
+
+    def findCorners(self,walls:List[List[List[Union[int,float]]]]) -> tuple[Point|None,Point|None,Point|None,Point|None]:
+        wallClass:list[Wall] = []
+        for wall in walls:
+            wallClass.append(Wall(wall))
+        intersects:List[Point] = []
+        
+        for i in range (0,len(wallClass)):
+            for j in range (i+1, len(wallClass)):
+                if wallClass[i]._asLine()._intersects(wallClass[j],30):
+                    intersection = wallClass[i].intersect(wallClass[j])
+                    if(type(intersection) != bool):
+                        intersects.append(intersection)
+        #topright,bottomright,topleft,bottomleft
+        split:tuple[list[Point],list[Point],list[Point],list[Point]] = ([],[],[],[])
+        # distance:tuple[float,float,float,float] = (0,0,0,0)
+        # optimal:tuple[Point,Point,Point,Point] = (Point(0,0),Point(0,self.shape[1]),Point(self.shape[0],0),Point(self.shape[0],self.shape[1]))
+        
+        for intersect in intersects:
+            if(intersect.x < self.shape[1] / 2 and intersect.y < self.shape[0] / 2): # top-left
+                split[0].append(intersect)
+            elif(intersect.x >= self.shape[1] / 2 and intersect.y < self.shape[0] / 2): # top-right
+                split[1].append(intersect)
+            elif(intersect.x < self.shape[1] / 2 and intersect.y >= self.shape[0] / 2): # bottom-left
+                split[2].append(intersect)
+            elif(intersect.x >= self.shape[1] / 2 and intersect.y >= self.shape[0] / 2): # bottom-right
+                split[3].append(intersect)
+        
+        if(any(len(split[i]) == 0 for i in range(0,4))):
+            printLog("error","Kunne ikke finde alle hjørner", producer="findCorners")
+            return (None,None,None,None)
+        
+        x0 = float(np.median(np.array([p.x for p in split[0]])))
+        y0 = float(np.median(np.array([p.y for p in split[0]])))
+        
+        x1 = float(np.median(np.array([p.x for p in split[1]])))
+        y1 = float(np.median(np.array([p.y for p in split[1]])))
+        
+        x2 = float(np.median(np.array([p.x for p in split[2]])))
+        y2 = float(np.median(np.array([p.y for p in split[2]])))
+        
+        x3 = float(np.median(np.array([p.x for p in split[3]])))
+        y3 = float(np.median(np.array([p.y for p in split[3]])))
+        
+        corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (Point(x0,y0), Point(x1,y1), Point(x2,y2), Point(x3,y3))
+        
+        # distance = \
+        #     (math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2), distance[1], distance[2], distance[3]) if i == 0 else \
+        #     (distance[0], math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2), distance[2], distance[3]) if i == 1 else \
+        #     (distance[0], distance[1], math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2), distance[3]) if i == 2 else \
+        #     (distance[0], distance[1], distance[2], math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2))
+        # break
+        # dist = math.sqrt((intersect.x - optimal[i].x) ** 2 + (intersect.y - optimal[i].y) ** 2)
+        # if(corners[i] is None or distance[i] > dist):
+        #     distance = \
+        #         (dist, distance[1], distance[2], distance[3]) if i == 0 else \
+        #         (distance[0], dist, distance[2], distance[3]) if i == 1 else \
+        #         (distance[0], distance[1], dist, distance[3]) if i == 2 else \
+        #         (distance[0], distance[1], distance[2], dist)
+        #     corners = \
+        #         (intersect, corners[1], corners[2], corners[3]) if i == 0 else \
+        #         (corners[0], intersect, corners[2], corners[3]) if i == 1 else \
+        #         (corners[0], corners[1], intersect, corners[3]) if i == 2 else \
+        #         (corners[0], corners[1], corners[2], intersect)
+        #     break
+        
+        return corners
 
     def findCar(self, frame:np.ndarray) -> Tuple[List[Tuple[List[int | float],str]],Tuple[List[int | float],str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -325,7 +409,7 @@ class Camera:
                 veritcalLines.append(lines[i])
                 break
             a = abs(x1 - x2) / abs(y1 - y2)
-            if(a < -7 or a > 7):
+            if(a < -4 or a > 4):
                 veritcalLines.append(lines[i])
         
         rightLines = []
@@ -414,31 +498,31 @@ class Camera:
 
     def Test(self, useOldWall = False):
         if(useOldWall):
-            walls = self.walls
+            walls = self.generateWall(40)
         else:
             walls = self.generateWall(40)
         frame:Union[np.ndarray,None] = self.getFrame()
         if(frame is None): return
-        eggs = self.findEgg(np.copy(frame))
-        circles = self.findCircle(np.copy(frame))
-        __car = self.findCar(np.copy(frame))# type: ignore
-        car, front = __car if __car is not None else (None, None)
+        # eggs = self.findEgg(np.copy(frame))
+        # circles = self.findCircle(np.copy(frame))
+        # __car = self.findCar(np.copy(frame))# type: ignore
+        # car, front = __car if __car is not None else (None, None)
         goals = self.midpointWalls(self.shape[1], walls)# type: ignore
-        if(circles is None):
-            circles = []
-        if(eggs is None):
-            eggs = []
-        if(car is None):
-            car = []
-        if(walls is None):
-            walls = []
-        if(goals is None):
-            goals = []
-        if(front is None):
-            front = []
-        else:
-            front = [front]
-        self.displayWithDetails(frame, circles + eggs + car + front, walls, goals)# type: ignore
+        # if(circles is None):
+        #     circles = []
+        # if(eggs is None):
+        #     eggs = []
+        # if(car is None):
+        #     car = []
+        # if(walls is None):
+        #     walls = []
+        # if(goals is None):
+        #     goals = []
+        # if(front is None):
+        #     front = []
+        # else:
+        #     front = [front]
+        self.displayWithDetails(frame, lines=walls, goals=goals)# type: ignore
 
     def setDebug(self, debug:bool):
         self.debug = debug

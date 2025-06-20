@@ -87,6 +87,17 @@ class Wall:
     def _asLine(self) -> 'Line':
         """Converts the wall to a Line object"""
         return Line(self.start, self.end)
+    def intersect(self, other:'Wall') -> Point | bool:
+        """Checks if the wall intersects with any of the walls"""
+        a1,b1,c1 = self._asLine()._asFunction()
+        a2,b2,c2 = other._asLine()._asFunction()
+        
+        det = a1 * b2 - a2 * b1
+        if det == 0:
+            return c1 == c2  # lines are parallel or coincident
+        x = (b1 * c2 - b2 * c1) / det
+        y = (a2 * c1 - a1 * c2) / det
+        return Point(y, x)  # returns the intersection point if it exists
 
 class Line:
     """
@@ -109,35 +120,36 @@ class Line:
             if self._intersects(wall):
                 return True
         return False
-    def _intersects(self, wall:Wall) -> bool:
+    def _intersects(self, wall:Wall, extend:int = 0) -> bool:
         col:Point = Point(0, 0)
         func1 = self._asFunction()
         func2 = wall._asLine()._asFunction()
+        if(func1[0] * func2[1] - func2[0] * func1[1]) == 0:
+            return func1[2] == func2[2]  # lines are parallel or coincident
         col.y = (func1[1] * func2[2] - func2[1] * func1[2]) / (func1[0] * func2[1] - func2[0] * func1[1])
         col.x = (func1[2] * func2[0] - func2[2] * func1[0]) / (func1[0] * func2[1] - func2[0] * func1[1])
-        if col.y < min(self.start.y, self.end.y) or col.y > max(self.start.y, self.end.y):
+        if col.y < min(self.start.y, self.end.y) - extend or col.y > max(self.start.y, self.end.y) + extend:
             return False
-        if col.x < min(self.start.x, self.end.x) or col.x > max(self.start.x, self.end.x):
+        if col.x < min(self.start.x, self.end.x) - extend or col.x > max(self.start.x, self.end.x) + extend:
             return False
-        if col.y < min(wall.start.y, wall.end.y) or col.y > max(wall.start.y, wall.end.y):
+        if col.y < min(wall.start.y, wall.end.y) - extend or col.y > max(wall.start.y, wall.end.y) + extend:
             return False
-        if col.x < min(wall.start.x, wall.end.x) or col.x > max(wall.start.x, wall.end.x):
+        if col.x < min(wall.start.x, wall.end.x) - extend or col.x > max(wall.start.x, wall.end.x) + extend:
             return False
         return True  # returns True if the line intersects with the wall
     
-    def _asFunction(self) ->List[float]:
-        """Converts the line to a function of y = mx + b"""
-        out = []
+    def _asFunction(self) ->tuple[float,float,float]:
+        """Converts the line to a function of ax + by + c = 0"""
         if self.start.y < self.end.y:
             self.start, self.end = self.end, self.start
         if(self.start.y == self.end.y):
-            return [0,0,0]
+            return (0,0,0)
         
-        out.append(self.end.x - self.start.x)  # a
-        out.append(self.start.y - self.end.y)  # b
-        out.append(self.start.x * (self.end.y - self.start.y) - (self.end.x - self.start.x) * self.start.y)  # c
+        a = (self.end.x - self.start.x)  # a
+        b = (self.start.y - self.end.y)  # b
+        c = (self.start.x * (self.end.y - self.start.y) - (self.end.x - self.start.x) * self.start.y)  # c
         
-        return out  # returns [a, b, c] for the line equation ay + bx + c = 0
+        return (a,b,c)  # returns [a, b, c] for the line equation ay + bx + c = 0
     
     def Shift(self, offset:int, angle:Union[float,None] = None) -> List['Line']:
         """Shifts the line by a given offset in both directions"""
@@ -165,6 +177,7 @@ class Line:
     def move(self, point:Point) -> 'Line':
         """Moves the line by a given point"""
         return Line(self.start.move(point), self.end.move(point))
+    
     def negate(self) -> 'Line':
         """Negates the line by swapping the start and end points"""
         return Line(self.start.negate(), self.end.negate())
@@ -274,7 +287,6 @@ class Car:
     def validTarget(self, target:Point) -> bool:
         """Checks if the target point is valid (not at the same position as the triangle points)"""
         return self.getRotationCenter().distanceTo(target) > self.front.distanceTo(self.getRotationCenter())
-
 class Arc:
     """
         Arc class to represent an arc in the environment
