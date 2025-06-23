@@ -5,6 +5,7 @@ from image_recognition import Camera
 from classes import Point, Wall, Car, Movement, Rotation, deliver, Line, Arc
 from Log import printLog
 import math
+from typing import Callable, Optional
 
 def deltaRotation(newAngle:float, currentAngle:float) -> float:
     """Generates the rotation needed to turn the car to the new angle"""
@@ -151,6 +152,30 @@ class track:
                 if wall.distance_to(point) < robot_radius:
                     return True
         return False
+    
+    def find_detour_target(self, original_target: Point, car_front: Point, walls, is_path_clear_fn: Callable, robot_radius: float) -> Optional[Point]:
+        """Try offsetting the target in various directions to find a reachable detour point"""
+        offsets = [(-30, 0), (30, 0), (0, -30), (0, 30), (-30, -30), (30, 30), (-30, 30), (30, -30)]
+        for dx, dy in offsets:
+            detour = Point(original_target.x + dx, original_target.y + dy)
+            if is_path_clear_fn(car_front, detour, walls, robot_radius):
+                return detour
+        return None
+    
+    def find_safe_arc(self,car, angle_to_target: float, walls, arc_intersects_fn: Callable, robot_radius: float) -> float | None:
+        """Try nearby angles to find a safe turning arc around a wall"""
+        direction = car.getRotation()
+        center = car.getRotationCenter()
+        radius = car.radius
+
+        angle_offsets = [-0.5, 0.5, -1.0, 1.0]  # radians ~[-30°, 30°, -60°, 60°]
+        for offset in angle_offsets:
+            test_angle = angle_to_target + offset
+            arc = Arc(center=center, startAngle=direction, endAngle=test_angle, radius=radius)
+            if arc_intersects_fn(arc, walls, robot_radius):
+                continue
+            return test_angle
+        return None
 
 
     def generatepath(self, target:Point | None = None, checkTarget:bool = True) -> tuple[List[Movement | Rotation | deliver],Point |None]:
@@ -198,8 +223,14 @@ class track:
 
         arc = Arc(center=car_center, startAngle=direction, endAngle=angle_to_target, radius=car.radius)
         if self.arc_intersects_wall(arc, self.walls, robot_radius=car.radius):
-            printLog("DEBUG", "Blocked: arc hits wall", producer="pathGenerator")
-            return path, None
+            safe_angle = self.find_safe_arc(car, angle_to_target, self.walls, self.arc_intersects_wall, car.radius)
+            if safe_angle is None:
+                printLog("DEBUG", "No safe arc found", producer="pathGenerator")
+                return path, None
+            else:
+                printLog("DEBUG", f"Adjusted rotation angle to avoid wall: {safe_angle:.2f}", producer="pathGenerator")
+                angle_to_target = safe_angle
+                rotation_amount = deltaRotation(direction, safe_angle)
         
         if(abs(rotation_amount) > 0.1):
             path.append(Rotation(rotation_amount))
@@ -211,8 +242,14 @@ class track:
             distance = 35
 
         if not self.is_path_clear(car.front, target, self.walls, robot_radius=car.radius):
-            printLog("DEBUG", "Blocked: straight path hits wall", producer="pathGenerator")
-            return path, None
+            detour = self.find_detour_target(target, car.front, self.walls, self.is_path_clear, car.radius)
+            if detour:
+                printLog("DEBUG", "Using detour instead of blocked path", producer="pathGenerator")
+                target = detour
+            else:
+                printLog("DEBUG", "No valid detour found", producer="pathGenerator")
+                return path, None
+            
         path.append(Movement(distance))
         car.applySelf(path[-1])  # apply movement to simulate robot state
         
