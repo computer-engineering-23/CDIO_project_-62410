@@ -62,12 +62,18 @@ try:
             step = Movement(-10)
         else:
             if not hasBall:
-                path,target = robot_track.generatepath(target)
+                path, target = robot_track.generatepath(target)
             else:
-                if(ballFrames % 10 == 0):
-                    target = robot_track.goals[1]
-                ballFrames += 1
-                path,target = robot_track.generatepath(target,False)
+                goal = robot_track.goals[0]
+                distance_to_goal = robot_track.car.front.distanceTo(goal)
+
+                if distance_to_goal > 30:
+                    printLog("DELIVERY", f"Getting closer to goal ({distance_to_goal:.1f}px)", producer="client Loop")
+                    target = goal
+                    path, target = robot_track.generatepath(target, checkTarget=False)
+                else:
+                    printLog("DELIVERY", "Close enough to deliver", producer="client Loop")
+                    path = [deliver(0.2)]
             
             robot_track.Draw(frame,path,target)
             robot_track.cam.displayFrame(frame,"Track")

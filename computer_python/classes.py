@@ -84,10 +84,11 @@ class Rotation:
 
 class deliver(Movement):
     """
-        deliver class to represent a delivery action for the robot
+        deliver class to represent a delivery action for the robot.
+        Inherits from Movement and represents a forward push to deliver the ball.
     """
-    def __init__(self, distance:float):
-        self.distance:float = distance
+    def __init__(self, distance: float):
+        super().__init__(distance)
 
 class Wall:
     """
