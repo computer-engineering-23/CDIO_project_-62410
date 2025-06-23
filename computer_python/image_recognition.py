@@ -29,6 +29,50 @@ class Camera:
             return
         pass
 
+    def adjustWithSliders(self):
+        cv2.namedWindow('Adjustments', cv2.WINDOW_NORMAL)
+        cv2.resizeWindow('Adjustments', 600, 800)
+
+        # Define color names and trackbars for each
+        colors = ['Red', 'Green', 'Blue', 'Yellow', 'Cyan', 'Magenta']
+        for color in colors:
+            cv2.createTrackbar(f'{color}_H_low', 'Adjustments', 0, 179, lambda x: None)
+            cv2.createTrackbar(f'{color}_H_high', 'Adjustments', 179, 179, lambda x: None)
+            cv2.createTrackbar(f'{color}_S_low', 'Adjustments', 0, 255, lambda x: None)
+            cv2.createTrackbar(f'{color}_S_high', 'Adjustments', 255, 255, lambda x: None)
+            cv2.createTrackbar(f'{color}_V_low', 'Adjustments', 0, 255, lambda x: None)
+            cv2.createTrackbar(f'{color}_V_high', 'Adjustments', 255, 255, lambda x: None)
+
+        while True:
+            frame = self.getFrame()
+            if frame is None:
+                continue
+
+            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            combined_mask = np.zeros(hsv.shape[:2], dtype=np.uint8)
+
+            for color in colors:
+                h_low = cv2.getTrackbarPos(f'{color}_H_low', 'Adjustments')
+                h_high = cv2.getTrackbarPos(f'{color}_H_high', 'Adjustments')
+                s_low = cv2.getTrackbarPos(f'{color}_S_low', 'Adjustments')
+                s_high = cv2.getTrackbarPos(f'{color}_S_high', 'Adjustments')
+                v_low = cv2.getTrackbarPos(f'{color}_V_low', 'Adjustments')
+                v_high = cv2.getTrackbarPos(f'{color}_V_high', 'Adjustments')
+
+                lower = np.array([h_low, s_low, v_low])
+                upper = np.array([h_high, s_high, v_high])
+                mask = cv2.inRange(hsv, lower, upper)
+                combined_mask = cv2.bitwise_or(combined_mask, mask)
+
+            masked_result = cv2.bitwise_and(frame, frame, mask=combined_mask)
+            cv2.imshow('Adjustments', masked_result)
+
+            if cv2.waitKey(1) & 0xFF == 27:  # ESC to exit
+                break
+
+        cv2.destroyAllWindows()
+
+
     def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, name:Union[str,None] = None, debug:bool = False) -> None:
         if(debug == True and not self.debug):
             return
