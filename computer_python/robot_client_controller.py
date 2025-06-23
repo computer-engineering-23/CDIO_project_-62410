@@ -7,17 +7,20 @@ from image_recognition import Camera
 from Log import enableLog, printLog, closeLog, blockTag
 import math
 import traceback
+from playsound import playsound
 
 host = '0.0.0.0'  # Lyt på alle interfaces
 port = 12345      # Samme port som EV3-klienten bruger
 enableLog()
 printLog("INFO", "Logging enabled",producer="init Client")
 
+
 # Opret TCP-socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((host, port))
 server_socket.listen(1)
 
+playsound("ready.mp3",False)
 printLog("status",f"Venter på forbindelse på {host}:{port}...",producer="init Client")
 
 # Accepter forbindelse fra klient
@@ -63,13 +66,14 @@ try:
             if not hasBall:
                 path, target = robot_track.generatepath(target)
             else:
-                goal = robot_track.goals[1]
-                distance_to_goal = robot_track.car.front.distanceTo(goal)
+                if target is None:
+                    printLog("error", "missing target",producer="goal seek")
+                    continue
+                distance_to_goal = robot_track.car.front.distanceTo(target)
 
                 if distance_to_goal > 30:
                     printLog("DELIVERY", f"Getting closer to goal ({distance_to_goal:.1f}px)", producer="client Loop")
-                    target = goal
-                    path, target = robot_track.generatepath(target, checkTarget=False)
+                    path, target_ = robot_track.generatepath(target, checkTarget=False,)
                 else:
                     printLog("DELIVERY", "Close enough to deliver", producer="client Loop")
 
@@ -77,8 +81,8 @@ try:
                     direction = car.getRotation()
                     center = car.getRotationCenter()
                     
-                    dx = goal.x - center.x
-                    dy = goal.y - center.y
+                    dx = target.x - center.x
+                    dy = target.y - center.y
                     angle_to_goal = math.atan2(dy, dx)
 
                     rot = deltaRotation(direction, angle_to_goal)
