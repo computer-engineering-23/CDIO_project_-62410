@@ -132,6 +132,7 @@ class Camera:
         return __circles
 
     def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[tuple[Union[int,float],int | float,int | float,int | float]]]:
+        """a single iteration to find walls"""
         if(not noMask):
             hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             hueMid = 0
@@ -162,6 +163,8 @@ class Camera:
         return linesP
 
     def generateWall(self, frameNumber) ->List[List[tuple[int | float,int | float,int | float,int | float]]]:
+        """many iterations to find walls more acurately"""
+        
         rawWalls = []
         for i in range (frameNumber):
             current = self.getFrame()

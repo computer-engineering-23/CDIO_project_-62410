@@ -89,7 +89,7 @@ def timeFormat(tim:float) -> str:
   """
   Formats the time for printing.
   """
-  return f"{tim:.5f}"
+  return "{" + f"{tim:.5f}" + "}"
 
 def prettyPrint(tag:str,message:str,producer:str,current_time:float):
   """

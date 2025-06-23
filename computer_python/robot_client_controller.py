@@ -9,17 +9,9 @@ import math
 import cv2
 host = '0.0.0.0'  # Lyt på alle interfaces
 port = 12345      # Samme port som EV3-klienten bruger
-while(True):
-    doLog = input("enable log (y/n): ")
-    if(doLog == "y"):
-        enableLog()
-        blockTag("Raw_response")
-        printLog("INFO", "Logging enabled",producer="init Client")
-        break
-    elif(doLog == "n"):
-        printLog("Status","logging disabled",producer="init Client")
-        break
-    printLog("INFO","please only use y or n as inputs",producer="init Client")
+enableLog()
+blockTag("Raw_response")
+printLog("INFO", "Logging enabled",producer="init Client")
 
 # Opret TCP-socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -57,7 +49,7 @@ try:
             break
         robot_track.cam.displayFrame(frame,"success",False)
         
-        response = robot_track.update(walls=False, goals=True, targets=True, obsticles=False, car=True, frame=frame)
+        response = robot_track.update(walls=False, goals=False, targets=True, obsticles=False, car=True, frame=frame)
         
         if(response is None): 
             printLog("RETRY","no car",producer="client Loop")

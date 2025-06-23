@@ -17,7 +17,7 @@ def deltaRotation(newAngle:float, currentAngle:float) -> float:
 
 class track:
     def __init__(self, cam:Camera,
-            walls:Union[List[List[List[Union[int,float]]]],None] = None, 
+            walls:List[List[tuple[int | float, int | float, int | float, int | float]]] |None = None, 
             goals:Union[List[Tuple[int,int]],None] = None, 
             targets:Union[List[Tuple[List[int | float],str]],None] = None, 
             obsticles: Union[List[Tuple[List[int | float],str]],None] = None, 
@@ -38,24 +38,43 @@ class track:
         if(frame is None):
             frame = self.cam.getFrame()
         
+        corners = None
+        
         if(frame is None):
             printLog("error","No frame received from camera.",producer="update track")
             return
         
         if(walls):
-            self.walls = self.formatWalls(self.cam.generateWall(walls if type(walls) == int else 40))
+            printLog("DEBUG", "updating walls",producer="update track")
+            oldWallStyle = self.cam.generateWall(40 if type(walls) is bool else walls)
+            corners = self.cam.findCorners(oldWallStyle)
+            newWallStyle = self.cam.makeWalls(corners)
+            if(newWallStyle is not None and len(newWallStyle) > 0):
+                self.walls = newWallStyle
         
         if(goals):
-            self.goals = self.formatGoals(self.cam.midpointWalls(self.cam.shape[1], self.cam.walls))
+            if(corners is None or len(corners) == 0):
+                corners = self.cam.findCorners(self.cam.generateWall(40 if type(goals) is bool else goals))
+            goalsPoints = self.cam.makeGoals(corners)
+            if(goalsPoints is not None):
+                printLog("DEBUG", f"found {len(goalsPoints)} goals",producer="update track")
+                self.goals = [*goalsPoints]
+            else:
+                printLog("DEBUG", "no goals found",producer="update track")
+                self.goals = []
+                self.goals = self.formatGoals(self.cam.midpointWalls(self.cam.shape[1], self.cam.walls))
         
         if(targets):
+            printLog("DEBUG", "updating targets",producer="update track")
             detected = self.cam.findCircle(np.copy(frame))
             self.targets = self.formatTargets(detected) if detected else []
         
         if(obsticles is not None):
+            printLog("DEBUG", "updating obsticles",producer="update track")
             self.obsticles = self.formatObsticles(self.cam.findEgg(np.copy(frame)))
         
         if(car):
+            printLog("DEBUG", "updating car",producer="update track")
             tempCar:Tuple[List[Tuple[List[int | float], str]], Tuple[List[int | float], str]] | None = self.cam.findCar(frame)
             fails = 0
             while(tempCar is None or len(tempCar[0]) <= 2): 
@@ -68,11 +87,15 @@ class track:
                 if(fails == 5):
                     return None
             car_,front_ = tempCar
-            self.car = self.formatCar(car_, front_)
+            car__ = self.formatCar(car_, front_)
+            if(car__ is None or not car__.valid()):
+                printLog("DEBUG", "car is not valid",producer="update track")
+                return None
+            printLog("DEBUG", f"car updated with {len(self.car.triangle)} points",producer="update track")
         
         return 1
     
-    def formatWalls(self, walls:Union[List[List[List[int | float]]],None]) -> List[Wall]:
+    def formatWalls(self, walls:List[List[tuple[int | float, int | float, int | float, int | float]]] | None) -> List[Wall]:
         realWalls = []
         if(walls is None or len(walls) == 0):
             return []
