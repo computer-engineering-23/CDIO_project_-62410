@@ -289,6 +289,10 @@ class Car:
     def validTarget(self, target:Point) -> bool:
         """Checks if the target point is valid (not at the same position as the triangle points)"""
         return self.getRotationCenter().distanceTo(target) > self.front.distanceTo(self.getRotationCenter())
+    @property
+    def radius(self) -> float:
+        """Returns the turning radius of the car (from rotation center to front)"""
+        return Line(self.front, self.getRotationCenter()).length()
 class Arc:
     """
         Arc class to represent an arc in the environment
@@ -301,6 +305,7 @@ class Arc:
         self.start:float = startAngle
         self.end:float = endAngle
         self.radius:float = radius
+        self.angle = abs(endAngle - startAngle)
     def Intersects(self, walls:List[Wall]) -> bool:
         """Checks if the arc intersects with any of the walls"""
         for wall in walls:
@@ -319,6 +324,13 @@ class Arc:
                 self.center.x + self.radius * math.sin(self.end)    #x1
             )
         ]
+    def point_at(self, t: float) -> Point:
+        """Returns a point on the arc at angle offset `t` from the start angle"""
+        angle = self.start + t  # assumes counter-clockwise
+        return Point(
+            self.center.x + self.radius * math.cos(angle),
+            self.center.y + self.radius * math.sin(angle)
+        )
     
     def _intersects(self, wall:Wall) -> bool:
         """Checks if the arc intersects with a given wall"""

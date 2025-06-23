@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from typing import List, Tuple, Union
 from image_recognition import Camera
-from classes import Point, Wall, Car, Movement, Rotation, deliver
+from classes import Point, Wall, Car, Movement, Rotation, deliver, Line, Arc
 from Log import printLog
 import math
 
@@ -138,6 +138,20 @@ class track:
                 front_point = Point(front[0][1], front[0][0])
             return Car(triangle,front_point)
         return Car([Point(0,0),Point(0,1),Point(1,0)], Point(0, 0))  # Default car if no car is provided
+    
+    
+    def is_path_clear(self, start: Point, end: Point, walls: list, robot_radius: float = 0.0) -> bool:
+        path_line = Line(start, end)
+        return not path_line.intersects(walls)
+        
+    def arc_intersects_wall(self, arc: Arc, walls: list, robot_radius: float = 0.0) -> bool:
+        for t in np.linspace(0, arc.angle, num=50):
+            point = arc.point_at(t)
+            for wall in walls:
+                if wall.distance_to(point) < robot_radius:
+                    return True
+        return False
+
 
     def generatepath(self, target:Point | None = None, checkTarget:bool = True) -> tuple[List[Movement | Rotation | deliver],Point |None]:
         """Generates a path from the car to the closest target"""
@@ -181,6 +195,12 @@ class track:
         angle_to_target = math.atan2(dy, dx)
         # Compute required rotation
         rotation_amount = deltaRotation(direction, angle_to_target)
+
+        arc = Arc(center=car_center, startAngle=direction, endAngle=angle_to_target, radius=car.radius)
+        if self.arc_intersects_wall(arc, self.walls, robot_radius=car.radius):
+            printLog("DEBUG", "Blocked: arc hits wall", producer="pathGenerator")
+            return path, None
+        
         if(abs(rotation_amount) > 0.1):
             path.append(Rotation(rotation_amount))
             car.applySelf(path[-1])  # apply rotation to simulate robot state
@@ -189,6 +209,10 @@ class track:
         distance = car.front.distanceTo(target)
         if(distance < 15):
             distance = 35
+
+        if not self.is_path_clear(car.front, target, self.walls, robot_radius=car.radius):
+            printLog("DEBUG", "Blocked: straight path hits wall", producer="pathGenerator")
+            return path, None
         path.append(Movement(distance))
         car.applySelf(path[-1])  # apply movement to simulate robot state
         
