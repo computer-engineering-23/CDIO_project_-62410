@@ -88,6 +88,7 @@ try:
                         printLog("DELIVERY", f"Rotating towards goal: {rot:.2f} rad", producer="client Loop")
                         path.append(Rotation(rot))
                         car.applySelf(path[-1])
+                        
 
                     # After rotating, add the delivery command
                     path.append(deliver(0.2))

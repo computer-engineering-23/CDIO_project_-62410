@@ -149,12 +149,6 @@ class track:
         
     def arc_intersects_wall(self, arc: Arc, walls: list[Wall], robot_radius: float = 0.0) -> bool:
         return arc.Intersects(walls)
-        for t in np.linspace(0, arc.angle, num=50):
-            point = arc.point_at(t)
-            for wall in walls:
-                if wall.distance_to(point) < robot_radius:
-                    return True
-        return False
     
     def find_detour_target(self, original_target: Point, car_front: Point, walls, is_path_clear_fn: Callable, robot_radius: float) -> Optional[Point]:
         """Try points in circles around the target to find a reachable detour point"""
