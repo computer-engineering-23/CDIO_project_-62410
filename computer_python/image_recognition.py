@@ -23,24 +23,24 @@ class Camera:
 
         self.hsv_thresholds = {
         'Ball_Orange': {
-            'low': np.array([0, 30, 100]),
+            'low': np.array([11, 111, 186]),
             'high': np.array([30, 255, 255])
         },
         'Ball_White': {
-            'low': np.array([0, 0, 0]),
-            'high': np.array([180, 35, 255])
+            'low': np.array([0, 0, 208]),
+            'high': np.array([180, 38, 255])
         },
         'Egg': {
-            'low': np.array([0, 0, 0]),
-            'high': np.array([180, 35, 255])
+            'low': np.array([0, 0, 208]),
+            'high': np.array([180, 38, 255])
         },
         'Wall': {
-            'low': np.array([145, 30, 60]),  # red range
-            'high': np.array([10, 200, 200])
+            'low': np.array([13, 139, 158]),  # red range
+            'high': np.array([173, 243, 255])
         },
         'Car': {
-            'low': np.array([58, 30, 30]),   # green range
-            'high': np.array([83, 255, 255])
+            'low': np.array([62, 115, 94]),   # green range
+            'high': np.array([100, 228, 143])
         }
 }
     
@@ -81,14 +81,28 @@ class Camera:
                 v_low = cv2.getTrackbarPos('V low', name)
                 v_high = cv2.getTrackbarPos('V high', name)
 
+                
                 # Update the live threshold values
                 self.hsv_thresholds[name]['low'] = np.array([h_low, s_low, v_low])
                 self.hsv_thresholds[name]['high'] = np.array([h_high, s_high, v_high])
 
-                # Generate and show the mask
-                lower = self.hsv_thresholds[name]['low']
-                upper = self.hsv_thresholds[name]['high']
-                mask = cv2.inRange(hsv, lower, upper)
+                if name is "Wall":
+                    lower = self.hsv_thresholds[name]['low']
+                    upper = self.hsv_thresholds[name]['high']
+                    low_hue = lower[0]
+                    high_hue = upper[0]
+                    
+                    low_std = lower[1:3]
+                    high_std = upper[1:3]
+                    
+                    low_ = cv2.inRange(hsv, np.array([0,*low_std]), np.array([low_hue,*high_std]))
+                    high_= cv2.inRange(hsv, np.array([high_hue,*low_std]), np.array([180,*high_std]))
+                    mask = cv2.bitwise_or(low_, high_)
+                else:
+                    # Generate and show the mask
+                    lower = self.hsv_thresholds[name]['low']
+                    upper = self.hsv_thresholds[name]['high']
+                    mask = cv2.inRange(hsv, lower, upper)
                 result = cv2.bitwise_and(frame, frame, mask=mask)
                 cv2.imshow(name, result)
 
@@ -243,8 +257,21 @@ class Camera:
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             low = self.hsv_thresholds['Wall']['low']
             high = self.hsv_thresholds['Wall']['high']
-
-            mask = cv2.inRange(hsv, low, high)
+            
+            low_hue = low[0]
+            high_hue = high[0]
+            
+            low_std = low[1:3]
+            high_std = high[1:3]
+            
+            low_ = cv2.inRange(hsv, np.array([0,*low_std]), np.array([low_hue,*high_std]))
+            high_= cv2.inRange(hsv, np.array([high_hue,*low_std]), np.array([180,*high_std]))
+            
+            # low_hue = cv2.inRange(hsv, low, np.array([180,*high[2:4]]))
+            # high_hue = cv2.inRange(hsv, np.array([0,*low[2:4]]), high)
+            
+            mask = cv2.bitwise_or(low_, high_)
+            # mask = cv2.inRange(hsv, low, high)
             masked = cv2.bitwise_and(frame, frame, mask=mask)
             masked_gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
 
@@ -527,19 +554,29 @@ class Camera:
         return goals
 
     def Test(self, generateWalls = False):
+        self.debug = True
         if(generateWalls):
             self.walls = self.generateWall(40)
         else:
-            if(self.walls is None or len(self.walls) == 0):
-                self.walls = self.generateWall(40)
-        self.corners = self.findCorners(self.walls)
-        goals:tuple[Point, Point] | None = self.makeGoals(self.corners)
+            pass
         frame:Union[np.ndarray,None] = self.getFrame()
         if(frame is None): return
+
+        balls = self.findCircle(frame)
+        eggs = self.findEgg(frame)
+        car = self.findCar(frame)
+        if balls is None:
+            balls = []
+        if eggs is None:
+            eggs = []
+        if car is None:
+            car = ([], None)
+        self.corners = self.findCorners(self.walls)
+        goals:tuple[Point, Point] | None = self.makeGoals(self.corners)
         walls:list[Wall]|None = self.makeWalls(self.corners)
         if walls is None or len(walls) == 0: walls = []
         lines:list[Line] = [wall._asLine() for wall in walls]
-        self.displayWithDetails(frame, lines=lines, goals=goals)
+        self.displayWithDetails(frame,circles=balls+eggs, lines=lines, goals=goals, name="detection", debug=True)
 
     def setDebug(self, debug:bool):
         self.debug = debug
