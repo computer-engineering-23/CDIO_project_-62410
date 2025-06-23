@@ -11,7 +11,6 @@ import traceback
 host = '0.0.0.0'  # Lyt på alle interfaces
 port = 12345      # Samme port som EV3-klienten bruger
 enableLog()
-blockTag("Raw_response")
 printLog("INFO", "Logging enabled",producer="init Client")
 
 # Opret TCP-socket
@@ -64,7 +63,7 @@ try:
             if not hasBall:
                 path, target = robot_track.generatepath(target)
             else:
-                goal = robot_track.goals[0]
+                goal = robot_track.goals[1]
                 distance_to_goal = robot_track.car.front.distanceTo(goal)
 
                 if distance_to_goal > 30:
@@ -120,7 +119,7 @@ try:
         elif response == "OK ball caught":
             robot_track.update(goals=True)
             robot_track.update(walls=True, goals=True, targets=False, obsticles=False, car=False, frame=frame)
-            target = robot_track.goals[0].move(Point(0, -50))
+            target = robot_track.goals[1].move(Point(-50, 0))
             hasBall = True
             ballFrames = 0
             time.sleep(2.3)

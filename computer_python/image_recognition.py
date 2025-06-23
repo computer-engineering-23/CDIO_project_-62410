@@ -40,7 +40,7 @@ class Camera:
         },
         'Car': {
             'low': np.array([62, 115, 94]),   # green range
-            'high': np.array([100, 228, 143])
+            'high': np.array([100, 228, 164])
         }
 }
     

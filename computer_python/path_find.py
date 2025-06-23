@@ -299,8 +299,8 @@ class track:
         for goal in self.goals:
             cv2.circle(frame, (int(goal.x), int(goal.y)), 5, (255, 0, 0), -1)
         
-        for target in self.targets:
-            cv2.circle(frame, (int(target.x), int(target.y)), 5, (0, 255, 0), -1)
+        for target_ in self.targets:
+            cv2.circle(frame, (int(target_.x), int(target_.y)), 5, (0, 255, 0), -1)
         
         for obsticle in self.obsticles:
             cv2.circle(frame, (int(obsticle.x), int(obsticle.y)), 5, (0, 255, 255), -1)
@@ -311,9 +311,9 @@ class track:
 
 # Compute path once
         if(path is None):
-            path,target = self.generatepath()
+            path,target_ = self.generatepath()
         if(target is None):
-            target = Point(0,0)
+            target = Point(0, 0)
 # Draw the path step-by-step
         for step in path:
             prev_front = car.front.copy()
