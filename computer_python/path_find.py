@@ -227,8 +227,14 @@ class track:
         if arc.Intersects(self.walls):
             safe_angle = self.find_safe_arc(car, angle_to_target, self.walls)
             if safe_angle is None:
-                printLog("DEBUG", "No safe arc found", producer="pathGenerator")
-                return path, None
+                # Last chance: try to find detour
+                detour = self.find_detour_target(target, car.front, self.walls, self.is_path_clear, car.radius)
+                if detour:
+                    printLog("DEBUG", f"Detouring around arc-blocked wall to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
+                    return self.generatepath(target=detour, checkTarget=False)  # recursively call to generate path to detour
+                else:
+                    printLog("DEBUG", "No valid detour found after arc failed", producer="pathGenerator")
+                    return path, None
             else:
                 printLog("DEBUG", f"Adjusted rotation angle to avoid wall: {safe_angle:.2f}", producer="pathGenerator")
                 angle_to_target = safe_angle
