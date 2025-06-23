@@ -20,6 +20,29 @@ class Camera:
             exit(1)
         self.shape:Tuple[int,...] = np.shape(initial_frame)
         self.corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (None,None,None,None)
+
+        self.hsv_thresholds = {
+        'Ball_Orange': {
+            'low': np.array([0, 30, 100]),
+            'high': np.array([30, 255, 255])
+        },
+        'Ball_White': {
+            'low': np.array([0, 0, 0]),
+            'high': np.array([180, 35, 255])
+        },
+        'Egg': {
+            'low': np.array([0, 0, 0]),
+            'high': np.array([180, 35, 255])
+        },
+        'Wall': {
+            'low': np.array([145, 30, 60]),  # red range
+            'high': np.array([10, 200, 200])
+        },
+        'Car': {
+            'low': np.array([58, 30, 30]),   # green range
+            'high': np.array([83, 255, 255])
+        }
+}
     
     def displayFrame(self,frame:np.ndarray,name:str = "detection window", debug:bool = False):
         if(debug == True and not self.debug):
@@ -29,19 +52,20 @@ class Camera:
             return
     
     def adjustWithSliders(self):
-        cv2.namedWindow('Ball')
-        cv2.namedWindow('Egg')
-        cv2.namedWindow('Wall')
-        cv2.namedWindow('Car')
-        
-        # Create HSV sliders for each object
-        for window in ['Ball', 'Egg', 'Wall', 'Car']:
-            cv2.createTrackbar('H low', window, 0, 179, lambda x: None)
-            cv2.createTrackbar('H high', window, 179, 179, lambda x: None)
-            cv2.createTrackbar('S low', window, 0, 255, lambda x: None)
-            cv2.createTrackbar('S high', window, 255, 255, lambda x: None)
-            cv2.createTrackbar('V low', window, 0, 255, lambda x: None)
-            cv2.createTrackbar('V high', window, 255, 255, lambda x: None)
+        object_names = ['Ball_Orange', 'Ball_White', 'Egg', 'Wall', 'Car']
+
+        for name in object_names:
+            cv2.namedWindow(name)
+
+            # Initialize trackbars with defaults from self.hsv_thresholds
+            low = self.hsv_thresholds[name]['low']
+            high = self.hsv_thresholds[name]['high']
+            cv2.createTrackbar('H low', name, low[0], 179, lambda x: None)
+            cv2.createTrackbar('H high', name, high[0], 179, lambda x: None)
+            cv2.createTrackbar('S low', name, low[1], 255, lambda x: None)
+            cv2.createTrackbar('S high', name, high[1], 255, lambda x: None)
+            cv2.createTrackbar('V low', name, low[2], 255, lambda x: None)
+            cv2.createTrackbar('V high', name, high[2], 255, lambda x: None)
 
         while True:
             frame = self.getFrame()
@@ -49,25 +73,30 @@ class Camera:
                 continue
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-            masks = {}
-            for window in ['Ball', 'Egg', 'Wall', 'Car']:
-                h_low = cv2.getTrackbarPos('H low', window)
-                h_high = cv2.getTrackbarPos('H high', window)
-                s_low = cv2.getTrackbarPos('S low', window)
-                s_high = cv2.getTrackbarPos('S high', window)
-                v_low = cv2.getTrackbarPos('V low', window)
-                v_high = cv2.getTrackbarPos('V high', window)
-                lower = np.array([h_low, s_low, v_low])
-                upper = np.array([h_high, s_high, v_high])
+            for name in object_names:
+                h_low = cv2.getTrackbarPos('H low', name)
+                h_high = cv2.getTrackbarPos('H high', name)
+                s_low = cv2.getTrackbarPos('S low', name)
+                s_high = cv2.getTrackbarPos('S high', name)
+                v_low = cv2.getTrackbarPos('V low', name)
+                v_high = cv2.getTrackbarPos('V high', name)
+
+                # Update the live threshold values
+                self.hsv_thresholds[name]['low'] = np.array([h_low, s_low, v_low])
+                self.hsv_thresholds[name]['high'] = np.array([h_high, s_high, v_high])
+
+                # Generate and show the mask
+                lower = self.hsv_thresholds[name]['low']
+                upper = self.hsv_thresholds[name]['high']
                 mask = cv2.inRange(hsv, lower, upper)
                 result = cv2.bitwise_and(frame, frame, mask=mask)
-                cv2.imshow(window, result)
-                masks[window] = mask
+                cv2.imshow(name, result)
 
-            if cv2.waitKey(1) & 0xFF == 27:  # ESC key
+            if cv2.waitKey(1) & 0xFF == 27:
                 break
 
         cv2.destroyAllWindows()
+
 
     def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, name:Union[str,None] = None, debug:bool = False) -> None:
         if(debug == True and not self.debug):
@@ -119,42 +148,70 @@ class Camera:
         self.shape = np.shape(frame)
         return frame
     
-    def findCircle(self,frame:np.ndarray) -> Union[List[Tuple[List[Union[int,float]],str]],None]:
+    def findCircle(self, frame: np.ndarray) -> Union[List[Tuple[List[Union[int, float]], str]], None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        # Hvid farveområde (HSV)
-        lower_white = np.array([0, 0, 165])
-        upper_white = np.array([180, 35, 255])
-        mask_white = cv2.inRange(hsv, lower_white, upper_white)
-        masked = cv2.bitwise_and(frame, frame, mask=mask_white)
+
+        # Get current HSV thresholds for orange and white balls
+        low_orange = self.hsv_thresholds['Ball_Orange']['low']
+        high_orange = self.hsv_thresholds['Ball_Orange']['high']
+        low_white = self.hsv_thresholds['Ball_White']['low']
+        high_white = self.hsv_thresholds['Ball_White']['high']
+
+        # Create masks
+        mask_orange = cv2.inRange(hsv, low_orange, high_orange)
+        mask_white = cv2.inRange(hsv, low_white, high_white)
+
+        # Combine both masks
+        mask = cv2.bitwise_or(mask_orange, mask_white)
+        masked = cv2.bitwise_and(frame, frame, mask=mask)
+
         self.displayFrame(masked, "masked circle", debug=True)
+
+        # Convert to grayscale and blur
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(mask_white, (15, 15), 0)
-        self.displayFrame(gray, "brur circle", debug=False)
+        gray = cv2.GaussianBlur(gray, (11, 11), 0)
+
+        # Detect circles
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
             dp=1,
             minDist=1,
             param1=50,
-            param2=14,
-            minRadius=5,
-            maxRadius=8
+            param2=15,
+            minRadius=3,
+            maxRadius=7
         )
-        if(__circles is not None):
-            circles:List[List[List[Union[int,float]]]] = __circles.tolist()
-            names = ["ball"]*len(circles[0])
-            return [*zip(circles[0],names)]
-        return __circles
+
+        if __circles is not None and len(__circles) > 0:
+            circle_data = __circles[0]
+            if isinstance(circle_data, np.ndarray):
+                circle_list = circle_data.tolist()
+            else:
+                circle_list = circle_data
+
+            if isinstance(circle_list[0], list) and len(circle_list[0]) == 3:
+                names = ["ball"] * len(circle_list)
+                return list(zip(circle_list, names))
+
+        return None
+
+
     
-    def findEgg(self, frame:np.ndarray) -> Union[List[Tuple[List[int | float], str]],None]:
+    def findEgg(self, frame: np.ndarray) -> Union[List[Tuple[List[int | float], str]], None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        lower_white = np.array([0, 0, 0])
-        upper_white = np.array([180, 35, 255])
-        mask_white = cv2.inRange(hsv, lower_white, upper_white)
+
+        # Get white range from sliders
+        low = self.hsv_thresholds['Egg']['low']
+        high = self.hsv_thresholds['Egg']['high']
+
+        mask_white = cv2.inRange(hsv, low, high)
         masked = cv2.bitwise_and(frame, frame, mask=mask_white)
         self.displayFrame(masked, "masked egg", debug=True)
+
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
+
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
@@ -165,42 +222,49 @@ class Camera:
             minRadius=12,
             maxRadius=15
         )
-        if(__circles is not None):
-            circles = __circles.tolist()
-            names = ["eggs"]*len(circles[0])
-            return [*zip(circles[0],names)]
-        return __circles
 
-    def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[tuple[Union[int,float],int | float,int | float,int | float]]]:
-        """a single iteration to find walls"""
-        if(not noMask):
-            hueMid = 0
-            hueWidth = 15
-            minSaturation = 100
-            maxSaturation = 255
-            minBrightness = 150
-            maxBrightness = 255
-            hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            hue0 = hueMid - hueWidth if hueMid - hueWidth >= 0 else (hueMid - hueWidth + 180)
-            hue1 = (hueMid + hueWidth) % 180
-            lower_red0 = np.array([hue0, minSaturation, minBrightness])
-            upper_red0 = np.array([180 , maxSaturation, maxBrightness])
-            lower_red1 = np.array([0   , minSaturation, minBrightness])
-            upper_red1 = np.array([hue1, maxSaturation, maxBrightness])
-            mask0:np.ndarray = cv2.inRange(hsv, lower_red0, upper_red0)
-            mask1:np.ndarray = cv2.inRange(hsv, lower_red1, upper_red1)
-            mask:np.ndarray = cv2.bitwise_or(mask0,mask1)
-            masked:np.ndarray = cv2.bitwise_and(frame, frame, mask=mask)
-            masked:np.ndarray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-            edges = masked
-            self.displayFrame(masked, "walls masked", debug = True)
-            self.displayFrame(edges, "walls edges", debug = True)
+        if __circles is not None and len(__circles) > 0:
+            circle_data = __circles[0]
+            if isinstance(circle_data, np.ndarray):
+                circle_list = circle_data.tolist()
+            else:
+                circle_list = circle_data
+
+            if isinstance(circle_list[0], list) and len(circle_list[0]) == 3:
+                names = ["eggs"] * len(circle_list)
+                return list(zip(circle_list, names))
+
+        return None
+
+
+
+    def findWall(self, frame: np.ndarray, noMask: bool = False) -> List[List[tuple[int | float, int | float, int | float, int | float]]]:
+        if not noMask:
+            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            low = self.hsv_thresholds['Wall']['low']
+            high = self.hsv_thresholds['Wall']['high']
+
+            mask = cv2.inRange(hsv, low, high)
+            masked = cv2.bitwise_and(frame, frame, mask=mask)
+            masked_gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
+
+            self.displayFrame(masked, "walls masked", debug=True)
+            self.displayFrame(masked_gray, "walls edges", debug=True)
+
+            edges = masked_gray
         else:
-            edges:np.ndarray = frame
-            edges:np.ndarray = cv2.cvtColor(edges, cv2.COLOR_BGR2GRAY)
-        linesP:List[List[tuple[Union[int,float],int | float,int | float,int | float]]] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5).tolist()
-        self.walls = linesP
-        return linesP
+            edges = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        linesP: Union[np.ndarray, None] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5)
+
+        # Pylance-safe assignment
+        wall_lines: List[List[tuple[int | float, int | float, int | float, int | float]]] = linesP.tolist() if linesP is not None else []
+
+        self.walls = wall_lines
+        return wall_lines
+
+
+
 
     def generateWall(self, frameNumber) ->List[List[tuple[int | float,int | float,int | float,int | float]]]:
         """many iterations to find walls more acurately"""
@@ -290,20 +354,19 @@ class Camera:
         self.corners = corners
         return corners
 
-    def findCar(self, frame:np.ndarray) -> Tuple[List[Tuple[List[int | float],str]],Tuple[List[int | float],str]] | None:
+    def findCar(self, frame: np.ndarray) -> Tuple[List[Tuple[List[int | float], str]], Tuple[List[int | float], str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        huemiddle = 150//2
-        satmiddle = 60
-        brightmiddle = 60
-        hueWidth = 20
-        satWidth = 60
-        brightWidth = 15
-        lower_green = np.array([max(huemiddle - hueWidth,0), 20, 20])
-        upper_green = np.array([min(huemiddle + hueWidth,360), 255, 255])
-        mask_green = cv2.inRange(hsv, lower_green, upper_green)
+        low = self.hsv_thresholds['Car']['low']
+        high = self.hsv_thresholds['Car']['high']
+        mask_green = cv2.inRange(hsv, low, high)
+
         gray = cv2.GaussianBlur(mask_green, (15, 15), 0)
         gray = cv2.inRange(gray, np.array([20]), np.array([255]))
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
+
+        self.displayFrame(mask_green, "car mask", debug=True)
+        self.displayFrame(gray, "car blur", debug=True)
+
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
@@ -314,58 +377,47 @@ class Camera:
             minRadius=2,
             maxRadius=10
         )
-        self.displayFrame(mask_green,"car mask", debug=True)
-        self.displayFrame(gray, "car blur", debug=True)
-        closest:Union[Tuple[int,int], None] = None
-        distance = 1000000
-        front: Union[List[Union[int, float]],None] = None
-        if(__circles is not None):
-            circles:List[List[List[Union[int,float]]]] = __circles.tolist()
-            while(len(circles[0]) > 4):
-                furtherstDist = 0
-                furthestID = -1
-                for i in range (0, len(circles[0])):
-                    dist = 0
-                    for j in range (0, len(circles[0])):
-                        if(i == j):
+
+        closest = None
+        front = None
+        if __circles is not None and len(__circles) > 0:
+            circle_data = __circles[0]
+            if isinstance(circle_data, np.ndarray):
+                circle_list = circle_data.tolist()
+            else:
+                circle_list = circle_data
+
+            if isinstance(circle_list, list) and isinstance(circle_list[0], list):
+                while len(circle_list) > 4:
+                    i_to_remove = max(range(len(circle_list)), key=lambda i: sum(
+                        math.dist(circle_list[i], circle_list[j]) for j in range(len(circle_list)) if i != j
+                    ))
+                    circle_list.pop(i_to_remove)
+
+                for i in range(len(circle_list)):
+                    for j in range(len(circle_list)):
+                        if i == j:
                             continue
-                        dist += math.sqrt((circles[0][i][0] - circles[0][j][0]) ** 2 + (circles[0][i][1] - circles[0][j][1]) ** 2)
-                    if(dist > furtherstDist):
-                        furtherstDist = dist
-                        furthestID = i
-                circles[0].remove(circles[0][furthestID])
-            for i in range (0, len(circles[0])):
-                for j in range (0, len(circles[0])):
-                    if(i == j):
-                        continue
-                    (x0, y0, r) = circles[0][i]
-                    (x1, y1, r) = circles[0][j]
-                    currentDistance = math.sqrt((x0 - x1) ** 2 + (y0 - y1) ** 2)
-                    if(currentDistance < distance):
-                        distance = currentDistance
-                        closest = (i,j)
-            if(closest is not None):
-                front = [
-                    (circles[0][closest[0]][0] + circles[0][closest[1]][0]) // 2,
-                    (circles[0][closest[0]][1] + circles[0][closest[1]][1]) // 2,
-                    5
-                ]
-                circles[0].remove(circles[0][closest[1]])
-                circles[0].remove(circles[0][closest[0]])
-                circles[0].append(front)
-            if(len(circles[0]) > 1):
-                lines:List[Line] = []
-                for i in range (0,len(circles[0])):
-                    (x0, y0, r) = circles[0][i]
-                    (x1, y1, r) = circles[0][(i+1) % len(circles[0])]
-                    lines.append(Line(Point(x0, y0), Point(x1, y1)))
-                self.displayWithDetails(frame, lines= lines, name="car", debug=True)
-            names = ["car"]*len(circles[0])
-            circles_ = [*zip(circles[0],names)]
-            if(front is not None):
-                return (circles_, (front, "front"))
-        else:
-            return None
+                        d = math.dist(circle_list[i][:2], circle_list[j][:2])
+                        if closest is None or d < math.dist(circle_list[closest[0]][:2], circle_list[closest[1]][:2]):
+                            closest = (i, j)
+
+                if closest:
+                    x = (circle_list[closest[0]][0] + circle_list[closest[1]][0]) // 2
+                    y = (circle_list[closest[0]][1] + circle_list[closest[1]][1]) // 2
+                    front = [x, y, 5]
+                    for idx in sorted(closest, reverse=True):
+                        circle_list.pop(idx)
+                    circle_list.append(front)
+
+                names = ["car"] * len(circle_list)
+                results = list(zip(circle_list, names))
+                if front:
+                    return results, (front, "front")
+
+        return None
+
+
 
     def close(self):
         self.capture.release()
