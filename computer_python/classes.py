@@ -368,50 +368,65 @@ class Arc:
             self.center.y + self.radius * math.sin(angle)
         )
     
-    def _intersects(self, wall:Wall) -> bool:
-        """Checks if the arc intersects with a given wall"""
-        # Calculate the distance from the center of the arc to the line segment defined by the wall
+    def _intersects(self, wall: Wall) -> bool:
+        """Checks if the arc intersects with a given wall."""
+
+        def angle_in_arc(angle, start, end):
+            """Checks if a given angle is within the arc's angular span."""
+            def norm(a): return a % (2 * math.pi)
+            angle = norm(angle)
+            start = norm(start)
+            end = norm(end)
+
+            if start < end:
+                return start <= angle <= end
+            else:
+                return angle >= start or angle <= end
+
+        # Convert the wall to a line
         line = wall._asLine()
-        
-        polarradius = math.sqrt((line.start.y - self.center.y) ** 2 + (line.start.x - self.center.x) ** 2)
-        if (line.angle() >= self.start and line.angle() <= self.end and polarradius < self.radius):
-            return True  # returns True if the start is within the arc
-        
-        polarradius = math.sqrt((line.end.y - self.center.y) ** 2 + (line.end.x - self.center.x) ** 2)
-        if (line.angle() >= self.start and line.angle() <= self.end and polarradius < self.radius):
-            return True  # returns True if the end is within the arc
-        #chack if the arc's radius intersects with the wall
-        arcPoints = self.points()
-        arcLines = [Line(arcPoints[0], self.center), Line(arcPoints[1], self.center)]
-        for arcLine in arcLines:
-            if arcLine._intersects(wall):
+
+        # 1. Check if wall endpoints are inside the arc’s circle and within arc angle
+        for point in [line.start, line.end]:
+            dx = point.x - self.center.x
+            dy = point.y - self.center.y
+            dist = math.sqrt(dx**2 + dy**2)
+            angle = math.atan2(dy, dx)
+
+            if dist <= self.radius and angle_in_arc(angle, self.start, self.end):
                 return True
-        
-        # Check if the line segment intersects with the arc
-        line = line.move(self.center.negate())  # move the line to the origin
-        
-        deltay = line.end.y - line.start.y
-        deltax = line.end.x - line.start.x
-        deltaR = math.sqrt(deltay ** 2 + deltax ** 2)
-        delta = line.start.y * line.end.x - line.end.y * line.start.x
-        
-        # Check if the line segment intersects with the arc
-        discriminant = self.radius ** 2 * deltaR ** 2 - delta ** 2
-        
+
+        # 2. Check if the wall intersects the arc’s circle
+        # Translate the wall line to the arc’s local space
+        local_start = Point(line.start.x - self.center.x, line.start.y - self.center.y)
+        local_end = Point(line.end.x - self.center.x, line.end.y - self.center.y)
+
+        dx = local_end.x - local_start.x
+        dy = local_end.y - local_start.y
+        dr2 = dx**2 + dy**2
+        D = local_start.x * local_end.y - local_end.x * local_start.y
+        discriminant = self.radius**2 * dr2 - D**2
+
         if discriminant < 0:
-            return False
-        
-        # Calculate the intersection points
-        y0 = (delta * deltax + sgn(deltax) * deltay * math.sqrt(discriminant))/(deltaR ** 2)
-        x0 = (-delta * deltay + abs(deltax) * math.sqrt(discriminant))/(deltaR ** 2)
-        y1 = (delta * deltax - sgn(deltax) * deltay * math.sqrt(discriminant))/(deltaR ** 2)
-        x1 = (-delta * deltay - abs(deltax) * math.sqrt(discriminant))/(deltaR ** 2)
-        
-        intersections = [Point(y0, x0).move(self.center), Point(y1, x1).move(self.center)]
-        for intersection in intersections:
-            # Check if the intersection point is within the arc's angle range
-            angle = math.atan2(intersection.x - self.center.x, intersection.y - self.center.y)
-            if self.start <= angle <= self.end:
-                return True
-        
+            return False  # no intersection with circle
+
+        sqrt_disc = math.sqrt(discriminant)
+        sign_dy = 1 if dy >= 0 else -1
+
+        # 3. Compute the intersection points
+        for sign in [+1, -1]:
+            x = (D * dy + sign * sign_dy * dx * sqrt_disc) / dr2
+            y = (-D * dx + sign * abs(dy) * sqrt_disc) / dr2
+            world_x = x + self.center.x
+            world_y = y + self.center.y
+            intersection = Point(world_x, world_y)
+
+            angle = math.atan2(intersection.y - self.center.y, intersection.x - self.center.x)
+
+            # Check if intersection is within the arc's angle
+            if angle_in_arc(angle, self.start, self.end):
+                # Also check if the point lies within the wall segment
+                if wall._asLine().contains(intersection):
+                    return True
+
         return False
