@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from typing import List, Tuple, Union
 import math
-from classes import Point, Wall, Line
+from classes import Point, Wall, Line, polygonArea
 from Log import printLog
 
 # Start kameraet
@@ -183,19 +183,10 @@ class Camera:
         self.corners = self.findCorners(self.walls)
         return self.walls
 
-    def polygonArea(self, corners:list[Point]) -> float:
-        area = 0.0
-        for i in range(len(corners)):
-            j = (i + 1) % len(corners)
-            area += corners[i].x * corners[j].y
-            area -= corners[j].x * corners[i].y
-        area = abs(area) / 2.0
-        return area
-
     def findCorners(self,walls:List[List[tuple[Union[int,float],int | float,int | float,int | float]]]) -> tuple[Point|None,Point|None,Point|None,Point|None]:
         old = self.corners
         if(not any (corner is None for corner in self.corners)):
-            oldArea = self.polygonArea([c for c in old if c is not None])
+            oldArea = polygonArea([c for c in old if c is not None])
         else:
             oldArea = -1
         
@@ -241,7 +232,7 @@ class Camera:
                 printLog("error","Kunne ikke finde hjørner, et eller flere hjørner er None", producer="findCorners")
                 return old
         
-        newArea = self.polygonArea([c for c in corners if c is not None])
+        newArea = polygonArea([c for c in corners if c is not None])
         if(oldArea != -1 and (newArea < oldArea * (1 - margin))):
             printLog("error","Kunne ikke finde hjørner, for lille område", producer="findCorners")
             return old

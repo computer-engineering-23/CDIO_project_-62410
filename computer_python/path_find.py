@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from typing import List, Tuple, Union
-from image_recognition import Camera
+from image_recognition import Camera, polygonArea
 from classes import Point, Wall, Car, Movement, Rotation, deliver, Line, Arc
 from Log import printLog
 import math
@@ -91,6 +91,7 @@ class track:
             if(car__ is None or not car__.valid()):
                 printLog("DEBUG", "car is not valid",producer="update track")
                 return None
+            self.car = car__
             printLog("DEBUG", f"car updated with {len(self.car.triangle)} points",producer="update track")
         
         return 1
@@ -128,14 +129,14 @@ class track:
         triangle:List[Point] = []
         if(car is not None and len(car) != 0):
             for point in car:
-                triangle.append(Point(point[0][1], point[0][0]))
+                triangle.append(Point(point[0][0], point[0][1]))
             if(len(triangle) < 3):
                 return self.car
             if(len(triangle) > 3):
                 triangle = triangle[0:3]
             front_point:Point = Point(0, 0)
             if(front is not None):
-                front_point = Point(front[0][1], front[0][0])
+                front_point = Point(front[0][0], front[0][1])
             return Car(triangle,front_point)
         return Car([Point(0,0),Point(0,1),Point(1,0)], Point(0, 0))  # Default car if no car is provided
     
@@ -218,7 +219,7 @@ class track:
         
         # Debug info
         printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})",producer="pathGenerator")
-        printLog("DEBUG", f"From:   ({front.x:.2f}, {front.y:.2f})",producer="pathGenerator")
+        printLog("DEBUG", f"Front:   ({front.x:.2f}, {front.y:.2f})",producer="pathGenerator")
         printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad",producer="pathGenerator")
         printLog("DEBUG", f"Rotation applied: {rotation_amount:.2f} rad",producer="pathGenerator")
         printLog("DEBUG", f"Movement: {distance:.2f} px",producer="pathGenerator")

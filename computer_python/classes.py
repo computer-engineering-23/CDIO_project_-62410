@@ -3,6 +3,15 @@ import numpy as np
 from typing import List,Union,Tuple
 from Log import printLog
 
+def polygonArea(corners:list['Point']) -> float:
+    area = 0.0
+    for i in range(len(corners)):
+        j = (i + 1) % len(corners)
+        area += corners[i].x * corners[j].y
+        area -= corners[j].x * corners[i].y
+    area = abs(area) / 2.0
+    return area
+
 def __sgn(x:float) -> int:
     """Returns the sign of a number"""
     if x >= 0:
@@ -16,7 +25,7 @@ def pointAverage(points:List['Point']) -> 'Point':
         return Point(0, 0)
     x_sum = sum(point.x for point in points)
     y_sum = sum(point.y for point in points)
-    return Point(x_sum // len(points), y_sum // len(points))
+    return Point(x_sum / len(points), y_sum / len(points))
 
 class Point:
     """Point class to represent a point in 2D space"""
@@ -194,19 +203,17 @@ class Car:
         self.triangle:List[Point] = triangle
         self.front:Point = front
         
-        self.valid()
+        if(not self.valid()):
+            printLog("debug", f"generating invalid car, {self.triangle}; {self.front}", "Class car constructor")
     def copy(self) -> 'Car':
         """Creates a deep copy of the car with independent points"""
-        new_triangle = [Point(p.x, p.y) for p in self.triangle]
-        new_front = Point(self.front.x, self.front.y)
-        return Car(new_triangle, new_front)
+        new_triangle = [p.copy() for p in self.triangle]
+        new_front = self.front.copy()
+        new_car = Car(new_triangle, new_front)
+        return new_car
     def area(self) -> float:
         """Calculates the area of the triangle formed by the car's points"""
-        y1, x1 = self.triangle[0].y, self.triangle[0].x
-        y2, x2 = self.triangle[1].y, self.triangle[1].x
-        y3, x3 = self.triangle[2].y, self.triangle[2].x
-        
-        return abs((y1*(x2 - x3) + y2*(x3 - x1) + y3*(x1 - x2)) / 2.0)
+        return polygonArea(self.triangle)
     
     def valid(self) -> bool:
         """Checks if the front point is valid (not at the same position as the triangle points)"""
@@ -216,37 +223,56 @@ class Car:
             i += 1
         
         if(i >= len(self.triangle)):
+            printLog("ERROR","invalid triangle points, front not found in car",producer="Class Car Valid")
             return False
         
         if(self.triangle[0] != self.front):
+            printLog("ERROR","invalid triangle points, front not stored correctly",producer="Class Car Valid")
             return False
         
         if self.area() < 20:
+            printLog("ERROR","invalid triangle points, area too small",producer="Class Car Valid")
             return False
         
+        printLog("INFO","valid triangle points",producer="Class Car Valid")
         return True
     
     def getRotation(self) -> float:
         """Calculates the rotation of the car based on its triangle points"""
-        direction = Line(self.triangle[0], self.getRotationCenter())
+        direction = Line(self.getRotationCenter(),self.front)
         return direction.angle()
     
     def getWidth(self) -> float:
         """Calculates the width of the car based on the distance between the base points"""
         if not self.valid():
-            return 0.0
+            if(len(self.triangle) >= 3):
+                printLog("debug","invalid car, attempting calculation","Class car width")
+                return Line(*self.triangle[1:3]).length()
+            else:
+                printLog("ERRor","invalid car, default width used","Class car width")
+                return 0.0
         return Line(*self.triangle[1:3]).length()
     
     def getRotationCenter(self) -> Point:
         """Calculates the center of the car's rotation based on its triangle points"""
         if not self.valid():
-            return Point(0, 0)
+            if(len(self.triangle) >= 3):
+                printLog("debug","invalid car, attempting calculation","Class car rotation center")
+                return pointAverage(self.triangle[1:3])
+            else:
+                printLog("ERRor","invalid car, default width used","Class car rotation center")
+                return Point(0, 0)
         return pointAverage(self.triangle[1:3])
     
     def getRotationDiameter(self) -> float:
         """Calculates the diameter of the car based on the distance between the front point and the base points"""
         if not self.valid():
-            return 0.0
+            if(len(self.triangle) >= 3):
+                printLog("debug","invalid car, attempting calculation","Class car rotation diameter")
+                return Line(self.front, self.getRotationCenter()).length()
+            else:
+                printLog("ERRor","invalid car, default width used","Class car rotation diameter")
+                return 0.0
         return Line(self.front, self.getRotationCenter()).length()
     
     def apply(self, robotInfo:Movement | Rotation) -> 'Car':
@@ -261,17 +287,23 @@ class Car:
             self.rotate(robotInfo.angle)
         if isinstance(robotInfo, Movement):
             self.move(robotInfo.distance)
+        if not self.valid():
+            printLog("debug","apply failed, invalid car unpredictable outcome from this point on","Class car apply")
     
     def rotate(self, angle:float) -> None:
         """Rotates the car around its rotation center by a given angle in radians"""
         center = self.getRotationCenter()
-        if(self.triangle[0] != self.front):
-            printLog("ERROR","invalid triangle points, default action will be taken",producer="Class Car")
+        if(not self.valid()):
+            printLog("ERROR","invalid Car, default action will be taken",producer="Class Car rotate")
         for i in range(len(self.triangle)):
             self.triangle[i] = self.triangle[i].rotateAround(center, angle)
         self.front = self.triangle[0]
     
     def move(self, distance:float) -> None:
+        """Moves the car in the direction from its rotation center to its front point by a given distance"""
+        if not self.valid():
+            printLog("ERROR","invalid Car, default action will be taken",producer="Class Car move")
+
         # Move in the direction from rotation center to front
         center = self.getRotationCenter()
         dx = self.front.x - center.x

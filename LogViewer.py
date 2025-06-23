@@ -263,7 +263,8 @@ def filterMenu(filters:tuple[list[str] | None, list[str] | None, tuple[float, fl
 
 def __addFilters(command:str, filters:tuple[list[str] | None, list[str] | None, tuple[float, float] | None, list[str] | None]) -> tuple[list[str] | None, list[str] | None, tuple[float, float] | None, list[str] | None]:
   if command.startswith("tag"):
-    tag = command.split("tag")[1].strip()
+    split = command.split(" ")
+    tag = " ".join(split[1:]).strip()
     if filters[0] is None:
       filters = ([], filters[1], filters[2], filters[3])
     if filters[0] is not None:
@@ -275,7 +276,8 @@ def __addFilters(command:str, filters:tuple[list[str] | None, list[str] | None, 
     else:
       print("failed to add tag, unkown error")
   elif command.startswith("producer"):
-    producer = command.split("producer")[1].strip()
+    split = command.split(" ")
+    producer = " ".join(split[1:]).strip()
     if filters[1] is None:
       filters = (filters[0], [], filters[2], filters[3])
     if filters[1] is not None:
@@ -287,7 +289,8 @@ def __addFilters(command:str, filters:tuple[list[str] | None, list[str] | None, 
     else:
       print("failed to add producer, unkown error")
   elif command.startswith("message"):
-    meassage = command.split("meassage")[1].strip()
+    split = command.split(" ")
+    meassage = " ".join(split[1:]).strip()
     if filters[3] is None:
       filters = (filters[0], filters[1], filters[2], [])
     if filters[3] is not None:
@@ -300,7 +303,7 @@ def __addFilters(command:str, filters:tuple[list[str] | None, list[str] | None, 
       print("failed to add meassage, unkown error")
   elif command.startswith("time"):
     try:
-      start, end = map(float, command.split("time")[1].strip().split(" "))
+      start, end = map(float, " ".join(command.split(" ")[1:]).strip().split(" "))
       filters = (filters[0], filters[1], (start, end), filters[3])
       print(f"Set time filter: {start:.5} to {end:.5}")
     except ValueError:
