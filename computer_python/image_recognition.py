@@ -21,6 +21,13 @@ class Camera:
         self.shape:Tuple[int,...] = np.shape(initial_frame)
         self.corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (None,None,None,None)
     
+    def displayFrame(self,frame:np.ndarray,name:str = "detection window", debug:bool = False):
+        if(debug == True and not self.debug):
+            return
+        cv2.imshow(name, frame)
+        if cv2.waitKey(1) & 0xFF == 27:
+            return
+    
     def adjustWithSliders(self):
         cv2.namedWindow('Ball')
         cv2.namedWindow('Egg')
@@ -61,8 +68,6 @@ class Camera:
                 break
 
         cv2.destroyAllWindows()
-
-
 
     def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, name:Union[str,None] = None, debug:bool = False) -> None:
         if(debug == True and not self.debug):
