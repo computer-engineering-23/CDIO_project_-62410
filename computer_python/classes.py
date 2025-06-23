@@ -60,6 +60,9 @@ class Point:
 
     def copy(self) -> 'Point':
         return Point(self.x, self.y)
+    
+    def __str__(self) -> str:
+        return f"Point[{self.x},{self.y}]"
 
 class Movement:
     """
@@ -230,11 +233,12 @@ class Car:
             printLog("ERROR","invalid triangle points, front not stored correctly",producer="Class Car Valid")
             return False
         
-        if self.area() < 20:
-            printLog("ERROR","invalid triangle points, area too small",producer="Class Car Valid")
+        if self.area() < 2000:
+            printLog("ERROR","invalid triangle points, area too small:", self.area() ,producer="Class Car Valid")
             return False
         
         printLog("INFO","valid triangle points",producer="Class Car Valid")
+        printLog("INFO", "area:", self.area(),producer="Class Car Valid")
         return True
     
     def getRotation(self) -> float:

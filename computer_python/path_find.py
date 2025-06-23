@@ -6,6 +6,7 @@ from classes import Point, Wall, Car, Movement, Rotation, deliver, Line, Arc
 from Log import printLog
 import math
 from typing import Callable, Optional
+from random import random
 
 def deltaRotation(newAngle:float, currentAngle:float) -> float:
     """Generates the rotation needed to turn the car to the new angle"""
@@ -156,12 +157,14 @@ class track:
         return False
     
     def find_detour_target(self, original_target: Point, car_front: Point, walls, is_path_clear_fn: Callable, robot_radius: float) -> Optional[Point]:
-        """Try offsetting the target in various directions to find a reachable detour point"""
-        offsets = [(-30, 0), (30, 0), (0, -30), (0, 30), (-30, -30), (30, 30), (-30, 30), (30, -30)]
-        for dx, dy in offsets:
-            detour = Point(original_target.x + dx, original_target.y + dy)
-            if is_path_clear_fn(car_front, detour, walls, robot_radius):
-                return detour
+        """Try points in circles around the target to find a reachable detour point"""
+        for radius in range(30, 121, 30):  # Try 30, 60, 90, 120 pixels away
+            for angle in np.linspace(0, 2 * math.pi, 16, endpoint=False):  # 16 directions
+                dx = radius * math.cos(angle)
+                dy = radius * math.sin(angle)
+                detour = Point(original_target.x + dx, original_target.y + dy)
+                if is_path_clear_fn(car_front, detour, walls, robot_radius):
+                    return detour
         return None
     
     def find_safe_arc(self,car, angle_to_target: float, walls) -> float | None:
@@ -180,8 +183,12 @@ class track:
         return None
 
 
-    def generatepath(self, target:Point | None = None, checkTarget:bool = True) -> tuple[List[Movement | Rotation | deliver],Point |None]:
+    def generatepath(self, target:Point | None = None, checkTarget:bool = True, attempt:int = 0) -> tuple[List[Movement | Rotation | deliver],Point |None]:
         """Generates a path from the car to the closest target"""
+        MAX_ATTEMPTS = 10
+        if attempt > MAX_ATTEMPTS:
+            printLog("ERROR", "Pathfinding recursion limit reached: ", attempt, producer="pathGenerator")
+            return [Movement(-10) if random() > 0.3 else Movement(10)], target
         path: List[deliver | Movement | Rotation] = []
         
         # Copy car to simulate forward steps
@@ -227,14 +234,20 @@ class track:
         if arc.Intersects(self.walls):
             safe_angle = self.find_safe_arc(car, angle_to_target, self.walls)
             if safe_angle is None:
-                # Last chance: try to find detour
                 detour = self.find_detour_target(target, car.front, self.walls, self.is_path_clear, car.radius)
                 if detour:
                     printLog("DEBUG", f"Detouring around arc-blocked wall to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
-                    return self.generatepath(target=detour, checkTarget=False)  # recursively call to generate path to detour
+                    return self.generatepath(target=detour, checkTarget=False, attempt=attempt+1)
                 else:
-                    printLog("DEBUG", "No valid detour found after arc failed", producer="pathGenerator")
-                    return path, None
+                    printLog("DEBUG", "No valid detour found after arc failed, backing up", producer="pathGenerator")
+                    # Add a backup movement and try again
+                    backup_distance = -30  # Negative for backing up
+                    path.append(Movement(backup_distance))
+                    car.applySelf(path[-1])
+                    # Try to generate a new path from the new position
+                    new_path, new_target = self.generatepath(target=target, checkTarget=checkTarget, attempt=attempt+1)
+                    path.extend(new_path)
+                    return path, new_target
             else:
                 printLog("DEBUG", f"Adjusted rotation angle to avoid wall: {safe_angle:.2f}", producer="pathGenerator")
                 angle_to_target = safe_angle
@@ -253,7 +266,7 @@ class track:
             detour = self.find_detour_target(target, car.front, self.walls, self.is_path_clear, car.radius)
             if detour:
                 printLog("DEBUG", "Using detour instead of blocked path", producer="pathGenerator")
-                target = detour
+                return self.generatepath(target=detour, checkTarget=False, attempt=attempt+1)
             else:
                 printLog("DEBUG", "No valid detour found", producer="pathGenerator")
                 return path, None

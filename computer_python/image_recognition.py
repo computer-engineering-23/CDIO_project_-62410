@@ -134,13 +134,13 @@ class Camera:
     def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[tuple[Union[int,float],int | float,int | float,int | float]]]:
         """a single iteration to find walls"""
         if(not noMask):
-            hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             hueMid = 0
             hueWidth = 15
-            minSaturation = 0
+            minSaturation = 100
             maxSaturation = 255
-            minBrightness = 0
+            minBrightness = 150
             maxBrightness = 255
+            hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             hue0 = hueMid - hueWidth if hueMid - hueWidth >= 0 else (hueMid - hueWidth + 180)
             hue1 = (hueMid + hueWidth) % 180
             lower_red0 = np.array([hue0, minSaturation, minBrightness])
