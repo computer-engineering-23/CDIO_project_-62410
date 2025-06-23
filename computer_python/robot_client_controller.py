@@ -2,7 +2,7 @@
 import socket
 import time
 from classes import Movement, Rotation, Point, deliver
-from path_find import track
+from path_find import track, deltaRotation
 from image_recognition import Camera
 from Log import enableLog, printLog, closeLog, blockTag
 import math
@@ -73,7 +73,25 @@ try:
                     path, target = robot_track.generatepath(target, checkTarget=False)
                 else:
                     printLog("DELIVERY", "Close enough to deliver", producer="client Loop")
-                    path = [deliver(0.2)]
+
+                    car = robot_track.car.copy()
+                    direction = car.getRotation()
+                    center = car.getRotationCenter()
+                    
+                    dx = goal.x - center.x
+                    dy = goal.y - center.y
+                    angle_to_goal = math.atan2(dy, dx)
+
+                    rot = deltaRotation(direction, angle_to_goal)
+                    path = []
+
+                    if abs(rot) > 0.1:
+                        printLog("DELIVERY", f"Rotating towards goal: {rot:.2f} rad", producer="client Loop")
+                        path.append(Rotation(rot))
+                        car.applySelf(path[-1])
+
+                    # After rotating, add the delivery command
+                    path.append(deliver(0.2))
             
             robot_track.Draw(frame,path,target)
             robot_track.cam.displayFrame(frame,"Track")
