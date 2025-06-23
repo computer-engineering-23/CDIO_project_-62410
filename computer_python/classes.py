@@ -39,11 +39,11 @@ class Point:
         return math.atan2(point.y - self.y, point.x - self.x)
 
     def rotateAround(self, center: 'Point', angle: float) -> 'Point':
-        s, c = math.sin(angle), math.cos(angle)
+        sin, cos = math.sin(angle), math.cos(angle)
         x_shifted = self.x - center.x
         y_shifted = self.y - center.y
-        x_new = x_shifted * c - y_shifted * s + center.x
-        y_new = x_shifted * s + y_shifted * c + center.y
+        x_new = x_shifted * cos - y_shifted * sin + center.x
+        y_new = x_shifted * sin + y_shifted * cos + center.y
         return Point(x_new, y_new)
 
     def distanceTo(self, point: 'Point') -> float:
@@ -197,8 +197,8 @@ class Car:
         self.valid()
     def copy(self) -> 'Car':
         """Creates a deep copy of the car with independent points"""
-        new_triangle = [Point(p.y, p.x) for p in self.triangle]
-        new_front = Point(self.front.y, self.front.x)
+        new_triangle = [Point(p.x, p.y) for p in self.triangle]
+        new_front = Point(self.front.x, self.front.y)
         return Car(new_triangle, new_front)
     def area(self) -> float:
         """Calculates the area of the triangle formed by the car's points"""
@@ -228,9 +228,8 @@ class Car:
     
     def getRotation(self) -> float:
         """Calculates the rotation of the car based on its triangle points"""
-        dx = self.front.x - self.getRotationCenter().x
-        dy = self.front.y - self.getRotationCenter().y
-        return math.atan2(dy, dx)
+        direction = Line(self.triangle[0], self.getRotationCenter())
+        return direction.angle()
     
     def getWidth(self) -> float:
         """Calculates the width of the car based on the distance between the base points"""
@@ -252,7 +251,7 @@ class Car:
     
     def apply(self, robotInfo:Movement | Rotation) -> 'Car':
         """Applies the robot info to the car and returns a new RobotInfo object"""
-        CarCopy = Car(self.triangle.copy(), self.front)
+        CarCopy = self.copy()  # Create a copy of the car to avoid modifying the original
         CarCopy.applySelf(robotInfo)
         return CarCopy
     
@@ -275,13 +274,13 @@ class Car:
     def move(self, distance:float) -> None:
         # Move in the direction from rotation center to front
         center = self.getRotationCenter()
-        dy = self.front.y - center.y
         dx = self.front.x - center.x
+        dy = self.front.y - center.y
         norm = math.sqrt(dx**2 + dy**2)
         if norm == 0:
             vector = Point(0, 0)
         else:
-            vector = Point(distance * dy / norm, distance * dx / norm)
+            vector = Point(distance * dx / norm, distance * dy / norm)
         for i in range(len(self.triangle)):
             self.triangle[i] = self.triangle[i].move(vector)
         self.front = self.front.move(vector)
