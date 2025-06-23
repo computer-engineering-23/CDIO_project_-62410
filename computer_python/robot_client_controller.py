@@ -6,7 +6,8 @@ from path_find import track
 from image_recognition import Camera
 from Log import enableLog, printLog, closeLog, blockTag
 import math
-import cv2
+import traceback
+
 host = '0.0.0.0'  # Lyt på alle interfaces
 port = 12345      # Samme port som EV3-klienten bruger
 enableLog()
@@ -119,9 +120,8 @@ try:
             target = None
             hasBall = False
 except Exception as e:
-    printLog("ERROR", "An error occurred:\n","\t", str(e),producer="client cleanup")
-    printLog("ERROR", "Stack trace:\n", e.__traceback__,producer="client cleanup")
-    # Luk forbindelsen
+    printLog("ERROR", "An error occurred:\n","\t", traceback.format_exception_only(e),producer="client cleanup")
+    printLog("ERROR", "Stack trace:", traceback.format_stack() ,producer="client cleanup")
 finally:
     printLog("STATUS", "Closing connection without error",producer="client cleanup")
 

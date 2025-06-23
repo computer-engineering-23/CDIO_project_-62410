@@ -12,7 +12,7 @@ def polygonArea(corners:list['Point']) -> float:
     area = abs(area) / 2.0
     return area
 
-def __sgn(x:float) -> int:
+def sgn(x:float) -> int:
     """Returns the sign of a number"""
     if x >= 0:
         return 1
@@ -397,9 +397,9 @@ class Arc:
             return False
         
         # Calculate the intersection points
-        y0 = (delta * deltax + __sgn(deltax) * deltay * math.sqrt(discriminant))/(deltaR ** 2)
+        y0 = (delta * deltax + sgn(deltax) * deltay * math.sqrt(discriminant))/(deltaR ** 2)
         x0 = (-delta * deltay + abs(deltax) * math.sqrt(discriminant))/(deltaR ** 2)
-        y1 = (delta * deltax - __sgn(deltax) * deltay * math.sqrt(discriminant))/(deltaR ** 2)
+        y1 = (delta * deltax - sgn(deltax) * deltay * math.sqrt(discriminant))/(deltaR ** 2)
         x1 = (-delta * deltay - abs(deltax) * math.sqrt(discriminant))/(deltaR ** 2)
         
         intersections = [Point(y0, x0).move(self.center), Point(y1, x1).move(self.center)]

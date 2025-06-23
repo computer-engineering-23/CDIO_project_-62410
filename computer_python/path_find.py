@@ -146,7 +146,8 @@ class track:
         path_line = Line(start, end)
         return not path_line.intersects(walls)
         
-    def arc_intersects_wall(self, arc: Arc, walls: list, robot_radius: float = 0.0) -> bool:
+    def arc_intersects_wall(self, arc: Arc, walls: list[Wall], robot_radius: float = 0.0) -> bool:
+        return arc.Intersects(walls)
         for t in np.linspace(0, arc.angle, num=50):
             point = arc.point_at(t)
             for wall in walls:
@@ -163,7 +164,7 @@ class track:
                 return detour
         return None
     
-    def find_safe_arc(self,car, angle_to_target: float, walls, arc_intersects_fn: Callable, robot_radius: float) -> float | None:
+    def find_safe_arc(self,car, angle_to_target: float, walls) -> float | None:
         """Try nearby angles to find a safe turning arc around a wall"""
         direction = car.getRotation()
         center = car.getRotationCenter()
@@ -173,7 +174,7 @@ class track:
         for offset in angle_offsets:
             test_angle = angle_to_target + offset
             arc = Arc(center=center, startAngle=direction, endAngle=test_angle, radius=radius)
-            if arc_intersects_fn(arc, walls, robot_radius):
+            if arc.Intersects(walls):
                 continue
             return test_angle
         return None
@@ -223,8 +224,8 @@ class track:
         rotation_amount = deltaRotation(direction, angle_to_target)
 
         arc = Arc(center=car_center, startAngle=direction, endAngle=angle_to_target, radius=car.radius)
-        if self.arc_intersects_wall(arc, self.walls, robot_radius=car.radius):
-            safe_angle = self.find_safe_arc(car, angle_to_target, self.walls, self.arc_intersects_wall, car.radius)
+        if arc.Intersects(self.walls):
+            safe_angle = self.find_safe_arc(car, angle_to_target, self.walls)
             if safe_angle is None:
                 printLog("DEBUG", "No safe arc found", producer="pathGenerator")
                 return path, None
