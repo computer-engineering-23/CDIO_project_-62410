@@ -36,12 +36,12 @@ class Camera:
             'high': np.array([180, 38, 255])
         },
         'Wall': {
-            'low': np.array([13, 139, 158]),  # red range
-            'high': np.array([150, 243, 255])
+            'low': np.array([5, 135, 150]),  # red range
+            'high': np.array([171, 240, 255])
         },
         'Car': {
-            'low': np.array([28, 54, 71]),   # green range
-            'high': np.array([110, 255, 255])
+            'low': np.array([28, 76, 62]),   # green range
+            'high': np.array([102, 255, 156])
         }
 }
     
