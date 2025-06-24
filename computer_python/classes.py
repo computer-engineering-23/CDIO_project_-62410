@@ -139,17 +139,33 @@ class Line:
                 return True
         return False
     
-    def _intersects(self, wall: Wall, extend: int = 0) -> bool:
+    def _intersects(self, wall: Wall, extend: int = 0, tolerance:float = 1) -> bool:
         """Checks if this line segment intersects with a wall segment."""
-        def ccw(A: Point, B: Point, C: Point):
-            return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
+        # Extend the current line by the specified amount
+        extended_line = self.extend(extend)
+        extended_wall = wall._asLine().extend(extend)
 
-        A = self.start
-        B = self.end
-        C = wall.start
-        D = wall.end
+        # Convert both lines to their function representation
+        a1, b1, c1 = extended_line._asFunction()
+        a2, b2, c2 = extended_wall._asFunction()
 
-        return (ccw(A, C, D) != ccw(B, C, D)) and (ccw(A, B, C) != ccw(A, B, D))
+        # Calculate the determinant
+        det = a1 * b2 - a2 * b1
+
+        # If determinant is zero, lines are parallel or coincident
+        if det == 0:
+            return False
+
+        # Calculate intersection point
+        x = (b1 * c2 - b2 * c1) / det
+        y = (a2 * c1 - a1 * c2) / det
+        intersection = Point(x, y)
+
+        # Check if the intersection point lies within both line segments
+        return (
+            extended_line.distanceTo(intersection) <= tolerance and
+            extended_wall.distanceTo(intersection) <= tolerance
+        )
     
     def _asFunction(self) ->tuple[float,float,float]:
         """Converts the line to a function of ax + by + c = 0"""
