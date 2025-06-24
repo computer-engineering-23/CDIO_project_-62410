@@ -263,6 +263,9 @@ class track:
             dy = target.y - car_center.y
             dx = target.x - car_center.x
             angle_to_target = math.atan2(dy, dx)
+            car_center = car.getRotationCenter()
+            direction = car.getRotation()
+            front = car.front
             # Compute required rotation
             rotation_amount = deltaRotation(direction, angle_to_target)
 
