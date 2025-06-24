@@ -169,7 +169,7 @@ class track:
         Check if the car can drive straight to the target without intersecting any walls,
         by extending the car's bounding lines toward the target and checking for intersection.
         """
-        bounding_lines = car.getBoundingBox()
+        bounding_lines = car.getBoundingLines()
         safe = True
 
         if buffer is None:
@@ -248,6 +248,7 @@ class track:
                 printLog("DEBUG", "no valid targets",producer="pathGenerator")
         elif checkTarget:
             self.targets.sort(key=lambda t: target.distanceTo(t)) # type: ignore
+            isSet = False
             for i in range(len(self.targets)):
                 if target.distanceTo(self.targets[i]) > 10:
                     printLog("DEBUG", f"target is too far to , old target will be used{self.targets[i]}",producer="pathGenerator")
@@ -261,8 +262,11 @@ class track:
                         for i in range(len(self.targets)):
                             if car.validTarget(self.targets[i]):
                                 target = self.targets[i]
+                                isSets = True
                                 printLog("DEBUG", f"using target {target}",producer="pathGenerator")
                                 break
+                if isSet:
+                    break
                 if car.validTarget(self.targets[i]):
                     self.failedTargetAdjustment = 0
                     printLog("DEBUG", f"target is valid, using {self.targets[i]}",producer="pathGenerator")

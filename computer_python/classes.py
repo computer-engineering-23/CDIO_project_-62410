@@ -164,13 +164,13 @@ class Line:
         
         return (a,b,c)  # returns [a, b, c] for the line equation ay + bx + c = 0
     
-    def Shift(self, offset:int | float, angle:Union[float,None] = None) -> List['Line']:
+    def Shift(self, offset:int | float, angle:Union[float,None] = None) -> tuple['Line','Line']:
         """Shifts the line by a given offset in both directions"""
         if angle is None:
             angle = self.angle()
         
         if offset == 0:
-            return [self,self]  # returns the original line if offset is zero or negative
+            return (self,self)  # returns the original line if offset is zero or negative
         
         offset = abs(offset)
         
@@ -181,11 +181,11 @@ class Line:
         
         new_start = Point(self.start.y + offset_y, self.start.x + offset_x)
         new_end = Point(self.end.y + offset_y, self.end.x + offset_x)
-        out.append(Line(new_start, new_end))
+        out1 = Line(new_start, new_end)
         new_start = Point(self.start.y - offset_y, self.start.x - offset_x)
         new_end = Point(self.end.y - offset_y, self.end.x - offset_x)
-        out.append(Line(new_start, new_end))
-        return out  # returns a list of two lines shifted by the offset in both directions
+        out2 = Line(new_start, new_end)
+        return (out1,out2)  # returns a list of two lines shifted by the offset in both directions
     
     def move(self, point:Point) -> 'Line':
         """Moves the line by a given point"""
@@ -358,16 +358,46 @@ class Car:
     
     def validTarget(self, target:Point) -> bool:
         """Checks if the target point is valid (not at the same position as the triangle points)"""
-        return self.getRotationCenter().distanceTo(target) > self.front.distanceTo(self.getRotationCenter())
+        bounds = self.getBoundingLines()
+        corners = (bounds[2].start, bounds[2].end, bounds[1].start, bounds[1].end)
+        
+        angle = bounds[0].angle()
+        
+        delta_X = corners[0].x
+        delta_Y = corners[0].y
+        
+        for corner in corners:
+            corner.x -= delta_X
+            corner.y -= delta_Y
+        
+        
+        corners = (corner.rotateAround(corner, math.pi / 2 - angle) for corner in corners)
+        
+        min_X = min(corner.x for corner in corners)
+        max_X = max(corner.x for corner in corners)
+        min_Y = min(corner.y for corner in corners)
+        max_Y = max(corner.y for corner in corners)
+        
+        if( \
+            abs(min_X) > 0.1 or\
+            abs(min_Y) > 0.1 \
+        ):
+            printLog("ERROR","failed rotation when searching inbounds",producer="Class Car validTarget")
+            return False
+        
+        if(target.x < min_X or target.x > max_X or target.y < min_Y or target.y > max_Y):
+            printLog("ERROR","target out of bounds",producer="Class Car validTarget")
+            return False
+        return True
     @property
     def radius(self) -> float:
         """Returns the turning radius of the car (from rotation center to front)"""
         return Line(self.front, self.getRotationCenter()).length()
 
-    def getBoundingBox(self:'Car') -> list['Line']:
+    def getBoundingLines(self:'Car') -> tuple['Line','Line','Line']:
         """generate 3 lines, one following the center of the car and two lines that are the previouse line offset to the wheels"""
         centerLine:Line = Line(self.getRotationCenter(),self.front)
-        return [centerLine, *centerLine.Shift(self.getWidth() / 2)]
+        return (centerLine, *centerLine.Shift(self.getWidth() / 2))
 
 class Arc:
     """
