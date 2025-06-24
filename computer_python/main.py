@@ -42,6 +42,6 @@ def main(mode="slider"):
     else:
         run_tracking_mode()
 
-#if __name__ == "__main__":
-#    main(mode="slider")  # Change to 'tracking' to run full system
-main()
+if __name__ == "__main__":
+    main(mode="slider")  # Change to 'tracking' to run full system
+#main()
