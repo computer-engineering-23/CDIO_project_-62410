@@ -166,7 +166,7 @@ try:
                 printLog("DEBUG", f"Skipping small rotation: {step.angle:.4f}", producer="client sender")
                 continue
             angle_degrees = math.degrees(step.angle)
-            cmd = f"rotate {-angle_degrees / 3}"
+            cmd = f"rotate {-angle_degrees / 10:.2f}"
             printLog("status", "create rotate", step.angle, producer="client sender")
 
         else:
