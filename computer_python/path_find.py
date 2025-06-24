@@ -309,9 +309,7 @@ class track:
             
             # Compute forward movement
             distance = car.front.distanceTo(target)
-            min(distance, 30)  # Limit to a maximum of 30 pixels per step
-            if distance < 5:
-                return path, target  # Close enough to the target
+            
             #check if car hits something with a boundning box
             if not self.is_path_safe(car, target, self.walls, buffer=car.radius):
                 detour = self.find_detour_target(target, car, walls, self.is_path_safe, car.radius)
@@ -323,9 +321,15 @@ class track:
                     printLog("DEBUG", "No valid detour found, backing up", producer="pathGenerator")
                     # Add a backup movement and try again
                     distance = -30
-                
+            
+            distance = min(distance, 75)  # Limit to a maximum of 75 pixels per step
+            
             path.append(Movement(distance))
             car.applySelf(path[-1])  # apply movement to simulate robot state
+            
+            if(abs(distance) < 10):
+                printLog("DEBUG", "Target is too close, stopping", producer="pathGenerator")
+                break            
             
             # Debug info
             printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})",producer="pathGenerator")
