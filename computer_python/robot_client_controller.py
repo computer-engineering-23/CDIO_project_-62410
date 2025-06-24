@@ -20,8 +20,8 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((host, port))
 server_socket.listen(1)
 
-playsound("ready.mp3",False)
 printLog("status",f"Venter på forbindelse på {host}:{port}...",producer="init Client")
+playsound("ready.mp3")
 
 # Accepter forbindelse fra klient
 client_socket, client_address = server_socket.accept()
