@@ -373,10 +373,10 @@ class Car:
         
         corners = (corner.rotateAround(corner, math.pi / 2 - angle) for corner in corners)
         
-        min_X = min(corner.x for corner in corners)
-        max_X = max(corner.x for corner in corners)
-        min_Y = min(corner.y for corner in corners)
-        max_Y = max(corner.y for corner in corners)
+        min_X = min([corner.x for corner in corners])
+        max_X = max([corner.x for corner in corners])
+        min_Y = min([corner.y for corner in corners])
+        max_Y = max([corner.y for corner in corners])
         
         if( \
             abs(min_X) > 0.1 or\
