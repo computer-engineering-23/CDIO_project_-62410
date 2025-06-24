@@ -87,8 +87,8 @@ class deliver(Movement):
         deliver class to represent a delivery action for the robot.
         Inherits from Movement and represents a forward push to deliver the ball.
     """
-    def __init__(self, distance: float):
-        super().__init__(distance)
+    def __init__(self):
+        super().__init__(50)
 
 class Wall:
     """

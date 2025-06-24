@@ -37,6 +37,7 @@ class track:
         self.obsticles = self.formatObsticles(obsticles)
         self.car:Car = self.formatCar(car, front if front is not None else None)
         self.approach_point: Point | None = None
+        self.delivery_goal: Point | None = None
     
     def update(self, walls:bool | int = False, goals:bool = False, targets:bool = False, obsticles:bool = False, car:bool = False, frame:np.ndarray | None= None):
         if(frame is None):
