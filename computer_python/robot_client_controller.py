@@ -202,7 +202,7 @@ try:
 
 except Exception as e:
     printLog("ERROR", "An error occurred:", traceback.format_exception_only(e),producer="client cleanup")
-    printLog("ERROR", "Stack trace:", traceback.format_stack(),producer="client cleanup")
+    printLog("ERROR", "Stack trace:", *traceback.format_stack(),producer="client cleanup")
 
 finally:
     printLog("STATUS", "Closing connection without error",producer="client cleanup")
