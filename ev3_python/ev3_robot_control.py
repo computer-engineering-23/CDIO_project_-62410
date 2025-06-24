@@ -6,7 +6,7 @@ import ev3dev.ev3 as ev3
 import time
 import threading
 
-host = '192.168.28.173' # IP-address to computer
+host = '192.168.28.176' # IP-address to computer
 
 port = 12345            # Port the server is listening to
 
@@ -23,7 +23,7 @@ colorSensor.mode = 'COL-REFLECT'
 
 has_ball = True
 has_ball_movement_done = False
-color_limit = 2 # Adjust according to testing
+color_limit = 1 # Adjust according to testing
 
 degrees_per_robot_degree = 500 / 180 # 617 motor degrees correspond to 180 degrees robot rotation
 
@@ -86,7 +86,7 @@ while(True):
 
        
         except (IndexError, ValueError):
-            print("Invalid rotate command:", command)
+            print("Invalid drive command:", command)
             s.sendall("ERR".encode())
 
     elif command == "grab":
@@ -144,7 +144,7 @@ while(True):
 
        
         except (IndexError, ValueError):
-            print("Invalid rotate command:", command)
+            print("Invalid backward command:", command)
             s.sendall("ERR".encode())
 
 
@@ -168,7 +168,7 @@ while(True):
 
        
         except (IndexError, ValueError):
-            print("Invalid rotate command:", command)
+            print("Invalid deliver command:", command)
             s.sendall("ERR".encode())
         
     else:
