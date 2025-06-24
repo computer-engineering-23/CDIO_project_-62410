@@ -69,71 +69,61 @@ try:
             step = Movement(-10)
         else:
             if not hasBall:
-                # Standard ball approach
+                # Standard path to ball
                 path, target = robot_track.generatepath(target)
                 delivering = False
                 rotating_to_deliver = False
                 robot_track.approach_point = None
                 robot_track.delivery_goal = None
-
             else:
-                car_front = robot_track.car.front
+                car = robot_track.car.copy()
+                car_front = car.front
+                car_center = car.getRotationCenter()
+                car_angle = car.getRotation()
+
+                # Ensure a goal exists
+                if not robot_track.goals:
+                    printLog("ERROR", "No goals available", producer="client loop")
+                    continue
+
+                # Pick closest goal
+                goal = min(robot_track.goals, key=lambda g: car_front.distanceTo(g))
+                robot_track.delivery_goal = goal
+
+                # Calculate approach point
+                dx = goal.x - car_front.x
+                dy = goal.y - car_front.y
+                angle_to_goal = math.atan2(dy, dx)
+                approach_distance = 60
+                approach_point = Point(goal.x - approach_distance * math.cos(angle_to_goal),
+                                       goal.y - approach_distance * math.sin(angle_to_goal))
+                robot_track.approach_point = approach_point
+
+                dist_to_approach = car_front.distanceTo(approach_point)
+                angle_diff = abs(deltaRotation(car_angle, angle_to_goal))
+
+                printLog("DEBUG", f"Dist to approach: {dist_to_approach:.2f}", producer="client loop")
+                printLog("DEBUG", f"Angle diff to goal: {angle_diff:.2f}", producer="client loop")
 
                 if not delivering:
-                    if not robot_track.goals:
-                        printLog("ERROR", "No goals available", producer="client loop")
-                        continue
-
-                    # Select closest goal
-                    goal = min(robot_track.goals, key=lambda g: car_front.distanceTo(g))
-                    robot_track.delivery_goal = goal
-
-                    # Compute approach point behind the goal
-                    dx = goal.x - car_front.x
-                    dy = goal.y - car_front.y
-                    angle = math.atan2(dy, dx)
-                    approach_distance = 60
-                    approach_x = goal.x - approach_distance * math.cos(angle)
-                    approach_y = goal.y - approach_distance * math.sin(angle)
-                    approach_point = Point(approach_x, approach_y)
-
-                    robot_track.approach_point = approach_point
-
-                    # Plan path to the approach point
-                    path, _ = robot_track.generatepath(approach_point, checkTarget=False)
-
-                    # Once near approach point, set delivering flag
-                    if car_front.distanceTo(approach_point) < 10:
+                    # Not near enough yet — keep going
+                    if dist_to_approach > 12:
+                        path, _ = robot_track.generatepath(approach_point, checkTarget=False)
+                    elif angle_diff > 0.15:
+                        # Rotate to face goal
+                        path = [Rotation(deltaRotation(car_angle, angle_to_goal))]
+                        rotating_to_deliver = True
+                    else:
+                        # Aligned & in position → ready to deliver next frame
                         delivering = True
-                        path = []  # Wait until next frame
+                        path = []
                 elif rotating_to_deliver:
-                    # STEP 2: Deliver after rotation
+                    # Just finished rotating → now deliver
                     rotating_to_deliver = False
                     path = [deliver()]
                 else:
-                    # STEP 1: Rotate toward the goal
-                    goal = robot_track.delivery_goal
-                    if goal is None:
-                        printLog("ERROR", "Missing delivery goal", producer="client loop")
-                        continue
-
-                    car = robot_track.car.copy()
-                    center = car.getRotationCenter()
-                    direction = car.getRotation()
-
-                    dx = goal.x - center.x
-                    dy = goal.y - center.y
-                    angle_to_goal = math.atan2(dy, dx)
-
-                    rot = deltaRotation(direction, angle_to_goal)
-
-                    if abs(rot) > 0.1:
-                        path = [Rotation(rot)]
-                        rotating_to_deliver = True
-                    else:
-                        # Already aligned → deliver in next loop
-                        rotating_to_deliver = True
-                        path = []
+                    # Already aligned & ready → deliver
+                    path = [deliver()]
 
 
 
