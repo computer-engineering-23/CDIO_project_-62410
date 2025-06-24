@@ -87,7 +87,7 @@ class Camera:
                 self.hsv_thresholds[name]['low'] = np.array([h_low, s_low, v_low])
                 self.hsv_thresholds[name]['high'] = np.array([h_high, s_high, v_high])
 
-                if name is "Wall":
+                if name == "Wall":
                     lower = self.hsv_thresholds[name]['low']
                     upper = self.hsv_thresholds[name]['high']
                     low_hue = lower[0]
