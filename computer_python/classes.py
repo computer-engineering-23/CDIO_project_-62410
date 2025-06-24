@@ -196,7 +196,12 @@ class Line:
     def negate(self) -> 'Line':
         """Negates the line by swapping the start and end points"""
         return Line(self.start.negate(), self.end.negate())
-
+    
+    def distanceTo(self, point:Point) -> float:
+        """Returns the shortest distance from the line segment to a given point."""
+        a,b,c = self._asFunction()
+        x,y = point.x, point.y
+        return abs(a*x+b*y+c)/math.sqrt(a**2 + b**2) if math.sqrt(a**2 + b**2) != 0 else point.y
 class Car:
     """
         Car class to represent the car's position and orientation in the environment
@@ -426,7 +431,7 @@ class Arc:
             # Check if intersection is within the arc's angle
             if angle_in_arc(angle, self.start, self.end):
                 # Also check if the point lies within the wall segment
-                if wall._asLine().contains(intersection):
+                if wall._asLine().distanceTo(intersection):
                     return True
 
         return False
