@@ -54,6 +54,13 @@ try:
         printLog("STATUS", "generating frame",producer="client Loop")
         frame = robot_track.cam.getFrame()
 
+        cross = robot_track.cam.findCross(robot_track.cam.walls)
+        if cross is not None:
+            wall1, wall2 = cross
+            robot_track.extra_obstacles = [wall1, wall2]
+        else:
+            robot_track.extra_obstacles = []
+
         if frame is None:
             break
 

@@ -374,60 +374,52 @@ class Camera:
         self.corners = corners
         return corners
 
-    def findCross(self,walls:List[List[tuple[Union[int,float],int | float,int | float,int | float]]]) -> tuple[Wall,Wall] | None:
-        oldIntersect: Point | bool = False
-        if self.cross is not None:
-            oldIntersect = self.cross[0].intersect(self.cross[1])
-        
-        #convert from cv2 line to Wall class
-        wallClass:list[Wall] = []
-        for wall in walls:
-            wallClass.append(Wall(wall))
-        
-        #se where walls intersect
-        intersects:List[Point] = []
-        for i in range (0,len(wallClass)):
-            for j in range (i+1, len(wallClass)):
-                if wallClass[i]._asLine()._intersects(wallClass[j],30):
+    def findCross(self, walls: List[List[tuple[Union[int, float], int | float, int | float, int | float]]]) -> tuple[Wall, Wall] | None:
+        # Convert raw walls to Wall objects
+        wallClass: List[Wall] = [Wall(w) for w in walls]
+
+        # Find all intersections
+        intersects: List[Point] = []
+        for i in range(len(wallClass)):
+            for j in range(i + 1, len(wallClass)):
+                if wallClass[i]._asLine()._intersects(wallClass[j], 30):
                     intersection = wallClass[i].intersect(wallClass[j])
-                    if(type(intersection) != bool):
+                    if isinstance(intersection, Point):
                         intersects.append(intersection)
-        
-        #sort intersections
-        middleIntersects:list[Point] = []
-        for intersect in intersects:
-            if(intersect.x < self.shape[1] / 3 and intersect.x > self.shape[1] / 3 * 2):#invalid X
-                continue
-            if(intersect.y < self.shape[0] / 3 and intersect.y > self.shape[0] / 3 * 2):
-                continue
-            middleIntersects.append(intersect)
-        
-        #find the walls that are close to intersection
-        validWalls:list[Wall] = []
+
+        # Filter intersections near the center of the frame
+        middleIntersects: List[Point] = []
+        for pt in intersects:
+            if (self.shape[1] / 3 < pt.x < self.shape[1] * 2 / 3) and (self.shape[0] / 3 < pt.y < self.shape[0] * 2 / 3):
+                middleIntersects.append(pt)
+
+        # Find walls that intersect near those points
+        validWalls: List[Wall] = []
         for wall in wallClass:
-            for intersect in middleIntersects:
-                if(wall._asLine().distanceTo(intersect) <= 0.001):
+            for pt in middleIntersects:
+                if wall._asLine().distanceTo(pt) <= 0.001:
                     validWalls.append(wall)
                     break
-        
+
         if len(validWalls) < 2:
             return None
-        
+
+        # Find bounding box of intersecting walls
         max_X = max([wall.start.x for wall in validWalls] + [wall.end.x for wall in validWalls])
-        max_Y = max([wall.start.y for wall in validWalls] + [wall.end.y for wall in validWalls])
-        
         min_X = min([wall.start.x for wall in validWalls] + [wall.end.x for wall in validWalls])
+        max_Y = max([wall.start.y for wall in validWalls] + [wall.end.y for wall in validWalls])
         min_Y = min([wall.start.y for wall in validWalls] + [wall.end.y for wall in validWalls])
-        
+
         mid_X = (max_X + min_X) / 2
         mid_Y = (max_Y + min_Y) / 2
-        
-        trueWalls:tuple[Wall,Wall] = ( \
-            Wall([(max_X,mid_Y,min_X,mid_Y)]), \
-            Wall([(mid_X, max_Y, mid_X, min_Y)]) \
-            )
-        
-        return trueWalls
+
+        # Return two perpendicular walls forming the cross
+        crossWalls: tuple[Wall, Wall] = (
+        Wall([(min_X, min_Y, max_X, min_Y)]),  # Horizontal wall
+        Wall([(mid_X, min_Y, mid_X, max_Y)])  # Vertical wall
+        )
+        return crossWalls
+
 
     def findCar(self, frame: np.ndarray) -> Tuple[List[Tuple[List[int | float], str]], Tuple[List[int | float], str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)

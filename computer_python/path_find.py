@@ -38,6 +38,7 @@ class track:
         self.car:Car = self.formatCar(car, front if front is not None else None)
         self.approach_point: Point | None = None
         self.delivery_goal: Point | None = None
+        self.extra_obstacles: List[Wall] = []
     
     def update(self, walls:bool | int = False, goals:bool = False, targets:bool = False, obsticles:bool = False, car:bool = False, frame:np.ndarray | None= None):
         if(frame is None):
@@ -98,6 +99,12 @@ class track:
                 return None
             self.car = car__
             printLog("DEBUG", f"car updated with {len(self.car.triangle)} points",producer="update track")
+
+            cross_lines = self.cam.findCross(self.cam.walls)
+            if cross_lines:
+                self.extra_obstacles = list(cross_lines)
+            else:
+                self.extra_obstacles = []
         
         return 1
     
@@ -183,6 +190,7 @@ class track:
     def generatepath(self, target:Point | None = None, checkTarget:bool = True, attempt:int = 0) -> tuple[List[Movement | Rotation | deliver],Point |None]:
         """Generates a path from the car to the closest target"""
         MAX_ATTEMPTS = 10
+        walls = self.walls + self.extra_obstacles
         if attempt > MAX_ATTEMPTS:
             printLog("ERROR", "Pathfinding recursion limit reached: ", attempt, producer="pathGenerator")
             return [Movement(-10) if random() > 0.3 else Movement(10)], target
@@ -228,7 +236,7 @@ class track:
         rotation_amount = deltaRotation(direction, angle_to_target)
 
         arc = Arc(center=car_center, startAngle=direction, endAngle=angle_to_target, radius=car.radius)
-        if arc.Intersects(self.walls):
+        if arc.Intersects(walls):
             safe_angle = self.find_safe_arc(car, angle_to_target, self.walls)
             if safe_angle is None:
                 detour = self.find_detour_target(target, car.front, self.walls, self.is_path_clear, car.radius)
@@ -292,7 +300,10 @@ class track:
         """Draws the track on the frame"""
         for wall in self.walls:
             cv2.line(frame, (int(wall.start.x), int(wall.start.y)), (int(wall.end.x), int(wall.end.y)), (0, 0, 255), 1)
-        
+
+        for wall in self.extra_obstacles:
+            cv2.line(frame, (int(wall.start.x), int(wall.start.y)), (int(wall.end.x), int(wall.end.y)), (255, 0, 255), 2)
+
         for goal in self.goals:
             cv2.circle(frame, (int(goal.x), int(goal.y)), 5, (255, 0, 0), -1)
         
