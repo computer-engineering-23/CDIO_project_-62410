@@ -51,7 +51,7 @@ def incrimentLogID():
   if(logFile is not None):
     logID += 1
     logFile.close()
-    logFile = open(f"{logName}{logID}.txt")
+    logFile = open(f"{logName}{logID}.txt","x")
     logSize = 0
     printLog("INFO","this is a new logfile, old file:",f"{logName}{logID-1}.txt",producer="Log System")
   
