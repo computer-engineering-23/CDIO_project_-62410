@@ -359,7 +359,7 @@ class Car:
     def validTarget(self, target:Point) -> bool:
         """Checks if the target point is valid (not at the same position as the triangle points)"""
         bounds = self.getBoundingLines()
-        corners = (bounds[2].start, bounds[2].end, bounds[1].start, bounds[1].end)
+        corners:tuple[Point,Point,Point,Point] = (bounds[2].start, bounds[2].end, bounds[1].start, bounds[1].end)
         
         angle = bounds[0].angle()
         
@@ -371,8 +371,10 @@ class Car:
             corner.y -= delta_Y
         
         
-        corners = (corner.rotateAround(corner, math.pi / 2 - angle) for corner in corners)
-        
+        tempCorners = [corners[0]]
+        for i in range(1,len(corners)):
+            tempCorners[i] = corners[i].rotateAround(corners[0], angle)
+        corners = (tempCorners[0], tempCorners[1], tempCorners[2], tempCorners[3])
         min_X = min([corner.x for corner in corners])
         max_X = max([corner.x for corner in corners])
         min_Y = min([corner.y for corner in corners])
