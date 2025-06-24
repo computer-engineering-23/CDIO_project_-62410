@@ -111,24 +111,31 @@ try:
         step = path[0]
         
         #client sender
-        if isinstance(step, Movement):
+        # client sender
+        if isinstance(step, deliver):
+            cmd = "deliver"
+            printLog("status", "create deliver command", producer="client sender")
+
+        elif isinstance(step, Movement):
             if step.distance > 0:
-                if(step.distance < 100 and hasBall):
-                    cmd = f"deliver {step.distance / 200}"
-                else:
-                    cmd = f"drive {step.distance / 200}"
+                cmd = f"drive {step.distance / 200}"
             elif step.distance < 0:
-                cmd = f"backward {0-step.distance / 200}"
+                cmd = f"backward {abs(step.distance) / 200}"
             else:
-                printLog("ERROR","no movement", step.distance,producer="client sender")
+                printLog("ERROR", "zero movement ignored", step.distance, producer="client sender")
                 continue
-            printLog("status","create movement",step.distance,producer="client sender")
+            printLog("status", "create movement", step.distance, producer="client sender")
+
         elif isinstance(step, Rotation):
+            if abs(step.angle) < 0.05:
+                printLog("DEBUG", f"Skipping small rotation: {step.angle:.4f}", producer="client sender")
+                continue
             angle_degrees = math.degrees(step.angle)
-            cmd = f"rotate {0-angle_degrees/3}"
-            printLog("status","create rotate",step.angle,producer="client sender")
+            cmd = f"rotate {-angle_degrees / 3}"  # Assuming EV3 expects this scale
+            printLog("status", "create rotate", step.angle, producer="client sender")
+
         else:
-            printLog("error","Unknown step", step,producer="client sender")
+            printLog("ERROR", "Unknown step type", str(step), producer="client sender")
             continue
         
         printLog("command","sending command", cmd,producer="client sender")
