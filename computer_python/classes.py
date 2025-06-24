@@ -373,7 +373,7 @@ class Car:
         
         tempCorners = [corners[0]]
         for i in range(1,len(corners)):
-            tempCorners[i] = corners[i].rotateAround(corners[0], angle)
+            tempCorners.append(corners[i].rotateAround(corners[0], angle))
         corners = (tempCorners[0], tempCorners[1], tempCorners[2], tempCorners[3])
         min_X = min([corner.x for corner in corners])
         max_X = max([corner.x for corner in corners])
