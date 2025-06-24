@@ -97,6 +97,9 @@ class Wall:
         can generate the angle of the wall
     """
     def __init__(self, wall:List[tuple[Union[int,float],int | float,int | float,int | float]]):
+        """Initializes the Wall with a list of points
+            correct form: [(x1, y1, x2, y2)]
+        """
         self.start = Point(wall[0][0], wall[0][1])
         self.end = Point(wall[0][2], wall[0][3])
     def _asLine(self) -> 'Line':

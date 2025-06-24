@@ -1,6 +1,6 @@
 find kryds
 undgå væg
-skriv rapport
-gå til mål korrekt
-hvis bold ligger op af vægge
-ved drej ram ikke ting (bolde væge osv)
+skriv rapport 
+gå til mål korrekt <-- kinda done
+hvis bold ligger op af vægge 
+ved drej ram ikke ting (bolde væge osv) <-- kinda done

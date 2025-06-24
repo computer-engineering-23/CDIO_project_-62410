@@ -20,6 +20,7 @@ class Camera:
             exit(1)
         self.shape:Tuple[int,...] = np.shape(initial_frame)
         self.corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (None,None,None,None)
+        self.cross:Tuple[Wall,Wall] | None= None
 
         self.hsv_thresholds = {
         'Ball_Orange': {
@@ -110,7 +111,6 @@ class Camera:
                 break
 
         cv2.destroyAllWindows()
-
 
     def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, name:Union[str,None] = None, debug:bool = False) -> None:
         if(debug == True and not self.debug):
@@ -210,8 +210,6 @@ class Camera:
 
         return None
 
-
-    
     def findEgg(self, frame: np.ndarray) -> Union[List[Tuple[List[int | float], str]], None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -250,8 +248,6 @@ class Camera:
 
         return None
 
-
-
     def findWall(self, frame: np.ndarray, noMask: bool = False) -> List[List[tuple[int | float, int | float, int | float, int | float]]]:
         if not noMask:
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -289,9 +285,6 @@ class Camera:
 
         self.walls = wall_lines
         return wall_lines
-
-
-
 
     def generateWall(self, frameNumber) ->List[List[tuple[int | float,int | float,int | float,int | float]]]:
         """many iterations to find walls more acurately"""
@@ -381,6 +374,61 @@ class Camera:
         self.corners = corners
         return corners
 
+    def findCross(self,walls:List[List[tuple[Union[int,float],int | float,int | float,int | float]]]) -> tuple[Wall,Wall] | None:
+        oldIntersect: Point | bool = False
+        if self.cross is not None:
+            oldIntersect = self.cross[0].intersect(self.cross[1])
+        
+        #convert from cv2 line to Wall class
+        wallClass:list[Wall] = []
+        for wall in walls:
+            wallClass.append(Wall(wall))
+        
+        #se where walls intersect
+        intersects:List[Point] = []
+        for i in range (0,len(wallClass)):
+            for j in range (i+1, len(wallClass)):
+                if wallClass[i]._asLine()._intersects(wallClass[j],30):
+                    intersection = wallClass[i].intersect(wallClass[j])
+                    if(type(intersection) != bool):
+                        intersects.append(intersection)
+        
+        #sort intersections
+        middleIntersects:list[Point] = []
+        for intersect in intersects:
+            if(intersect.x < self.shape[1] / 3 and intersect.x > self.shape[1] / 3 * 2):#invalid X
+                continue
+            if(intersect.y < self.shape[0] / 3 and intersect.y > self.shape[0] / 3 * 2):
+                continue
+            middleIntersects.append(intersect)
+        
+        #find the walls that are close to intersection
+        validWalls:list[Wall] = []
+        for wall in wallClass:
+            for intersect in middleIntersects:
+                if(wall._asLine().distanceTo(intersect) <= 0.001):
+                    validWalls.append(wall)
+                    break
+        
+        if len(validWalls) < 2:
+            return None
+        
+        max_X = max([wall.start.x for wall in validWalls] + [wall.end.x for wall in validWalls])
+        max_Y = max([wall.start.y for wall in validWalls] + [wall.end.y for wall in validWalls])
+        
+        min_X = min([wall.start.x for wall in validWalls] + [wall.end.x for wall in validWalls])
+        min_Y = min([wall.start.y for wall in validWalls] + [wall.end.y for wall in validWalls])
+        
+        mid_X = (max_X + min_X) / 2
+        mid_Y = (max_Y + min_Y) / 2
+        
+        trueWalls:tuple[Wall,Wall] = ( \
+            Wall([(max_X,mid_Y,min_X,mid_Y)]), \
+            Wall([(mid_X, max_Y, mid_X, min_Y)]) \
+            )
+        
+        return trueWalls
+
     def findCar(self, frame: np.ndarray) -> Tuple[List[Tuple[List[int | float], str]], Tuple[List[int | float], str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         low = self.hsv_thresholds['Car']['low']
@@ -443,8 +491,6 @@ class Camera:
                     return results, (front, "front")
 
         return None
-
-
 
     def close(self):
         self.capture.release()
