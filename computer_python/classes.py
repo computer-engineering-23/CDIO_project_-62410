@@ -139,11 +139,11 @@ class Line:
                 return True
         return False
     
-    def _intersects(self, wall: Wall, extend: int = 0, tolerance:float = 1) -> bool:
+    def _intersects(self, wall: Wall, extend: int = 0, tolerance: float = 1e-6) -> bool:
         """Checks if this line segment intersects with a wall segment."""
         # Extend the current line by the specified amount
-        extended_line = self.extend(extend,even=True)
-        extended_wall = wall._asLine().extend(extend,even=True)
+        extended_line = self.extend(extend, even=True)
+        extended_wall = wall._asLine().extend(extend, even=True)
 
         # Convert both lines to their function representation
         a1, b1, c1 = extended_line._asFunction()
@@ -152,9 +152,11 @@ class Line:
         # Calculate the determinant
         det = a1 * b2 - a2 * b1
 
-        # If determinant is zero, lines are parallel or coincident
-        if det == 0:
-            return c1 == c2  # Lines are parallel or coincident, check if they are the same line
+        # If determinant is close to zero, lines are parallel or coincident
+        if abs(det) < tolerance:
+            # Check if the lines are coincident
+            return abs(c1 - c2) < tolerance
+
         # Calculate intersection point
         x = (b1 * c2 - b2 * c1) / det
         y = (a2 * c1 - a1 * c2) / det
