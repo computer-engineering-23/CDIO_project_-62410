@@ -27,7 +27,7 @@ class track:
             front:Union[Tuple[List[int | float],str],None] = None
             
         ):
-
+        self.failedTargetAdjustment:int = 0
         self.walls:List[Wall] = self.formatWalls(walls)
         self.goals:List[Point] = self.formatGoals(goals)
         self.targets:List[Point] = self.formatTargets(targets)
@@ -249,9 +249,24 @@ class track:
         elif checkTarget:
             self.targets.sort(key=lambda t: target.distanceTo(t)) # type: ignore
             for i in range(len(self.targets)):
+                if target.distanceTo(self.targets[i]) > 10:
+                    printLog("DEBUG", f"target is too far to , old target will be used{self.targets[i]}",producer="pathGenerator")
+                    self.failedTargetAdjustment += 1
+                    if self.failedTargetAdjustment < 5:
+                        break
+                    else:
+                        printLog("DEBUG", "failed target adjustment, using closest target",producer="pathGenerator")
+                        self.targets.sort(key=lambda t: car.front.distanceTo(t)) # type: ignore
+                        self.failedTargetAdjustment = 0
+                        for i in range(len(self.targets)):
+                            if car.validTarget(self.targets[i]):
+                                target = self.targets[i]
+                                printLog("DEBUG", f"using target {target}",producer="pathGenerator")
+                                break
                 if car.validTarget(self.targets[i]):
+                    self.failedTargetAdjustment = 0
+                    printLog("DEBUG", f"target is valid, using {self.targets[i]}",producer="pathGenerator")
                     target = self.targets[i]
-                    printLog("DEBUG", "adjusted target",producer="pathGenerator")
                     break
             else:
                 printLog(f"DEBUG", "failed to adjust target",producer="pathGenerator")
