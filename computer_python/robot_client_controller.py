@@ -7,6 +7,7 @@ from image_recognition import Camera
 from Log import enableLog, printLog, closeLog, blockTag
 import math
 import traceback
+from typing import List
 from playsound import playsound
 
 host = '0.0.0.0'  # Lyt på alle interfaces
@@ -38,6 +39,7 @@ t = time.time()
 hasBall = False
 ballFrames = 0
 frameNumber = 0
+path: List[Movement | Rotation | deliver] = []
 
 try:
     while(1):
@@ -65,37 +67,51 @@ try:
         else:
             if not hasBall:
                 path, target = robot_track.generatepath(target)
+
             else:
-                if target is None:
-                    printLog("error", "missing target",producer="goal seek")
-                    continue
-                distance_to_goal = robot_track.car.front.distanceTo(target)
+                if target is not None:
+                    assert target is not None
+                    distance_to_goal = robot_track.car.front.distanceTo(target)
 
-                if distance_to_goal > 30:
-                    printLog("DELIVERY", f"Getting closer to goal ({distance_to_goal:.1f}px)", producer="client Loop")
-                    path, target_ = robot_track.generatepath(target, checkTarget=False,)
-                else:
-                    printLog("DELIVERY", "Close enough to deliver", producer="client Loop")
+                    if distance_to_goal > 60:
+                        printLog("DELIVERY", f"Getting closer to goal ({distance_to_goal:.1f}px)", producer="client Loop")
 
-                    car = robot_track.car.copy()
-                    direction = car.getRotation()
-                    center = car.getRotationCenter()
-                    
-                    dx = target.x - center.x
-                    dy = target.y - center.y
-                    angle_to_goal = math.atan2(dy, dx)
+                        # Compute the direction to the goal
+                        direction_to_goal = math.atan2(target.y - robot_track.car.front.y, target.x - robot_track.car.front.x)
+                        approach_distance = 60  # Distance behind goal to approach from
 
-                    rot = deltaRotation(direction, angle_to_goal)
-                    path = []
+                        # Compute approach point behind goal
+                        approach_x = target.x - approach_distance * math.cos(direction_to_goal)
+                        approach_y = target.y - approach_distance * math.sin(direction_to_goal)
+                        approach_point = Point(approach_x, approach_y)
 
-                    if abs(rot) > 0.1:
-                        printLog("DELIVERY", f"Rotating towards goal: {rot:.2f} rad", producer="client Loop")
-                        path.append(Rotation(rot))
-                        car.applySelf(path[-1])
-                        
+                        # Save for visualization
+                        robot_track.approach_point = approach_point
 
-                    # After rotating, add the delivery command
-                    path.append(deliver(0.2))
+                        # Plan a path to the approach point
+                        path, _ = robot_track.generatepath(approach_point, checkTarget=False)
+
+                    else:
+                        printLog("DELIVERY", "Close enough to deliver", producer="client Loop")
+
+                        car = robot_track.car.copy()
+                        direction = car.getRotation()
+                        center = car.getRotationCenter()
+
+                        dx = target.x - center.x
+                        dy = target.y - center.y
+                        angle_to_goal = math.atan2(dy, dx)
+
+                        rot = deltaRotation(direction, angle_to_goal)
+                        path = []
+
+                        if abs(rot) > 0.1:
+                            printLog("DELIVERY", f"Rotating towards goal: {rot:.2f} rad", producer="client Loop")
+                            path.append(Rotation(rot))
+                            car.applySelf(path[-1])
+
+                        # Add the delivery movement
+                        path.append(deliver(0.2))
             
             robot_track.Draw(frame,path,target)
             robot_track.cam.displayFrame(frame,"Track")

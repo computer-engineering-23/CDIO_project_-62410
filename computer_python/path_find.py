@@ -25,6 +25,7 @@ class track:
             obsticles: Union[List[Tuple[List[int | float],str]],None] = None, 
             car:Union[List[Tuple[List[int |float], str]],None] = None, 
             front:Union[Tuple[List[int | float],str],None] = None
+            
         ):
 
         self.walls:List[Wall] = self.formatWalls(walls)
@@ -35,6 +36,7 @@ class track:
             self.cam = Camera()
         self.obsticles = self.formatObsticles(obsticles)
         self.car:Car = self.formatCar(car, front if front is not None else None)
+        self.approach_point: Point | None = None
     
     def update(self, walls:bool | int = False, goals:bool = False, targets:bool = False, obsticles:bool = False, car:bool = False, frame:np.ndarray | None= None):
         if(frame is None):
@@ -302,6 +304,17 @@ class track:
         frame =self.drawCar(frame,self.car)
         
         car: Car = self.car.copy()
+
+        #draw approach point if it exists
+        if self.approach_point is not None and target is not None:
+            cv2.circle(frame, (int(self.approach_point.x), int(self.approach_point.y)), 5, (150, 0, 255), -1)
+            cv2.line(frame,
+                    (int(self.approach_point.x), int(self.approach_point.y)),
+                    (int(target.x), int(target.y)),
+                    (150, 0, 255), 1)
+            cv2.putText(frame, "Approach Point", (int(self.approach_point.x)+5, int(self.approach_point.y)-5),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.4, (150, 0, 255), 1)
+
 
 # Compute path once
         if(path is None):
