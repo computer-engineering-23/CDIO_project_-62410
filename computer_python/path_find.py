@@ -278,8 +278,7 @@ class track:
                         detour = self.find_detour_target(target, car.copy(), walls, self.is_path_safe, car.radius)
                         if detour:
                             printLog("DEBUG", f"Detouring around arc-blocked wall to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
-                            morePath, _ = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1, car=car.copy())
-                            return path + morePath, target
+                            return path + self.generatepath(target=detour, checkTarget=False, attempt=attempt+1, car=car.copy())[0], target
                         else:
                             printLog("DEBUG", "No valid detour found after arc failed, backing up", producer="pathGenerator")
                             backup_distance = -30
