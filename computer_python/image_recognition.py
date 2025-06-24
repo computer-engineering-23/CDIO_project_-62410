@@ -415,7 +415,7 @@ class Camera:
 
         # Return two perpendicular walls forming the cross
         crossWalls: tuple[Wall, Wall] = (
-        Wall([(min_X, min_Y, max_X, min_Y)]),  # Horizontal wall
+        Wall([(min_X, mid_Y, max_X, mid_Y)]),  # Horizontal wall
         Wall([(mid_X, min_Y, mid_X, max_Y)])  # Vertical wall
         )
         return crossWalls
