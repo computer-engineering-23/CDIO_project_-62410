@@ -138,23 +138,18 @@ class Line:
             if self._intersects(wall):
                 return True
         return False
-    def _intersects(self, wall:Wall, extend:int = 0) -> bool:
-        col:Point = Point(0, 0)
-        func1 = self._asFunction()
-        func2 = wall._asLine()._asFunction()
-        if(func1[0] * func2[1] - func2[0] * func1[1]) == 0:
-            return func1[2] == func2[2]  # lines are parallel or coincident
-        col.y = (func1[1] * func2[2] - func2[1] * func1[2]) / (func1[0] * func2[1] - func2[0] * func1[1])
-        col.x = (func1[2] * func2[0] - func2[2] * func1[0]) / (func1[0] * func2[1] - func2[0] * func1[1])
-        if col.y < min(self.start.y, self.end.y) - extend or col.y > max(self.start.y, self.end.y) + extend:
-            return False
-        if col.x < min(self.start.x, self.end.x) - extend or col.x > max(self.start.x, self.end.x) + extend:
-            return False
-        if col.y < min(wall.start.y, wall.end.y) - extend or col.y > max(wall.start.y, wall.end.y) + extend:
-            return False
-        if col.x < min(wall.start.x, wall.end.x) - extend or col.x > max(wall.start.x, wall.end.x) + extend:
-            return False
-        return True  # returns True if the line intersects with the wall
+    
+    def _intersects(self, wall: Wall, extend: int = 0) -> bool:
+        """Checks if this line segment intersects with a wall segment."""
+        def ccw(A: Point, B: Point, C: Point):
+            return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
+
+        A = self.start
+        B = self.end
+        C = wall.start
+        D = wall.end
+
+        return (ccw(A, C, D) != ccw(B, C, D)) and (ccw(A, B, C) != ccw(A, B, D))
     
     def _asFunction(self) ->tuple[float,float,float]:
         """Converts the line to a function of ax + by + c = 0"""
@@ -200,11 +195,25 @@ class Line:
         """Negates the line by swapping the start and end points"""
         return Line(self.start.negate(), self.end.negate())
     
-    def distanceTo(self, point:Point) -> float:
+    def distanceTo(self, point: Point) -> float:
         """Returns the shortest distance from the line segment to a given point."""
-        a,b,c = self._asFunction()
-        x,y = point.x, point.y
-        return abs(a*x+b*y+c)/math.sqrt(a**2 + b**2) if math.sqrt(a**2 + b**2) != 0 else point.y
+        px = self.end.x - self.start.x
+        py = self.end.y - self.start.y
+        norm = px * px + py * py
+
+        if norm == 0:
+            return point.distanceTo(self.start)
+
+        u = ((point.x - self.start.x) * px + (point.y - self.start.y) * py) / float(norm)
+        u = max(0, min(1, u))  # Clamp u to segment
+
+        x = self.start.x + u * px
+        y = self.start.y + u * py
+
+        dx = x - point.x
+        dy = y - point.y
+
+        return math.hypot(dx, dy)
 class Car:
     """
         Car class to represent the car's position and orientation in the environment
@@ -359,15 +368,13 @@ class Arc:
     
     def points(self) -> List[Point]:
         """Generates start and end points of the arc"""
-        return[
-            Point(
-                self.center.y + self.radius * math.cos(self.start), #y0
-                self.center.x + self.radius * math.sin(self.start)  #x0
-            ),Point(
-                self.center.y + self.radius * math.cos(self.end),   #y1
-                self.center.x + self.radius * math.sin(self.end)    #x1
-            )
+        return [
+            Point(self.center.x + self.radius * math.cos(self.start),
+                self.center.y + self.radius * math.sin(self.start)),
+            Point(self.center.x + self.radius * math.cos(self.end),
+                self.center.y + self.radius * math.sin(self.end))
         ]
+    
     def point_at(self, t: float) -> Point:
         """Returns a point on the arc at angle offset `t` from the start angle"""
         angle = self.start + t  # assumes counter-clockwise
