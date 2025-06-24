@@ -124,7 +124,7 @@ class Camera:
             self.displayFrame(frame, "with camera", debug)
             self.displayFrame(data, "without camera", True)
 
-    def drawToFrame(self, frame:np.ndarray, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None) -> np.ndarray:
+    def drawToFrame(self, frame:np.ndarray, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, points:list[Point] = None) -> np.ndarray:
         if circles is not None:
             names:List[str] = [a[1] for a in circles]
             _circles:List[List[Union[int,float]]] = [a[0] for a in circles]
@@ -152,7 +152,13 @@ class Camera:
                 cv2.circle(frame, (int(corner.x), int(corner.y)), 5, (0, 0, 255), 0)
                 cv2.putText(frame, "corner" + str(i), (int(corner.x) - 10, int(corner.y) - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        
+        if points is not None:
+            for p in points:
+                cv2.circle(frame,(int(p.x),int(p.y)),4,(255,255,255),0)
+        
         return frame
+    
 
     def getFrame(self) -> Union[np.ndarray,None]:
         ret, frame = self.capture.read()
@@ -324,19 +330,28 @@ class Camera:
                     intersection = wallClass[i].intersect(wallClass[j])
                     if(type(intersection) != bool):
                         intersects.append(intersection)
+        
+        
+        frame = self.drawToFrame(np.zeros(self.shape,dtype=np.uint8),points = intersects)
+        self.displayFrame(frame,"intersects of walls")
+        
         split:tuple[list[Point],list[Point],list[Point],list[Point]] = ([],[],[],[])
+        cornerArea = 2/5
+        cornerAreaI = 1 - cornerArea
+        
         for intersect in intersects:
-            if(intersect.x < self.shape[1] / 2 and intersect.y < self.shape[0] / 2): # top-left
+            if(  intersect.x <  self.shape[1] / cornerArea  and intersect.y <  self.shape[0] / cornerArea): # top-left
                 split[0].append(intersect)
-            elif(intersect.x >= self.shape[1] / 2 and intersect.y < self.shape[0] / 2): # top-right
+            elif(intersect.x >= self.shape[1] / cornerAreaI and intersect.y <  self.shape[0] / cornerArea): # top-right
                 split[1].append(intersect)
-            elif(intersect.x < self.shape[1] / 2 and intersect.y >= self.shape[0] / 2): # bottom-left
+            elif(intersect.x <  self.shape[1] / cornerArea  and intersect.y >= self.shape[0] / cornerAreaI): # bottom-left
                 split[2].append(intersect)
-            elif(intersect.x >= self.shape[1] / 2 and intersect.y >= self.shape[0] / 2): # bottom-right
+            elif(intersect.x >= self.shape[1] / cornerAreaI and intersect.y >= self.shape[0] / cornerAreaI): # bottom-right
                 split[3].append(intersect)
         if(any(len(split[i]) == 0 for i in range(0,4))):
             printLog("error","Kunne ikke finde alle hjørner", producer="findCorners")
             return (None,None,None,None)
+        
         x0 = float(np.median(np.array([p.x for p in split[0]])))
         y0 = float(np.median(np.array([p.y for p in split[0]])))
         x1 = float(np.median(np.array([p.x for p in split[1]])))

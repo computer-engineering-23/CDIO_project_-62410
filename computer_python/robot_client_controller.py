@@ -208,7 +208,7 @@ finally:
     printLog("STATUS", "Closing connection without error",producer="client cleanup")
 
 try:
-    client_socket.close()
+    client_socket.close()   
 except Exception as e:
     printLog("ERROR", "Failed to close client socket", str(e),producer="client cleanup")
 finally:
