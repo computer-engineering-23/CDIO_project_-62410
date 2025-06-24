@@ -164,7 +164,7 @@ class Line:
         
         return (a,b,c)  # returns [a, b, c] for the line equation ay + bx + c = 0
     
-    def Shift(self, offset:int, angle:Union[float,None] = None) -> List['Line']:
+    def Shift(self, offset:int | float, angle:Union[float,None] = None) -> List['Line']:
         """Shifts the line by a given offset in both directions"""
         if angle is None:
             angle = self.angle()
@@ -212,8 +212,25 @@ class Line:
 
         dx = x - point.x
         dy = y - point.y
-
+        
         return math.hypot(dx, dy)
+
+    def extend(self,length: float)->'Line':
+        """extends the length of the line by the given amount towards the end point"""
+        dx = self.start.x - self.end.x
+        dy = self.start.y - self.end.y
+        
+        ownLength = self.length()
+        if(ownLength == 0): 
+            ownLength = 0.0000000001
+        
+        end = self.end.copy()
+        start = self.start.copy()
+        end.x += (dx / ownLength) * length
+        end.y += (dy / ownLength) * length
+        return Line(start,end)
+
+
 class Car:
     """
         Car class to represent the car's position and orientation in the environment
@@ -346,6 +363,12 @@ class Car:
     def radius(self) -> float:
         """Returns the turning radius of the car (from rotation center to front)"""
         return Line(self.front, self.getRotationCenter()).length()
+
+    def getBoundingBox(self:'Car') -> list['Line']:
+        """generate 3 lines, one following the center of the car and two lines that are the previouse line offset to the wheels"""
+        centerLine:Line = Line(self.getRotationCenter(),self.front)
+        return [centerLine, *centerLine.Shift(self.getWidth() / 2)]
+
 class Arc:
     """
         Arc class to represent an arc in the environment

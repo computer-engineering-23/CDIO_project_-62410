@@ -73,7 +73,11 @@ class track:
         if(targets):
             printLog("DEBUG", "updating targets",producer="update track")
             detected = self.cam.findCircle(np.copy(frame))
-            self.targets = self.formatTargets(detected) if detected else []
+            if detected:
+                all_targets = self.formatTargets(detected)
+                self.targets = [t for t in all_targets if not self.is_target_too_close(t)]
+            else:
+                self.targets = []
         
         if(obsticles is not None):
             printLog("DEBUG", "updating obsticles",producer="update track")
@@ -107,6 +111,13 @@ class track:
                 self.extra_obstacles = []
         
         return 1
+    
+    def is_target_too_close(self, target: Point, min_distance: float = 25) -> bool:
+        """Returns True if the target is too close to any wall or extra obstacle (like the cross)."""
+        for wall in self.walls + self.extra_obstacles:
+            if Line(wall.start, wall.end).distanceTo(target) < min_distance:
+                return True
+        return False
     
     def formatWalls(self, walls:List[List[tuple[int | float, int | float, int | float, int | float]]] | None) -> List[Wall]:
         realWalls = []
@@ -153,9 +164,27 @@ class track:
         return Car([Point(0,0),Point(0,1),Point(1,0)], Point(0, 0))  # Default car if no car is provided
     
     
-    def is_path_clear(self, start: Point, end: Point, walls: list, robot_radius: float = 0.0) -> bool:
-        path_line = Line(start, end)
-        return not path_line.intersects(walls)
+    def is_path_safe(self, car: 'Car', target: 'Point', walls: list['Wall'], buffer: float | None= None) -> bool:
+        """
+        Check if the car can drive straight to the target without intersecting any walls,
+        by extending the car's bounding lines toward the target and checking for intersection.
+        """
+        bounding_lines = car.getBoundingBox()
+        safe = True
+
+        if buffer is None:
+            buffer = target.distanceTo(car.front)
+
+        for line in bounding_lines:
+            # Extend each bounding line to reach the target
+            extended_line = line.extend(buffer)
+
+            for wall in walls:
+                if extended_line.intersects([wall]):
+                    return False  # Collision risk
+        
+        return safe  # All bounding lines are clear
+
         
     def arc_intersects_wall(self, arc: Arc, walls: list[Wall], robot_radius: float = 0.0) -> bool:
         return arc.Intersects(walls)
@@ -187,7 +216,7 @@ class track:
         return None
 
 
-    def generatepath(self, target:Point | None = None, checkTarget:bool = True, attempt:int = 0) -> tuple[List[Movement | Rotation | deliver],Point |None]:
+    def generatepath(self, target:Point | None = None, checkTarget:bool = True, attempt:int = 0, car:Car | None = None) -> tuple[List[Movement | Rotation | deliver],Point |None]:
         """Generates a path from the car to the closest target"""
         MAX_ATTEMPTS = 10
         walls = self.walls + self.extra_obstacles
@@ -197,11 +226,11 @@ class track:
         path: List[deliver | Movement | Rotation] = []
         
         # Copy car to simulate forward steps
-        car = self.car.copy()
+        if(car is None):
+            car = self.car.copy()
         car_center = car.getRotationCenter()
         direction = car.getRotation()
         front = car.front
-        
         if target is None:
             if self.targets is None or len(self.targets) == 0 or self.car.front is None:
                 printLog("DEBUG", "no targets or no car",producer="pathGenerator")
@@ -228,63 +257,79 @@ class track:
                 printLog(f"DEBUG", "failed to adjust target",producer="pathGenerator")
         else:
             printLog("DEBUG", f"using provided target: ({target.x:.2f}, {target.y:.2f})",producer="pathGenerator")
-        # Calculate vector to target
-        dy = target.y - car_center.y
-        dx = target.x - car_center.x
-        angle_to_target = math.atan2(dy, dx)
-        # Compute required rotation
-        rotation_amount = deltaRotation(direction, angle_to_target)
+        
+        while True:
+            # Calculate vector to target
+            dy = target.y - car_center.y
+            dx = target.x - car_center.x
+            angle_to_target = math.atan2(dy, dx)
+            # Compute required rotation
+            rotation_amount = deltaRotation(direction, angle_to_target)
 
-        arc = Arc(center=car_center, startAngle=direction, endAngle=angle_to_target, radius=car.radius)
-        if arc.Intersects(walls):
-            safe_angle = self.find_safe_arc(car, angle_to_target, self.walls)
-            if safe_angle is None:
-                detour = self.find_detour_target(target, car.front, self.walls, self.is_path_clear, car.radius)
-                if detour:
-                    printLog("DEBUG", f"Detouring around arc-blocked wall to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
-                    return self.generatepath(target=detour, checkTarget=False, attempt=attempt+1)
+            arc = Arc(center=car_center, startAngle=direction, endAngle=angle_to_target, radius=car.radius)
+            if arc.Intersects(walls):
+                safe_angle = self.find_safe_arc(car, angle_to_target, self.walls)
+                if safe_angle is None:
+                    detour = self.find_detour_target(target, car.front, self.walls, self.is_path_safe, car.radius)
+                    if detour:
+                        printLog("DEBUG", f"Detouring around arc-blocked wall to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
+                        continue
+                    else:
+                        printLog("DEBUG", "No valid detour found after arc failed, backing up", producer="pathGenerator")
+                        # Add a backup movement and try again
+                        backup_distance = -30  # Negative for backing up
+                        path.append(Movement(backup_distance))
+                        car.applySelf(path[-1])
+                        # Try to generate a new path from the new position
+                        new_path, new_target = self.generatepath(target=target, checkTarget=checkTarget, attempt=attempt+1)
+                        path.extend(new_path)
+                        continue
                 else:
-                    printLog("DEBUG", "No valid detour found after arc failed, backing up", producer="pathGenerator")
-                    # Add a backup movement and try again
-                    backup_distance = -30  # Negative for backing up
-                    path.append(Movement(backup_distance))
-                    car.applySelf(path[-1])
-                    # Try to generate a new path from the new position
-                    new_path, new_target = self.generatepath(target=target, checkTarget=checkTarget, attempt=attempt+1)
-                    path.extend(new_path)
-                    return path, new_target
-            else:
-                printLog("DEBUG", f"Adjusted rotation angle to avoid wall: {safe_angle:.2f}", producer="pathGenerator")
-                angle_to_target = safe_angle
-                rotation_amount = deltaRotation(direction, safe_angle)
-        
-        if(abs(rotation_amount) > 0.1):
-            path.append(Rotation(rotation_amount))
-            car.applySelf(path[-1])  # apply rotation to simulate robot state
-        
-        # Compute forward movement
-        distance = car.front.distanceTo(target)
-        if(distance < 15):
-            distance = 35
-
-        if not self.is_path_clear(car.front, target, self.walls, robot_radius=car.radius):
-            detour = self.find_detour_target(target, car.front, self.walls, self.is_path_clear, car.radius)
-            if detour:
-                printLog("DEBUG", "Using detour instead of blocked path", producer="pathGenerator")
-                return self.generatepath(target=detour, checkTarget=False, attempt=attempt+1)
-            else:
-                printLog("DEBUG", "No valid detour found", producer="pathGenerator")
-                return path, None
+                    printLog("DEBUG", f"Adjusted rotation angle to avoid wall: {safe_angle:.2f}", producer="pathGenerator")
+                    angle_to_target = safe_angle
+                    rotation_amount = deltaRotation(direction, safe_angle)
             
-        path.append(Movement(distance))
-        car.applySelf(path[-1])  # apply movement to simulate robot state
-        
-        # Debug info
-        printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})",producer="pathGenerator")
-        printLog("DEBUG", f"Front:   ({front.x:.2f}, {front.y:.2f})",producer="pathGenerator")
-        printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad",producer="pathGenerator")
-        printLog("DEBUG", f"Rotation applied: {rotation_amount:.2f} rad",producer="pathGenerator")
-        printLog("DEBUG", f"Movement: {distance:.2f} px",producer="pathGenerator")
+            if(abs(rotation_amount) > 0.1):
+                path.append(Rotation(rotation_amount))
+                if not self.is_path_safe(car, target, self.walls, buffer=car.radius):
+                    detour = self.find_detour_target(target, car.front, self.walls, self.is_path_safe, car.radius)
+                    if detour:
+                        printLog("DEBUG", "Using detour instead of blocked path", producer="pathGenerator")
+                        morePath = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1,car = car)
+                        return path + morePath[0] , target
+                    else:
+                        car.applySelf(path[-1])  # apply rotation to simulate robot state    
+                else:
+                    car.applySelf(path[-1])  # apply rotation to simulate robot state
+            
+            # Compute forward movement
+            distance = car.front.distanceTo(target)
+            if(distance < 15):
+                distance = 35
+
+            #check if car hits something with a boundning box
+            if not self.is_path_safe(car, target, self.walls, buffer=car.radius):
+                detour = self.find_detour_target(target, car.front, walls, self.is_path_safe, car.radius)
+                if detour:
+                    printLog("DEBUG", f"Using detour to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
+                    morePath = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1,car = car)
+                    return path + morePath[0], target
+                else:
+                    printLog("DEBUG", "No valid detour found, backing up", producer="pathGenerator")
+                    # Add a backup movement and try again
+                    backup_distance = -30
+                
+            path.append(Movement(distance))
+            car.applySelf(path[-1])  # apply movement to simulate robot state
+            
+            # Debug info
+            printLog("DEBUG", f"Target: ({target.x:.2f}, {target.y:.2f})",producer="pathGenerator")
+            printLog("DEBUG", f"Front:   ({front.x:.2f}, {front.y:.2f})",producer="pathGenerator")
+            printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad",producer="pathGenerator")
+            printLog("DEBUG", f"Rotation applied: {rotation_amount:.2f} rad",producer="pathGenerator")
+            printLog("DEBUG", f"Movement: {distance:.2f} px",producer="pathGenerator")
+            if(car.front.distanceTo(target) < 10):
+                break
         
         return (path,target)
 
