@@ -140,9 +140,10 @@ class Line:
         return False
     
     def _intersects(self, wall: Wall, extend: int = 0, tolerance: float = 1e-3) -> bool:
+        """Checks if this line segment intersects with a wall segment."""
         # Extend the current line by the specified amount
-        extended_line = self.extend(extend, even=True)
-        extended_wall = wall._asLine().extend(extend, even=True)
+        extended_line = self.extend(extend, even=True) # Apply half extension to each side if even
+        extended_wall = wall._asLine().extend(extend, even=True) # Apply half extension to each side if even
 
         # Convert both lines to their function representation
         a1, b1, c1 = extended_line._asFunction()
@@ -153,14 +154,36 @@ class Line:
 
         # If determinant is close to zero, lines are parallel or coincident
         if abs(det) < tolerance:
-            return abs(c1 - c2) < tolerance
+            # Check for collinearity and overlap if parallel
+            # A more robust collinearity check using cross product
+            # (P2-P1) x (P3-P1) == 0 where P1,P2 are on one line, P3 on other
+            collinear_check1 = (extended_line.end.x - extended_line.start.x) * (extended_wall.start.y - extended_line.start.y) - \
+                               (extended_line.end.y - extended_line.start.y) * (extended_wall.start.x - extended_line.start.x)
+            collinear_check2 = (extended_line.end.x - extended_line.start.x) * (extended_wall.end.y - extended_line.start.y) - \
+                               (extended_line.end.y - extended_line.start.y) * (extended_wall.end.x - extended_line.start.x)
+
+            if abs(collinear_check1) < tolerance and abs(collinear_check2) < tolerance:
+                # Lines are collinear, check for overlap
+                # Project onto the axis with larger extent
+                
+                # Sort points to simplify overlap check
+                line1_min_x, line1_max_x = min(extended_line.start.x, extended_line.end.x), max(extended_line.start.x, extended_line.end.x)
+                line1_min_y, line1_max_y = min(extended_line.start.y, extended_line.end.y), max(extended_line.start.y, extended_line.end.y)
+                wall_min_x, wall_max_x = min(extended_wall.start.x, extended_wall.end.x), max(extended_wall.start.x, extended_wall.end.x)
+                wall_min_y, wall_max_y = min(extended_wall.start.y, extended_wall.end.y), max(extended_wall.start.y, extended_wall.end.y)
+
+                overlap_x = max(line1_min_x, wall_min_x) <= min(line1_max_x, wall_max_x) + tolerance
+                overlap_y = max(line1_min_y, wall_min_y) <= min(line1_max_y, wall_max_y) + tolerance
+
+                return overlap_x and overlap_y
+            return False  # Parallel and non-collinear, no intersection
 
         # Calculate intersection point
         x = (b1 * c2 - b2 * c1) / det
         y = (a2 * c1 - a1 * c2) / det
         intersection = Point(x, y)
 
-        # Check if the intersection point lies within both line segments
+        # Check if the intersection point lies within both line segments (including endpoints)
         within_line = (
             min(extended_line.start.x, extended_line.end.x) - tolerance <= intersection.x <= max(extended_line.start.x, extended_line.end.x) + tolerance and
             min(extended_line.start.y, extended_line.end.y) - tolerance <= intersection.y <= max(extended_line.start.y, extended_line.end.y) + tolerance
@@ -172,16 +195,16 @@ class Line:
 
         return within_line and within_wall
     
-    def _asFunction(self) ->tuple[float,float,float]:
+    def _asFunction(self) -> tuple[float, float, float]:
         """Converts the line to a function of ax + by + c = 0"""
         if self.start.y < self.end.y:
             self.start, self.end = self.end, self.start
         
-        a = (self.end.x - self.start.x)  # a
-        b = (self.start.y - self.end.y)  # b
-        c = (self.start.x * (self.end.y - self.start.y) - (self.end.x - self.start.x) * self.start.y)  # c
+        a = self.end.y - self.start.y  # a = (y2 - y1)
+        b = -(self.end.x - self.start.x)  # b = -(x2 - x1)
+        c = -(a * self.start.x + b * self.start.y)  # c = -(a * x1 + b * y1)
         
-        return (a,b,c)  # returns [a, b, c] for the line equation ay + bx + c = 0
+        return (a, b, c)  # returns [a, b, c] for the line equation ax + by + c = 0
     
     def Shift(self, offset:int | float, angle:Union[float,None] = None) -> tuple['Line','Line']:
         """Shifts the line by a given offset in both directions"""
@@ -218,42 +241,43 @@ class Line:
         """Returns the shortest distance from the line segment to a given point."""
         px = self.end.x - self.start.x
         py = self.end.y - self.start.y
-        norm = px * px + py * py
-
-        if norm == 0:
+        
+        # If the segment is a point
+        if px == 0 and py == 0:
             return point.distanceTo(self.start)
 
-        u = ((point.x - self.start.x) * px + (point.y - self.start.y) * py) / float(norm)
-        u = max(0, min(1, u))  # Clamp u to segment
+        # Calculate the parameter t for the closest point on the infinite line
+        # t = ((P - A) . (B - A)) / |B - A|^2
+        t = ((point.x - self.start.x) * px + (point.y - self.start.y) * py) / (px * px + py * py)
 
-        x = self.start.x + u * px
-        y = self.start.y + u * py
+        # Clamp t to [0, 1] to find the closest point on the segment
+        t = max(0, min(1, t))
 
-        dx = x - point.x
-        dy = y - point.y
-        
-        return math.hypot(dx, dy)
+        # Project the point onto the segment
+        closest_x = self.start.x + t * px
+        closest_y = self.start.y + t * py
 
-    def extend(self,length: float,even:bool=False)->'Line':
-        """extends the length of the line by the given amount towards the end point"""
-        dx = self.start.x - self.end.x
-        dy = self.start.y - self.end.y
-        
-        ownLength = self.length()
-        if(ownLength == 0): 
-            ownLength = 0.0000000001
-        
-        end = self.end.copy()
-        start = self.start.copy()
-        if(not even):
-            end.x += (dx / ownLength) * length
-            end.y += (dy / ownLength) * length
+        # Calculate the distance
+        return math.hypot(point.x - closest_x, point.y - closest_y)
+
+    def extend(self, length: float, even: bool = False) -> 'Line':
+        """Extends the line by the specified length."""
+        dx = self.end.x - self.start.x
+        dy = self.end.y - self.start.y
+
+        line_length = math.sqrt(dx**2 + dy**2)
+        if line_length == 0:
+            return self  # Avoid division by zero for zero-length lines
+
+        scale = length / line_length
+        if even:
+            start = Point(self.start.x - dx * scale / 2, self.start.y - dy * scale / 2)
+            end = Point(self.end.x + dx * scale / 2, self.end.y + dy * scale / 2)
         else:
-            end.x += (dx / ownLength) * (length / 2)
-            end.y += (dy / ownLength) * (length / 2)
-            start.x -= (dx / ownLength) * (length / 2)
-            start.y -= (dy / ownLength) * (length / 2)
-        return Line(start,end)
+            start = self.start
+            end = Point(self.end.x + dx * scale, self.end.y + dy * scale)
+
+        return Line(start, end)
 
 
 class Car:
@@ -473,10 +497,11 @@ class Arc:
             start = norm(start)
             end = norm(end)
 
-            if start < end:
-                return start <= angle <= end
-            else:
+            # Adjust angles for cases crossing 0/2pi boundary
+            if start > end:
                 return angle >= start or angle <= end
+            else:
+                return start <= angle <= end
 
         # Convert the wall to a line
         line = wall._asLine()
@@ -485,43 +510,68 @@ class Arc:
         for point in [line.start, line.end]:
             dx = point.x - self.center.x
             dy = point.y - self.center.y
-            dist = math.sqrt(dx**2 + dy**2)
-            angle = math.atan2(dy, dx)
-
-            if dist <= self.radius and angle_in_arc(angle, self.start, self.end):
-                return True
+            dist_sq = dx**2 + dy**2
+            
+            # Check if within radius (with tolerance for floating point)
+            if dist_sq <= self.radius**2 + 1e-6:
+                angle = math.atan2(dy, dx)
+                if angle_in_arc(angle, self.start, self.end):
+                    return True
 
         # 2. Check if the wall intersects the arc’s circle
         # Translate the wall line to the arc’s local space
         local_start = Point(line.start.x - self.center.x, line.start.y - self.center.y)
         local_end = Point(line.end.x - self.center.x, line.end.y - self.center.y)
 
-        dx = local_end.x - local_start.x
-        dy = local_end.y - local_start.y
-        dr2 = dx**2 + dy**2
-        D = local_start.x * local_end.y - local_end.x * local_start.y
-        discriminant = self.radius**2 * dr2 - D**2
+        dx_line = local_end.x - local_start.x
+        dy_line = local_end.y - local_start.y
+        dr2 = dx_line**2 + dy_line**2
+        
+        # A = local_start.x, B = local_start.y, C = local_end.x, D = local_end.y
+        # From line segment intersection with circle:
+        # P = A + t * (C - A)
+        # (Px - CenterX)^2 + (Py - CenterY)^2 = R^2
+        # ( (Ax + t*dx_line) )^2 + ( (Ay + t*dy_line) )^2 = R^2
+        # Where CenterX and CenterY are 0 in local space
+        # (Ax + t*dx_line)^2 + (Ay + t*dy_line)^2 = R^2
+        # (Ax^2 + 2*Ax*t*dx_line + t^2*dx_line^2) + (Ay^2 + 2*Ay*t*dy_line + t^2*dy_line^2) = R^2
+        # t^2 * (dx_line^2 + dy_line^2) + 2*t*(Ax*dx_line + Ay*dy_line) + (Ax^2 + Ay^2 - R^2) = 0
+        # t^2 * dr2 + 2*t*dot_product + (local_start.x^2 + local_start.y^2 - self.radius^2) = 0
+        
+        a = dr2
+        b = 2 * (local_start.x * dx_line + local_start.y * dy_line)
+        c = local_start.x**2 + local_start.y**2 - self.radius**2
 
-        if discriminant < 0:
+        discriminant = b*b - 4*a*c
+
+        if discriminant < -1e-6: # Allow for small negative due to floating point
             return False  # no intersection with circle
 
-        sqrt_disc = math.sqrt(discriminant)
-        sign_dy = 1 if dy >= 0 else -1
+        sqrt_disc = math.sqrt(max(0, discriminant)) # Ensure non-negative argument to sqrt
 
         # 3. Compute the intersection points
-        for sign in [+1, -1]:
-            x = (D * dy + sign * sign_dy * dx * sqrt_disc) / dr2
-            y = (-D * dx + sign * abs(dy) * sqrt_disc) / dr2
-            world_x = x + self.center.x
-            world_y = y + self.center.y
-            intersection = Point(world_x, world_y)
+        # t = (-b +/- sqrt(discriminant)) / 2a
+        t1 = (-b + sqrt_disc) / (2 * a)
+        t2 = (-b - sqrt_disc) / (2 * a)
+        
+        # Check if intersection points are on the line segment [0, 1] and within the arc's angle
+        for t in [t1, t2]:
+            if -1e-6 <= t <= 1.0 + 1e-6: # Check if t is within [0, 1] range with tolerance
+                intersection_x_local = local_start.x + t * dx_line
+                intersection_y_local = local_start.y + t * dy_line
+                
+                intersection_world = Point(intersection_x_local + self.center.x, intersection_y_local + self.center.y)
 
-            angle = math.atan2(intersection.y - self.center.y, intersection.x - self.center.x)
-
-            # Check if intersection is within the arc's angle
-            if angle_in_arc(angle, self.start, self.end):
-                # Also check if the point lies within the wall segment
-                if wall._asLine().distanceTo(intersection):
-                    return True
-
+                angle = math.atan2(intersection_world.y - self.center.y, intersection_world.x - self.center.x)
+                
+                if angle_in_arc(angle, self.start, self.end):
+                    # Check if the intersection point is actually on the wall segment
+                    # (this is implicitly handled by the 't' range check for the line segment)
+                    # The more robust check from _intersects would be:
+                    min_wx, max_wx = min(line.start.x, line.end.x), max(line.start.x, line.end.x)
+                    min_wy, max_wy = min(line.start.y, line.end.y), max(line.start.y, line.end.y)
+                    
+                    if (min_wx - 1e-6 <= intersection_world.x <= max_wx + 1e-6 and
+                        min_wy - 1e-6 <= intersection_world.y <= max_wy + 1e-6):
+                        return True
         return False
