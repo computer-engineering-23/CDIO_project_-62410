@@ -142,8 +142,8 @@ class Line:
     def _intersects(self, wall: Wall, extend: int = 0, tolerance:float = 1) -> bool:
         """Checks if this line segment intersects with a wall segment."""
         # Extend the current line by the specified amount
-        extended_line = self.extend(extend)
-        extended_wall = wall._asLine().extend(extend)
+        extended_line = self.extend(extend,even=True)
+        extended_wall = wall._asLine().extend(extend,even=True)
 
         # Convert both lines to their function representation
         a1, b1, c1 = extended_line._asFunction()
@@ -154,8 +154,7 @@ class Line:
 
         # If determinant is zero, lines are parallel or coincident
         if det == 0:
-            return False
-
+            return c1 == c2  # Lines are parallel or coincident, check if they are the same line
         # Calculate intersection point
         x = (b1 * c2 - b2 * c1) / det
         y = (a2 * c1 - a1 * c2) / det
@@ -171,8 +170,6 @@ class Line:
         """Converts the line to a function of ax + by + c = 0"""
         if self.start.y < self.end.y:
             self.start, self.end = self.end, self.start
-        if(self.start.y == self.end.y):
-            return (0,0,0)
         
         a = (self.end.x - self.start.x)  # a
         b = (self.start.y - self.end.y)  # b
@@ -231,7 +228,7 @@ class Line:
         
         return math.hypot(dx, dy)
 
-    def extend(self,length: float)->'Line':
+    def extend(self,length: float,even:bool=False)->'Line':
         """extends the length of the line by the given amount towards the end point"""
         dx = self.start.x - self.end.x
         dy = self.start.y - self.end.y
@@ -242,8 +239,14 @@ class Line:
         
         end = self.end.copy()
         start = self.start.copy()
-        end.x += (dx / ownLength) * length
-        end.y += (dy / ownLength) * length
+        if(not even):
+            end.x += (dx / ownLength) * length
+            end.y += (dy / ownLength) * length
+        else:
+            end.x += (dx / ownLength) * (length / 2)
+            end.y += (dy / ownLength) * (length / 2)
+            start.x -= (dx / ownLength) * (length / 2)
+            start.y -= (dy / ownLength) * (length / 2)
         return Line(start,end)
 
 
