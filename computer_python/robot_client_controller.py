@@ -79,9 +79,7 @@ try:
             printLog("RETRY","no car",producer="client Loop")
             robot_track.cam.displayFrame(frame,"fail",True)
             step = Movement(-10)
-            continue
-
-        if not hasBall:
+        elif not hasBall:
             path, target = robot_track.generatepath(target)
             delivering = False
             rotating_to_deliver = False
@@ -166,7 +164,7 @@ try:
                 printLog("DEBUG", f"Skipping small rotation: {step.angle:.4f}", producer="client sender")
                 continue
             angle_degrees = math.degrees(step.angle)
-            cmd = f"rotate {-angle_degrees / 10:.2f}"
+            cmd = f"rotate {-angle_degrees / 3:.2f}"
             printLog("status", "create rotate", step.angle, producer="client sender")
 
         else:
