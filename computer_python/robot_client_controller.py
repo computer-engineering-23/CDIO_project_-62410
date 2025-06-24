@@ -40,6 +40,8 @@ hasBall = False
 ballFrames = 0
 frameNumber = 0
 path: List[Movement | Rotation | deliver] = []
+delivering = False
+approach_point = None
 
 try:
     while(1):
@@ -67,36 +69,27 @@ try:
         else:
             if not hasBall:
                 path, target = robot_track.generatepath(target)
+               
 
             else:
                 if target is not None:
-                    assert target is not None
-                    distance_to_goal = robot_track.car.front.distanceTo(target)
+                    car_front = robot_track.car.front
+                    direction_to_goal = math.atan2(target.y - car_front.y, target.x - car_front.x)
+                    approach_distance = 60
+                    approach_x = target.x - approach_distance * math.cos(direction_to_goal)
+                    approach_y = target.y - approach_distance * math.sin(direction_to_goal)
+                    approach_point = Point(approach_x, approach_y)
+                    robot_track.approach_point = approach_point
 
-                    if distance_to_goal > 60:
-                        printLog("DELIVERY", f"Getting closer to goal ({distance_to_goal:.1f}px)", producer="client Loop")
-
-                        # Compute the direction to the goal
-                        direction_to_goal = math.atan2(target.y - robot_track.car.front.y, target.x - robot_track.car.front.x)
-                        approach_distance = 60  # Distance behind goal to approach from
-
-                        # Compute approach point behind goal
-                        approach_x = target.x - approach_distance * math.cos(direction_to_goal)
-                        approach_y = target.y - approach_distance * math.sin(direction_to_goal)
-                        approach_point = Point(approach_x, approach_y)
-
-                        # Save for visualization
-                        robot_track.approach_point = approach_point
-
-                        # Plan a path to the approach point
+                    if not delivering:
                         path, _ = robot_track.generatepath(approach_point, checkTarget=False)
-
+                        if robot_track.car.front.distanceTo(approach_point) < 10:
+                            delivering = True
+                            path = []  # wait one frame before delivering
                     else:
-                        printLog("DELIVERY", "Close enough to deliver", producer="client Loop")
-
                         car = robot_track.car.copy()
-                        direction = car.getRotation()
                         center = car.getRotationCenter()
+                        direction = car.getRotation()
 
                         dx = target.x - center.x
                         dy = target.y - center.y
@@ -104,21 +97,18 @@ try:
 
                         rot = deltaRotation(direction, angle_to_goal)
                         path = []
-
                         if abs(rot) > 0.1:
-                            printLog("DELIVERY", f"Rotating towards goal: {rot:.2f} rad", producer="client Loop")
                             path.append(Rotation(rot))
                             car.applySelf(path[-1])
 
-                        # Add the delivery movement
                         path.append(deliver(0.2))
-            
-            robot_track.Draw(frame,path,target)
-            robot_track.cam.displayFrame(frame,"Track")
-            if(path is None or len(path) < 1):
-                printLog("RETRY", "failed to follow path (empty)",producer="client Loop")
-                continue
-            step = path[0]
+                        
+        robot_track.Draw(frame,path,target)
+        robot_track.cam.displayFrame(frame,"Track")
+        if(path is None or len(path) < 1):
+            printLog("RETRY", "failed to follow path (empty)",producer="client Loop")
+            continue
+        step = path[0]
         
         #client sender
         if isinstance(step, Movement):
