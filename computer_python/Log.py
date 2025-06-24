@@ -4,11 +4,17 @@ logFile = None
 startTime = 0
 noTag = []
 prettyPrintEnabled = False
+logSize = 0
+maxLog = 1000 * 1000 * 80
+logID = 0
+oldLogLines = 0
+logName = ""
 
 def enableLog():
-  global logFile, startTime
+  global logFile, startTime, logName
   tim = time.gmtime()
-  logFile = open(f"../logs/log.{tim.tm_mday:02d}-{tim.tm_hour:02d}-{tim.tm_min:02d}.txt", "x")
+  logName = f"../logs/log.{tim.tm_mday:02d}-{tim.tm_hour:02d}-{tim.tm_min:02d}_"
+  logFile = open(f"{logName}0.txt", "x")
   startTime = time.time()
 
 def blockTag(tag:str):
@@ -39,6 +45,16 @@ def disablePrettyPrint():
   """
   global prettyPrintEnabled
   prettyPrintEnabled = False
+
+def incrimentLogID():
+  global logFile, logSize, logID
+  if(logFile is not None):
+    logID += 1
+    logFile.close()
+    logFile = open(f"{logName}{logID}.txt")
+    logSize = 0
+    printLog("INFO","this is a new logfile, old file:",f"{logName}{logID-1}.txt",producer="Log System")
+  
 
 def printLog(tag:str,message:str,*following,printable:bool=True,producer:str="unkown"):
   global startTime, noTag
@@ -101,9 +117,13 @@ def logWrite(tag:str, message:str, producer:str, current_time:float) -> None:
   """
   Prints the log message to the console and the log file.
   """
-  global logFile
+  global logFile, logSize,maxLog
   if(logFile is not None):
-    logFile.write(f"{timeFormat(current_time)} {producerFormat(producer)} {tagFormat(tag)}:\t{messageFormat(message)}\n")
+    text = f"{timeFormat(current_time)} {producerFormat(producer)} {tagFormat(tag)}:\t{messageFormat(message)}\n"
+    logSize += len(text)
+    logFile.write(text)
+    if(logSize >= maxLog):
+      incrimentLogID()
 
 def color(type:str = "") -> str:
   global prettyPrintEnabled

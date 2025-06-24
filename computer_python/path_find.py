@@ -269,25 +269,27 @@ class track:
             arc = Arc(center=car_center, startAngle=direction, endAngle=angle_to_target, radius=car.radius)
             if arc.Intersects(walls):
                 safe_angle = self.find_safe_arc(car, angle_to_target, self.walls)
-                if safe_angle is None:
-                    detour = self.find_detour_target(target, car, self.walls, self.is_path_safe, car.radius)
-                    if detour:
-                        printLog("DEBUG", f"Detouring around arc-blocked wall to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
-                        morePath = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1,car = car)
-                        return path + morePath[0] , target
-                    else:
-                        printLog("DEBUG", "No valid detour found after arc failed, backing up", producer="pathGenerator")
-                        # Add a backup movement and try again
-                        backup_distance = -30  # Negative for backing up
-                        path.append(Movement(backup_distance))
-                        car.applySelf(path[-1])
-                        # Try to generate a new path from the new position
-                        new_path, new_target = self.generatepath(target=target, checkTarget=checkTarget, attempt=attempt+1)
-                        path.extend(new_path)
-                        return path, target
+                if arc.Intersects(walls):
+                    safe_angle = self.find_safe_arc(car, angle_to_target, walls)
+                    if safe_angle is None:
+                        detour = self.find_detour_target(target, car.copy(), walls, self.is_path_safe, car.radius)
+                        if detour:
+                            printLog("DEBUG", f"Detouring around arc-blocked wall to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
+                            morePath, _ = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1, car=car.copy())
+                            return path + morePath, target
+                        else:
+                            printLog("DEBUG", "No valid detour found after arc failed, backing up", producer="pathGenerator")
+                            backup_distance = -30
+                            path.append(Movement(backup_distance))
+                            car.applySelf(path[-1])
+                            morePath, _ = self.generatepath(target=target, checkTarget=checkTarget, attempt=attempt+1, car=car.copy())
+                            return path + morePath, target
                 else:
                     printLog("DEBUG", f"Adjusted rotation angle to avoid wall: {safe_angle:.2f}", producer="pathGenerator")
                     angle_to_target = safe_angle
+                    if direction is None or safe_angle is None:
+                        printLog("ERROR", "Cannot compute rotation: direction or angle is None", producer="pathGenerator")
+                        return [Movement(-20)], target
                     rotation_amount = deltaRotation(direction, safe_angle)
             
             if(abs(rotation_amount) > 0.1):
