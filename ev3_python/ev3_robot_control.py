@@ -6,7 +6,7 @@ import ev3dev.ev3 as ev3
 import time
 import threading
 
-host = '192.168.28.172' # IP-address to computer
+host = '192.168.28.173' # IP-address to computer
 
 port = 12345            # Port the server is listening to
 
