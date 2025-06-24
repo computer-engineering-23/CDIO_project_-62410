@@ -139,8 +139,7 @@ class Line:
                 return True
         return False
     
-    def _intersects(self, wall: Wall, extend: int = 0, tolerance: float = 1e-6) -> bool:
-        """Checks if this line segment intersects with a wall segment."""
+    def _intersects(self, wall: Wall, extend: int = 0, tolerance: float = 1e-3) -> bool:
         # Extend the current line by the specified amount
         extended_line = self.extend(extend, even=True)
         extended_wall = wall._asLine().extend(extend, even=True)
@@ -154,7 +153,6 @@ class Line:
 
         # If determinant is close to zero, lines are parallel or coincident
         if abs(det) < tolerance:
-            # Check if the lines are coincident
             return abs(c1 - c2) < tolerance
 
         # Calculate intersection point
@@ -163,10 +161,16 @@ class Line:
         intersection = Point(x, y)
 
         # Check if the intersection point lies within both line segments
-        return (
-            extended_line.distanceTo(intersection) <= tolerance and
-            extended_wall.distanceTo(intersection) <= tolerance
+        within_line = (
+            min(extended_line.start.x, extended_line.end.x) - tolerance <= intersection.x <= max(extended_line.start.x, extended_line.end.x) + tolerance and
+            min(extended_line.start.y, extended_line.end.y) - tolerance <= intersection.y <= max(extended_line.start.y, extended_line.end.y) + tolerance
         )
+        within_wall = (
+            min(extended_wall.start.x, extended_wall.end.x) - tolerance <= intersection.x <= max(extended_wall.start.x, extended_wall.end.x) + tolerance and
+            min(extended_wall.start.y, extended_wall.end.y) - tolerance <= intersection.y <= max(extended_wall.start.y, extended_wall.end.y) + tolerance
+        )
+
+        return within_line and within_wall
     
     def _asFunction(self) ->tuple[float,float,float]:
         """Converts the line to a function of ax + by + c = 0"""
