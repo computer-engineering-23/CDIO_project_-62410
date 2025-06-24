@@ -189,14 +189,14 @@ class track:
     def arc_intersects_wall(self, arc: Arc, walls: list[Wall], robot_radius: float = 0.0) -> bool:
         return arc.Intersects(walls)
     
-    def find_detour_target(self, original_target: Point, car_front: Point, walls, is_path_clear_fn: Callable, robot_radius: float) -> Optional[Point]:
+    def find_detour_target(self, original_target: Point, car: Car, walls, is_path_clear_fn: Callable, robot_radius: float) -> Optional[Point]:
         """Try points in circles around the target to find a reachable detour point"""
         for radius in range(30, 121, 30):  # Try 30, 60, 90, 120 pixels away
             for angle in np.linspace(0, 2 * math.pi, 16, endpoint=False):  # 16 directions
                 dx = radius * math.cos(angle)
                 dy = radius * math.sin(angle)
                 detour = Point(original_target.x + dx, original_target.y + dy)
-                if is_path_clear_fn(car_front, detour, walls, robot_radius):
+                if is_path_clear_fn(car, detour, walls, robot_radius):
                     return detour
         return None
     
@@ -270,7 +270,7 @@ class track:
             if arc.Intersects(walls):
                 safe_angle = self.find_safe_arc(car, angle_to_target, self.walls)
                 if safe_angle is None:
-                    detour = self.find_detour_target(target, car.front, self.walls, self.is_path_safe, car.radius)
+                    detour = self.find_detour_target(target, car, self.walls, self.is_path_safe, car.radius)
                     if detour:
                         printLog("DEBUG", f"Detouring around arc-blocked wall to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
                         continue
@@ -292,7 +292,7 @@ class track:
             if(abs(rotation_amount) > 0.1):
                 path.append(Rotation(rotation_amount))
                 if not self.is_path_safe(car, target, self.walls, buffer=car.radius):
-                    detour = self.find_detour_target(target, car.front, self.walls, self.is_path_safe, car.radius)
+                    detour = self.find_detour_target(target, car, self.walls, self.is_path_safe, car.radius)
                     if detour:
                         printLog("DEBUG", "Using detour instead of blocked path", producer="pathGenerator")
                         morePath = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1,car = car)
@@ -309,7 +309,7 @@ class track:
 
             #check if car hits something with a boundning box
             if not self.is_path_safe(car, target, self.walls, buffer=car.radius):
-                detour = self.find_detour_target(target, car.front, walls, self.is_path_safe, car.radius)
+                detour = self.find_detour_target(target, car, walls, self.is_path_safe, car.radius)
                 if detour:
                     printLog("DEBUG", f"Using detour to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
                     morePath = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1,car = car)
