@@ -112,10 +112,17 @@ class track:
         
         return 1
     
-    def is_target_too_close(self, target: Point, min_distance: float = 25) -> bool:
+    def is_target_too_close(self, target: Point, min_distance: float = 50) -> bool:
         """Returns True if the target is too close to any wall or extra obstacle (like the cross)."""
         for wall in self.walls + self.extra_obstacles:
             if Line(wall.start, wall.end).distanceTo(target) < min_distance:
+                return True
+            
+        if self.car:
+            for pt in self.car.triangle:
+                if pt.distanceTo(target) < min_distance:
+                    return True
+            if self.car.front.distanceTo(target) < min_distance:
                 return True
         return False
     
