@@ -262,9 +262,11 @@ class track:
                         for i in range(len(self.targets)):
                             if car.validTarget(self.targets[i]):
                                 target = self.targets[i]
-                                isSets = True
+                                isSet = True
                                 printLog("DEBUG", f"using target {target}",producer="pathGenerator")
                                 break
+                        if isSet:
+                            break
                 if isSet:
                     break
                 if car.validTarget(self.targets[i]):
