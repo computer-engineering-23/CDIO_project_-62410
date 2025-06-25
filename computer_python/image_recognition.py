@@ -23,7 +23,7 @@ class Camera:
         self.cross:Tuple[Wall,Wall] | None= None
 
         self.hsv_thresholds = {
-        'Ball_Orange': {
+                'Ball_Orange': {
             'low': np.array([11, 111, 186]),
             'high': np.array([30, 255, 255])
         },
@@ -124,7 +124,10 @@ class Camera:
             self.displayFrame(frame, "with camera", debug)
             self.displayFrame(data, "without camera", True)
 
-    def drawToFrame(self, frame:np.ndarray, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None) -> np.ndarray:
+    def drawToFrame(self, frame:np.ndarray | None, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, points:list[Point] | None = None) -> np.ndarray:
+        if frame is None:
+            printLog("error","Kunne ikke tegne på billede, billede er None", producer="drawToFrame")
+            frame = np.zeros(self.shape, dtype=np.uint8)
         if circles is not None:
             names:List[str] = [a[1] for a in circles]
             _circles:List[List[Union[int,float]]] = [a[0] for a in circles]
@@ -152,7 +155,13 @@ class Camera:
                 cv2.circle(frame, (int(corner.x), int(corner.y)), 5, (0, 0, 255), 0)
                 cv2.putText(frame, "corner" + str(i), (int(corner.x) - 10, int(corner.y) - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        
+        if points is not None:
+            for p in points:
+                cv2.circle(frame,(int(p.x),int(p.y)),4,(255,255,255),0)
+        
         return frame
+    
 
     def getFrame(self) -> Union[np.ndarray,None]:
         ret, frame = self.capture.read()
@@ -324,15 +333,26 @@ class Camera:
                     intersection = wallClass[i].intersect(wallClass[j])
                     if(type(intersection) != bool):
                         intersects.append(intersection)
+        
+        intersects = [Point(intersect.y,intersect.x) for intersect in intersects]
+        frame = self.drawToFrame(self.getFrame(),points = intersects)
+        self.displayFrame(frame,"intersects of walls")
+        
         split:tuple[list[Point],list[Point],list[Point],list[Point]] = ([],[],[],[])
+        cornerArea = 2/5
+        cornerAreaI = 1 - cornerArea
+        
+        width = self.shape[1]
+        height = self.shape[0]
+
         for intersect in intersects:
-            if(intersect.x < self.shape[1] / 2 and intersect.y < self.shape[0] / 2): # top-left
+            if intersect.x < width * cornerArea and intersect.y < height * cornerArea:  # top-left
                 split[0].append(intersect)
-            elif(intersect.x >= self.shape[1] / 2 and intersect.y < self.shape[0] / 2): # top-right
+            elif intersect.x >= width * cornerAreaI and intersect.y < height * cornerArea:  # top-right
                 split[1].append(intersect)
-            elif(intersect.x < self.shape[1] / 2 and intersect.y >= self.shape[0] / 2): # bottom-left
-                split[2].append(intersect)
-            elif(intersect.x >= self.shape[1] / 2 and intersect.y >= self.shape[0] / 2): # bottom-right
+            elif intersect.x < width * cornerArea and intersect.y >= height * cornerAreaI:  # bottom-left
+                split[2].append(intersect) 
+            elif intersect.x >= width * cornerAreaI and intersect.y >= height * cornerAreaI:  # bottom-right
                 split[3].append(intersect)
         if(any(len(split[i]) == 0 for i in range(0,4))):
             printLog("error","Kunne ikke finde alle hjørner", producer="findCorners")
@@ -387,11 +407,16 @@ class Camera:
                     if isinstance(intersection, Point):
                         intersects.append(intersection)
 
+        intersects = [Point(intersect.y,intersect.x) for intersect in intersects]
+        frame = self.drawToFrame(self.getFrame(),points = intersects)
+        self.displayFrame(frame,"intersects of cross")
+
         # Filter intersections near the center of the frame
         middleIntersects: List[Point] = []
         for pt in intersects:
             if (self.shape[1] / 3 < pt.x < self.shape[1] * 2 / 3) and (self.shape[0] / 3 < pt.y < self.shape[0] * 2 / 3):
                 middleIntersects.append(pt)
+
 
         # Find walls that intersect near those points
         validWalls: List[Wall] = []
@@ -612,8 +637,11 @@ class Camera:
         self.corners = self.findCorners(self.walls)
         goals:tuple[Point, Point] | None = self.makeGoals(self.corners)
         walls:list[Wall]|None = self.makeWalls(self.corners)
+        cross:tuple[Wall,Wall] | None = self.findCross(self.walls)
         if walls is None or len(walls) == 0: walls = []
         lines:list[Line] = [wall._asLine() for wall in walls]
+        if cross is not None:
+            lines += [cross[0]._asLine(), cross[1]._asLine()]
         self.displayWithDetails(frame,circles=balls+eggs, lines=lines, goals=goals, name="detection", debug=True)
 
     def setDebug(self, debug:bool):

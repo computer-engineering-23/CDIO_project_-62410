@@ -117,6 +117,12 @@ class track:
         for wall in self.walls + self.extra_obstacles:
             if Line(wall.start, wall.end).distanceTo(target) < min_distance:
                 return True
+        if self.car:
+            for pt in self.car.triangle:
+                if pt.distanceTo(target) < min_distance:
+                    return True
+            if self.car.front.distanceTo(target) < min_distance:
+                return True
         return False
     
     def formatWalls(self, walls:List[List[tuple[int | float, int | float, int | float, int | float]]] | None) -> List[Wall]:
@@ -218,7 +224,7 @@ class track:
 
     def generatepath(self, target:Point | None = None, checkTarget:bool = True, attempt:int = 0, car:Car | None = None) -> tuple[List[Movement | Rotation | deliver],Point |None]:
         """Generates a path from the car to the closest target"""
-        MAX_ATTEMPTS = 10
+        MAX_ATTEMPTS = 15
         walls = self.walls + self.extra_obstacles
         if attempt > MAX_ATTEMPTS:
             printLog("ERROR", "Pathfinding recursion limit reached: ", attempt, producer="pathGenerator")
@@ -259,6 +265,8 @@ class track:
             printLog("DEBUG", f"using provided target: ({target.x:.2f}, {target.y:.2f})",producer="pathGenerator")
         
         while True:
+            if(attempt > MAX_ATTEMPTS):
+                break
             # Calculate vector to target
             dy = target.y - car_center.y
             dx = target.x - car_center.x
@@ -339,6 +347,7 @@ class track:
             printLog("DEBUG", f"Movement: {distance:.2f} px",producer="pathGenerator")
             if(car.front.distanceTo(target) < 10):
                 break
+            attempt += 1
         
         return (path,target)
 
@@ -440,7 +449,6 @@ class track:
             self.cam.displayFrame(frame,"Track")
             if cv2.waitKey(100) & 0xFF == ord('q'):
                 break
-        self.cam.close()
         cv2.destroyAllWindows()
     
     def testPath(self):

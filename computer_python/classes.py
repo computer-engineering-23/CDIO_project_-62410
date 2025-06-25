@@ -139,38 +139,74 @@ class Line:
                 return True
         return False
     
-    def _intersects(self, wall: Wall, extend: int = 0) -> bool:
+    def _intersects(self, wall: Wall, extend: int = 0, tolerance:float = 1e-3) -> bool:
         """Checks if this line segment intersects with a wall segment."""
-        def ccw(A: Point, B: Point, C: Point):
-            return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
+        # Extend the current line by the specified amount
+        extended_line = self.extend(extend,even=True)
+        extended_wall = wall._asLine().extend(extend,even=True)
 
-        A = self.start
-        B = self.end
-        C = wall.start
-        D = wall.end
+        # Convert both lines to their function representation
+        a1, b1, c1 = extended_line._asFunction()
+        a2, b2, c2 = extended_wall._asFunction()
 
-        return (ccw(A, C, D) != ccw(B, C, D)) and (ccw(A, B, C) != ccw(A, B, D))
+        # Calculate the determinant
+        det = a1 * b2 - a2 * b1
+
+        # If determinant is zero, lines are parallel or coincident
+        if abs(det) < tolerance:
+    # Check for collinearity and overlap if parallel
+            # A more robust collinearity check using cross product
+            # (P2-P1) x (P3-P1) == 0 where P1,P2 are on one line, P3 on other
+            collinear_check1 = (extended_line.end.x - extended_line.start.x) * (extended_wall.start.y - extended_line.start.y) - \
+                               (extended_line.end.y - extended_line.start.y) * (extended_wall.start.x - extended_line.start.x)
+            collinear_check2 = (extended_line.end.x - extended_line.start.x) * (extended_wall.end.y - extended_line.start.y) - \
+                               (extended_line.end.y - extended_line.start.y) * (extended_wall.end.x - extended_line.start.x)
+
+            if abs(collinear_check1) < tolerance and abs(collinear_check2) < tolerance:
+                # Lines are collinear, check for overlap
+                # Project onto the axis with larger extent
+                
+                # Sort points to simplify overlap check
+                line1_min_x, line1_max_x = min(extended_line.start.x, extended_line.end.x), max(extended_line.start.x, extended_line.end.x)
+                line1_min_y, line1_max_y = min(extended_line.start.y, extended_line.end.y), max(extended_line.start.y, extended_line.end.y)
+                wall_min_x, wall_max_x = min(extended_wall.start.x, extended_wall.end.x), max(extended_wall.start.x, extended_wall.end.x)
+                wall_min_y, wall_max_y = min(extended_wall.start.y, extended_wall.end.y), max(extended_wall.start.y, extended_wall.end.y)
+
+                overlap_x = max(line1_min_x, wall_min_x) <= min(line1_max_x, wall_max_x) + tolerance
+                overlap_y = max(line1_min_y, wall_min_y) <= min(line1_max_y, wall_max_y) + tolerance
+
+                return overlap_x and overlap_y
+            return False  # Parallel and non-collinear, no intersection
+
+        # Calculate intersection point
+        x = (b1 * c2 - b2 * c1) / det
+        y = (a2 * c1 - a1 * c2) / det
+        intersection = Point(x, y)
+
+        # Check if the intersection point lies within both line segments
+        return (
+            extended_line.distanceTo(intersection) <= tolerance and
+            extended_wall.distanceTo(intersection) <= tolerance
+        )
     
     def _asFunction(self) ->tuple[float,float,float]:
         """Converts the line to a function of ax + by + c = 0"""
         if self.start.y < self.end.y:
             self.start, self.end = self.end, self.start
-        if(self.start.y == self.end.y):
-            return (0,0,0)
         
-        a = (self.end.x - self.start.x)  # a
-        b = (self.start.y - self.end.y)  # b
-        c = (self.start.x * (self.end.y - self.start.y) - (self.end.x - self.start.x) * self.start.y)  # c
+        a = self.end.y - self.start.y  # a = (y2 - y1)
+        b = -(self.end.x - self.start.x)  # b = -(x2 - x1)
+        c = -(a * self.start.x + b * self.start.y)  # c = -(a * x1 + b * y1)
         
         return (a,b,c)  # returns [a, b, c] for the line equation ay + bx + c = 0
     
-    def Shift(self, offset:int | float, angle:Union[float,None] = None) -> List['Line']:
+    def Shift(self, offset:int | float, angle:Union[float,None] = None) -> tuple['Line','Line']:
         """Shifts the line by a given offset in both directions"""
         if angle is None:
             angle = self.angle()
         
         if offset == 0:
-            return [self,self]  # returns the original line if offset is zero or negative
+            return (self,self)  # returns the original line if offset is zero or negative
         
         offset = abs(offset)
         
@@ -181,11 +217,12 @@ class Line:
         
         new_start = Point(self.start.y + offset_y, self.start.x + offset_x)
         new_end = Point(self.end.y + offset_y, self.end.x + offset_x)
-        out.append(Line(new_start, new_end))
+        out1 = Line(new_start, new_end)
         new_start = Point(self.start.y - offset_y, self.start.x - offset_x)
         new_end = Point(self.end.y - offset_y, self.end.x - offset_x)
         out.append(Line(new_start, new_end))
-        return out  # returns a list of two lines shifted by the offset in both directions
+        out2 = Line(new_start, new_end)
+        return (out1,out2)  # returns a list of two lines shifted by the offset in both directions
     
     def move(self, point:Point) -> 'Line':
         """Moves the line by a given point"""
@@ -215,7 +252,7 @@ class Line:
         
         return math.hypot(dx, dy)
 
-    def extend(self,length: float)->'Line':
+    def extend(self,length: float,even:bool=False)->'Line':
         """extends the length of the line by the given amount towards the end point"""
         dx = self.start.x - self.end.x
         dy = self.start.y - self.end.y
@@ -226,8 +263,14 @@ class Line:
         
         end = self.end.copy()
         start = self.start.copy()
-        end.x += (dx / ownLength) * length
-        end.y += (dy / ownLength) * length
+        if(not even):
+            end.x += (dx / ownLength) * length
+            end.y += (dy / ownLength) * length
+        else:
+            end.x += (dx / ownLength) * (length / 2)
+            end.y += (dy / ownLength) * (length / 2)
+            start.x -= (dx / ownLength) * (length / 2)
+            start.y -= (dy / ownLength) * (length / 2)
         return Line(start,end)
 
 
