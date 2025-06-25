@@ -170,26 +170,30 @@ class track:
         return Car([Point(0,0),Point(0,1),Point(1,0)], Point(0, 0))  # Default car if no car is provided
     
     
-    def is_path_safe(self, car: 'Car', target: 'Point', walls: list['Wall'], buffer: float | None= None) -> bool:
+    def is_path_safe(self, car: 'Car', target: 'Point', walls: list['Wall'], buffer: float | None = None) -> bool:
         """
-        Check if the car can drive straight to the target without intersecting any walls,
-        by extending the car's bounding lines toward the target and checking for intersection.
+        Check if the car can safely move straight toward the target.
+        Extend the car’s bounding box lines and ensure they don’t intersect walls.
         """
-        bounding_lines = car.getBoundingBox()
-        safe = True
-
         if buffer is None:
             buffer = target.distanceTo(car.front)
-
-        for line in bounding_lines:
-            # Extend each bounding line to reach the target
-            extended_line = line.extend(buffer)
-
-            for wall in walls:
-                if extended_line.intersects([wall]):
-                    return False  # Collision risk
         
-        return safe  # All bounding lines are clear
+        buffer += 40  # ⬅️ Add safety margin
+
+        bounding_lines = car.getBoundingBox()
+        for line in bounding_lines:
+            extended = line.extend(buffer)
+            for wall in walls:
+                if extended.intersects([wall]):
+                    return False
+        
+        # Also check center point distance from any wall
+        for wall in walls:
+            if Line(wall.start, wall.end).distanceTo(car.getRotationCenter()) < car.radius + 10:
+                return False
+
+        return True
+
 
         
     def arc_intersects_wall(self, arc: Arc, walls: list[Wall], robot_radius: float = 0.0) -> bool:
@@ -304,16 +308,21 @@ class track:
             
             if(abs(rotation_amount) > 0.1):
                 path.append(Rotation(rotation_amount))
-                if not self.is_path_safe(car, target, self.walls, buffer=car.radius):
+                # Proactively try detour if too close to wall, even if technically safe
+                if not self.is_path_safe(car, target, self.walls, buffer=car.radius + 10):
+                    printLog("DEBUG", "Path unsafe or tight — finding detour", producer="pathGenerator")
                     detour = self.find_detour_target(target, car, self.walls, self.is_path_safe, car.radius)
                     if detour:
-                        printLog("DEBUG", "Using detour instead of blocked path", producer="pathGenerator")
-                        morePath = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1,car = car)
-                        return path + morePath[0] , target
+                        printLog("DEBUG", f"Using detour to ({detour.x:.2f}, {detour.y:.2f})", producer="pathGenerator")
+                        morePath, _ = self.generatepath(target=detour, checkTarget=False, attempt=attempt+1, car=car.copy())
+                        return path + morePath, target
                     else:
-                        car.applySelf(path[-1])  # apply rotation to simulate robot state    
-                else:
-                    car.applySelf(path[-1])  # apply rotation to simulate robot state
+                        printLog("DEBUG", "No valid detour found, backing up", producer="pathGenerator")
+                        path.append(Movement(-30))
+                        car.applySelf(path[-1])
+                        morePath, _ = self.generatepath(target=target, checkTarget=checkTarget, attempt=attempt+1, car=car.copy())
+                        return path + morePath, target
+
             
             # Compute forward movement
             distance = car.front.distanceTo(target)
