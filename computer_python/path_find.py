@@ -178,7 +178,7 @@ class track:
         if buffer is None:
             buffer = target.distanceTo(car.front)
         
-        buffer += 40  # ⬅️ Add safety margin
+        buffer += 10  # ⬅️ Add safety margin
 
         bounding_lines = car.getBoundingBox()
         for line in bounding_lines:
@@ -288,7 +288,7 @@ class track:
                             path.append(forward_probe)
                             car.applySelf(forward_probe)
                         else:
-                            path.append(Movement(-30))
+                            path.append(Movement(20))
                             car.applySelf(path[-1])
                         morePath, _ = self.generatepath(target=target, checkTarget=checkTarget, attempt=attempt+1, car=car.copy())
                         return path + morePath, target
