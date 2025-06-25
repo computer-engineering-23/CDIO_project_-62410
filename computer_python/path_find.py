@@ -218,7 +218,7 @@ class track:
 
     def generatepath(self, target:Point | None = None, checkTarget:bool = True, attempt:int = 0, car:Car | None = None) -> tuple[List[Movement | Rotation | deliver],Point |None]:
         """Generates a path from the car to the closest target"""
-        MAX_ATTEMPTS = 10
+        MAX_ATTEMPTS = 20
         walls = self.walls + self.extra_obstacles
         if attempt > MAX_ATTEMPTS:
             printLog("ERROR", "Pathfinding recursion limit reached: ", attempt, producer="pathGenerator")
@@ -358,8 +358,9 @@ class track:
             printLog("DEBUG", f"Angle to target: {angle_to_target:.2f} rad",producer="pathGenerator")
             printLog("DEBUG", f"Rotation applied: {rotation_amount:.2f} rad",producer="pathGenerator")
             printLog("DEBUG", f"Movement: {distance:.2f} px",producer="pathGenerator")
-            if(car.front.distanceTo(target) < 10):
+            if(car.front.distanceTo(target) < 10 or attempt > MAX_ATTEMPTS):
                 break
+            attempt += 1
         
         return (path,target)
 
