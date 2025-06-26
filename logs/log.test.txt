@@ -1,0 +1,20 @@
+{0.00000} <init Client> [INFO]: (Logging enabled)
+{0.00000} <init Client> [STATUS]: Venter p� forbindelse p� 0.0.0.0:12345...
+{14.11020} <init Client> [STATUS]: Forbundet til: ('192.168.28.151', 59396)
+{14.11165} <init Client> [STATUS]: Modtaget: EV3 is ready
+{15.06084} <client Loop> [STATUS]: generating frame
+{15.26522} <client Loop> [DEBUG]: found destination
+{15.26522} <pathGenerator> [DEBUG]: Target: (532.50, 331.50)
+{15.26522} <pathGenerator> [DEBUG]: From:   (404.00, 210.00)
+{15.26522} <pathGenerator> [DEBUG]: Angle to target: 0.44 rad
+{15.26522} <pathGenerator> [DEBUG]: Rotation applied: -2.50 rad
+{15.26522} <pathGenerator> [DEBUG]: Movement: 35.00 px
+{15.27960} <client sender> [STATUS]: create rotate: -2.501203567945166
+{15.27960} <client sender> [COMMAND]: sending command: rotate 47.76946938210702
+{15.27960} <client sender> [STATUS]: has ball: False
+{113.00696} <client cleanup> [ERROR]: An error occurred: [WinError 10054] An existing connection was forcibly closed by the remote host
+{113.00696} <client cleanup> [ERROR]: Stack trace: <traceback object at 0x000001D9E413CB00>
+{113.00696} <client cleanup> [STATUS]: Closing connection without error
+{113.00696} <client cleanup> [STATUS]: Client socket closed
+{113.00696} <client cleanup> [STATUS]: Server socket closed
+{113.00696} <client cleanup> [STATUS]: closing log

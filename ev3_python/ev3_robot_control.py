@@ -6,7 +6,7 @@ import ev3dev.ev3 as ev3
 import time
 import threading
 
-host = '192.168.28.172' # IP-address to computer
+host = '192.168.28.176' # IP-address to computer
 
 port = 12345            # Port the server is listening to
 
@@ -22,34 +22,35 @@ colorSensor = ev3.ColorSensor('in1')
 colorSensor.mode = 'COL-REFLECT'
 
 has_ball = True
-color_limit = 4 # Adjust according to testing
+has_ball_movement_done = False
+color_limit = 1 # Adjust according to testing
 
 degrees_per_robot_degree = 500 / 180 # 617 motor degrees correspond to 180 degrees robot rotation
 
 
 def sensor_loop():
     global has_ball
+    global has_ball_movement_done
     while True:
         light = colorSensor.value()
         print("sensor active", light)
         if light > color_limit and not has_ball:
+            has_ball = True
+            s.sendall("OK ball caught".encode())
             print("Ball detected - closing grabber")
             smallMotor.run_forever(speed_sp=350)
             time.sleep(2)
             smallMotor.stop()
-            has_ball = True
-            try:
-                s.sendall("OK ball caught\n".encode())
-            except:
-                print("error with send ball caught")
+            
         elif light < 5 and has_ball:
             print("No ball")
             has_ball = False
+            has_ball_movement_done = False
             smallMotor.run_forever(speed_sp=-350)
             time.sleep(2)
             smallMotor.stop()
             try:
-                s.sendall("OK ball lost\n".encode())
+                s.sendall("OK ball lost".encode())
             except:
                 print("error with send ball lost")
 
@@ -64,6 +65,14 @@ while(True):
     command = data.strip()
 
     print ("recieved:", command)
+
+    if has_ball and not has_ball_movement_done:
+        leftMotor.run_forever(speed_sp=-100)
+        rightMotor.run_forever(speed_sp=-100)
+        time.sleep(2)
+        leftMotor.stop()
+        rightMotor.stop()
+        has_ball_movement_done = True
     
     if command.startswith("drive "):
         try:    
@@ -77,7 +86,7 @@ while(True):
 
        
         except (IndexError, ValueError):
-            print("Invalid rotate command:", command)
+            print("Invalid drive command:", command)
             s.sendall("ERR".encode())
 
     elif command == "grab":
@@ -135,21 +144,32 @@ while(True):
 
        
         except (IndexError, ValueError):
-            print("Invalid rotate command:", command)
+            print("Invalid backward command:", command)
             s.sendall("ERR".encode())
 
 
 
-    elif command == "deliver":
-        smallMotor.run_forever(speed_sp=250)
-        time.sleep(1.5)
-        smallMotor.stop()
-        leftMotor.run_forever(speed_sp=-250)
-        rightMotor.run_forever(speed_sp=-250)
-        time.sleep(2)
-        leftMotor.stop()
-        rightMotor.stop()
-        s.sendall("OK".encode())
+    elif command.startswith("deliver"):
+        try:    
+            smallMotor.run_forever(speed_sp=-250)
+            time.sleep(1.5)
+            smallMotor.stop()
+            run_time = float(command.split()[1])
+            leftMotor.run_forever(speed_sp=-700)
+            rightMotor.run_forever(speed_sp=-700)
+            time.sleep(run_time)
+            leftMotor.stop()
+            rightMotor.stop()
+            time.sleep(1)
+            smallMotor.run_forever(speed_sp=250)
+            time.sleep(1.5)
+            smallMotor.stop()
+            s.sendall("OK".encode())
+
+       
+        except (IndexError, ValueError):
+            print("Invalid deliver command:", command)
+            s.sendall("ERR".encode())
         
     else:
         print "Unknown command:", command

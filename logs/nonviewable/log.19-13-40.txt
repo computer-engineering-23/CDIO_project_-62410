@@ -1,0 +1,2458 @@
+{0.00158} [INFO]: Logging enabled
+{0.00158} [STATUS]: Venter p� forbindelse p� 0.0.0.0:12345...
+{29.58289} [STATUS]: Forbundet til: ('192.168.28.151', 59376)
+{29.58706} [STATUS]: Modtaget: EV3 is ready
+{30.53070} [STATUS]: generating frame
+{30.72030} [DEBUG]: found destination
+{30.72136} [DEBUG]: Delivery condition: 
+{30.72136} [DEBUG]: Target: (382.50, 156.50)
+{30.72136} [DEBUG]: From:   (207.00, 354.00)
+{30.72136} [DEBUG]: Angle to target: -0.52 rad
+{30.72136} [DEBUG]: Rotation applied: 1.24 rad
+{30.72136} [DEBUG]: Movement: 189.99 px
+{30.73304} [COMMAND]: sending command: rotate -23.699735548274802
+{30.73304} [STATUS]: has ball: False
+{31.20723} [RESPONSE]: modified OK
+{31.20723} [FPS]: 1.4781297410641128
+{31.20723} [STATUS]: generating frame
+{31.26603} [DEBUG]: adjusted target
+{31.26603} [DEBUG]: Delivery condition: 
+{31.26603} [DEBUG]: Target: (383.50, 155.50)
+{31.26603} [DEBUG]: From:   (207.00, 354.00)
+{31.26603} [DEBUG]: Angle to target: -0.52 rad
+{31.26603} [DEBUG]: Rotation applied: 1.25 rad
+{31.26603} [DEBUG]: Movement: 191.23 px
+{31.26939} [COMMAND]: sending command: rotate -23.901594143013273
+{31.26939} [STATUS]: has ball: False
+{31.58317} [RESPONSE]: modified OK
+{31.58317} [FPS]: 2.6600354518846894
+{31.58317} [STATUS]: generating frame
+{31.64503} [DEBUG]: adjusted target
+{31.64503} [DEBUG]: Delivery condition: 
+{31.64503} [DEBUG]: Target: (485.50, 325.50)
+{31.64604} [DEBUG]: From:   (217.00, 340.00)
+{31.64604} [DEBUG]: Angle to target: 0.08 rad
+{31.64604} [DEBUG]: Rotation applied: 0.40 rad
+{31.64604} [DEBUG]: Movement: 259.50 px
+{31.64904} [COMMAND]: sending command: rotate -7.689287726802262
+{31.64904} [STATUS]: has ball: False
+{31.77740} [RESPONSE]: modified OK ball lost
+{31.77740} [STATUS]: Ball lost
+{31.77740} [FPS]: 5.148450973580811
+{31.77740} [STATUS]: generating frame
+{31.83098} [DEBUG]: found destination
+{31.83211} [DEBUG]: Delivery condition: 
+{31.83211} [DEBUG]: Target: (383.50, 155.50)
+{31.83211} [DEBUG]: From:   (221.00, 332.00)
+{31.83211} [DEBUG]: Angle to target: -0.54 rad
+{31.83211} [DEBUG]: Rotation applied: 0.88 rad
+{31.83211} [DEBUG]: Movement: 197.63 px
+{31.83534} [COMMAND]: sending command: rotate -16.89948341360688
+{31.83534} [STATUS]: has ball: False
+{31.84448} [RESPONSE]: modified OK
+{31.84448} [FPS]: 14.908734164616893
+{31.84448} [STATUS]: generating frame
+{31.89828} [DEBUG]: adjusted target
+{31.89925} [DEBUG]: Delivery condition: 
+{31.89925} [DEBUG]: Target: (383.50, 155.50)
+{31.89925} [DEBUG]: From:   (224.00, 325.00)
+{31.89925} [DEBUG]: Angle to target: -0.54 rad
+{31.89925} [DEBUG]: Rotation applied: 0.79 rad
+{31.89925} [DEBUG]: Movement: 197.52 px
+{31.90260} [COMMAND]: sending command: rotate -15.028813414183105
+{31.90260} [STATUS]: has ball: False
+{32.10094} [RESPONSE]: modified OK
+{32.10094} [FPS]: 3.8992696604144044
+{32.10094} [STATUS]: generating frame
+{32.15699} [DEBUG]: failed to adjust target
+{32.15800} [DEBUG]: Delivery condition: 
+{32.15800} [DEBUG]: Target: (383.50, 155.50)
+{32.15800} [DEBUG]: From:   (224.00, 325.00)
+{32.15800} [DEBUG]: Angle to target: -0.54 rad
+{32.15901} [DEBUG]: Rotation applied: 0.79 rad
+{32.15901} [DEBUG]: Movement: 197.52 px
+{32.16300} [COMMAND]: sending command: rotate -15.028813414183105
+{32.16300} [STATUS]: has ball: False
+{32.35245} [RESPONSE]: modified OK
+{32.35245} [FPS]: 3.975888561854522
+{32.35245} [STATUS]: generating frame
+{32.40591} [DEBUG]: adjusted target
+{32.40692} [DEBUG]: Delivery condition: 
+{32.40692} [DEBUG]: Target: (383.50, 155.50)
+{32.40692} [DEBUG]: From:   (224.00, 319.00)
+{32.40692} [DEBUG]: Angle to target: -0.54 rad
+{32.40692} [DEBUG]: Rotation applied: 0.70 rad
+{32.40692} [DEBUG]: Movement: 200.04 px
+{32.41050} [COMMAND]: sending command: rotate -13.391051715552225
+{32.41050} [STATUS]: has ball: False
+{32.58733} [RESPONSE]: modified OK
+{32.58733} [FPS]: 4.257614731050724
+{32.58836} [STATUS]: generating frame
+{32.63903} [DEBUG]: adjusted target
+{32.64004} [DEBUG]: Delivery condition: 
+{32.64004} [DEBUG]: Target: (383.50, 155.50)
+{32.64004} [DEBUG]: From:   (226.00, 309.00)
+{32.64004} [DEBUG]: Angle to target: -0.55 rad
+{32.64004} [DEBUG]: Rotation applied: 0.57 rad
+{32.64004} [DEBUG]: Movement: 200.16 px
+{32.64448} [COMMAND]: sending command: rotate -10.914904851228016
+{32.64448} [STATUS]: has ball: False
+{32.79291} [RESPONSE]: modified OK
+{32.79291} [FPS]: 4.864077782493836
+{32.79291} [STATUS]: generating frame
+{32.84538} [DEBUG]: adjusted target
+{32.84538} [DEBUG]: Delivery condition: 
+{32.84538} [DEBUG]: Target: (383.50, 155.50)
+{32.84538} [DEBUG]: From:   (226.00, 298.00)
+{32.84538} [DEBUG]: Angle to target: -0.56 rad
+{32.84538} [DEBUG]: Rotation applied: 0.43 rad
+{32.84538} [DEBUG]: Movement: 200.71 px
+{32.85002} [COMMAND]: sending command: rotate -8.28849936181283
+{32.85002} [STATUS]: has ball: False
+{32.97797} [RESPONSE]: modified OK
+{32.97797} [FPS]: 5.403805322504175
+{32.97911} [STATUS]: generating frame
+{33.04279} [DEBUG]: failed to adjust target
+{33.04380} [DEBUG]: Delivery condition: 
+{33.04380} [DEBUG]: Target: (383.50, 155.50)
+{33.04380} [DEBUG]: From:   (225.00, 290.00)
+{33.04380} [DEBUG]: Angle to target: -0.56 rad
+{33.04380} [DEBUG]: Rotation applied: 0.33 rad
+{33.04380} [DEBUG]: Movement: 200.98 px
+{33.04704} [COMMAND]: sending command: rotate -6.274396948978244
+{33.04704} [STATUS]: has ball: False
+{33.15080} [RESPONSE]: modified OK
+{33.15080} [FPS]: 5.786100845228193
+{33.15080} [STATUS]: generating frame
+{33.21162} [DEBUG]: adjusted target
+{33.21261} [DEBUG]: Delivery condition: 
+{33.21261} [DEBUG]: Target: (383.50, 155.50)
+{33.21261} [DEBUG]: From:   (223.00, 281.00)
+{33.21261} [DEBUG]: Angle to target: -0.58 rad
+{33.21261} [DEBUG]: Rotation applied: 0.20 rad
+{33.21261} [DEBUG]: Movement: 201.13 px
+{33.21607} [COMMAND]: sending command: rotate -3.8353541098695554
+{33.21607} [STATUS]: has ball: False
+{33.28219} [RESPONSE]: modified OK
+{33.28219} [FPS]: 7.6104680806281
+{33.28219} [STATUS]: generating frame
+{33.33701} [DEBUG]: adjusted target
+{33.33801} [DEBUG]: Delivery condition: 
+{33.33801} [DEBUG]: Target: (383.50, 155.50)
+{33.33801} [DEBUG]: From:   (220.00, 275.00)
+{33.33801} [DEBUG]: Angle to target: -0.58 rad
+{33.33801} [DEBUG]: Rotation applied: 0.12 rad
+{33.33801} [DEBUG]: Movement: 201.59 px
+{33.34101} [COMMAND]: sending command: rotate -2.279026205366577
+{33.34101} [STATUS]: has ball: False
+{33.39144} [RESPONSE]: modified OK
+{33.39144} [FPS]: 9.153591989768973
+{33.39144} [STATUS]: generating frame
+{33.44534} [DEBUG]: adjusted target
+{33.44534} [DEBUG]: Delivery condition: 
+{33.44534} [DEBUG]: Target: (383.50, 155.50)
+{33.44534} [DEBUG]: From:   (218.00, 271.00)
+{33.44534} [DEBUG]: Angle to target: -0.58 rad
+{33.44534} [DEBUG]: Rotation applied: 0.06 rad
+{33.44678} [DEBUG]: Movement: 201.82 px
+{33.44982} [COMMAND]: sending command: drive 2.0181798730539358
+{33.44982} [STATUS]: has ball: False
+{33.48094} [RESPONSE]: modified OK
+{33.48094} [FPS]: 11.173547730554269
+{33.48094} [STATUS]: generating frame
+{33.52972} [DEBUG]: adjusted target
+{33.52972} [DEBUG]: Delivery condition: 
+{33.52972} [DEBUG]: Target: (383.50, 155.50)
+{33.52972} [DEBUG]: From:   (217.00, 267.00)
+{33.52972} [DEBUG]: Angle to target: -0.58 rad
+{33.52972} [DEBUG]: Rotation applied: 0.02 rad
+{33.52972} [DEBUG]: Movement: 200.39 px
+{33.53422} [COMMAND]: sending command: drive 2.0038587774591305
+{33.53422} [STATUS]: has ball: False
+{35.52741} [RESPONSE]: modified OK
+{35.52741} [FPS]: 0.48864512512206504
+{35.52741} [STATUS]: generating frame
+{35.67612} [DEBUG]: adjusted target
+{35.67612} [DEBUG]: Delivery condition: 
+{35.67612} [DEBUG]: Target: (383.50, 155.50)
+{35.67612} [DEBUG]: From:   (215.00, 265.00)
+{35.67663} [DEBUG]: Angle to target: -0.58 rad
+{35.67663} [DEBUG]: Rotation applied: -0.01 rad
+{35.67663} [DEBUG]: Movement: 200.95 px
+{35.68334} [COMMAND]: sending command: drive 2.00953974830059
+{35.68334} [STATUS]: has ball: False
+{37.60594} [RESPONSE]: modified OK
+{37.60594} [FPS]: 0.48110950447018586
+{37.60594} [STATUS]: generating frame
+{37.67896} [DEBUG]: adjusted target
+{37.67896} [DEBUG]: Delivery condition: 
+{37.67896} [DEBUG]: Target: (383.50, 156.50)
+{37.67896} [DEBUG]: From:   (276.00, 206.00)
+{37.67896} [DEBUG]: Angle to target: -0.53 rad
+{37.67896} [DEBUG]: Rotation applied: -0.12 rad
+{37.67896} [DEBUG]: Movement: 117.13 px
+{37.69134} [COMMAND]: sending command: rotate 2.382920804139554
+{37.69172} [STATUS]: has ball: False
+{39.71447} [RESPONSE]: modified OK
+{39.71447} [FPS]: 0.4742647478692142
+{39.71447} [STATUS]: generating frame
+{39.79782} [DEBUG]: adjusted target
+{39.79782} [DEBUG]: Delivery condition: 
+{39.79782} [DEBUG]: Target: (383.50, 155.50)
+{39.79782} [DEBUG]: From:   (339.00, 145.00)
+{39.79782} [DEBUG]: Angle to target: -0.37 rad
+{39.79782} [DEBUG]: Rotation applied: -0.30 rad
+{39.79782} [DEBUG]: Movement: 33.78 px
+{39.80604} [COMMAND]: sending command: rotate 5.7712948026827675
+{39.80604} [STATUS]: has ball: False
+{39.80604} [RESPONSE]: modified OK
+{39.80604} [FPS]: 10.920960266625006
+{39.80604} [STATUS]: generating frame
+{39.89761} [DEBUG]: failed to adjust target
+{39.89761} [DEBUG]: Delivery condition: 
+{39.89761} [DEBUG]: Target: (383.50, 155.50)
+{39.89761} [DEBUG]: From:   (406.00, 80.00)
+{39.89761} [DEBUG]: Angle to target: 0.40 rad
+{39.89761} [DEBUG]: Rotation applied: -1.09 rad
+{39.89761} [DEBUG]: Movement: 38.59 px
+{39.90575} [COMMAND]: sending command: rotate 20.890350120664003
+{39.90575} [STATUS]: has ball: False
+{39.91281} [RESPONSE]: modified OK
+{39.91281} [FPS]: 9.365672408326224
+{39.91281} [STATUS]: generating frame
+{40.02158} [DEBUG]: failed to adjust target
+{40.02158} [DEBUG]: Delivery condition: 
+{40.02158} [DEBUG]: Target: (383.50, 155.50)
+{40.02158} [DEBUG]: From:   (407.00, 79.00)
+{40.02158} [DEBUG]: Angle to target: 0.45 rad
+{40.02158} [DEBUG]: Rotation applied: -1.13 rad
+{40.02158} [DEBUG]: Movement: 38.04 px
+{40.03700} [COMMAND]: sending command: rotate 21.584691725537883
+{40.03700} [STATUS]: has ball: False
+{40.21729} [RESPONSE]: modified OK
+{40.21729} [FPS]: 3.2842305716683997
+{40.21729} [STATUS]: generating frame
+{40.35148} [DEBUG]: failed to adjust target
+{40.35148} [DEBUG]: Delivery condition: 
+{40.35148} [DEBUG]: Target: (383.50, 155.50)
+{40.35148} [DEBUG]: From:   (408.00, 81.00)
+{40.35148} [DEBUG]: Angle to target: 0.83 rad
+{40.35148} [DEBUG]: Rotation applied: -1.71 rad
+{40.35148} [DEBUG]: Movement: 39.86 px
+{40.36766} [COMMAND]: sending command: rotate 32.69787629407967
+{40.36766} [STATUS]: has ball: False
+{40.51917} [RESPONSE]: modified OK
+{40.51917} [FPS]: 3.312672621252485
+{40.51917} [STATUS]: generating frame
+{40.61133} [DEBUG]: failed to adjust target
+{40.61133} [DEBUG]: Delivery condition: 
+{40.61133} [DEBUG]: Target: (383.50, 155.50)
+{40.61133} [DEBUG]: From:   (413.00, 87.00)
+{40.61133} [DEBUG]: Angle to target: 0.58 rad
+{40.61133} [DEBUG]: Rotation applied: -1.32 rad
+{40.61133} [DEBUG]: Movement: 43.99 px
+{40.62729} [COMMAND]: sending command: rotate 25.254814183251018
+{40.62729} [STATUS]: has ball: False
+{41.03326} [RESPONSE]: modified OK
+{41.03326} [FPS]: 1.9451564986196141
+{41.03326} [STATUS]: generating frame
+{41.12011} [DEBUG]: failed to adjust target
+{41.12011} [DEBUG]: Delivery condition: 
+{41.12011} [DEBUG]: Target: (383.50, 155.50)
+{41.12011} [DEBUG]: From:   (418.00, 103.00)
+{41.12011} [DEBUG]: Angle to target: 0.46 rad
+{41.12011} [DEBUG]: Rotation applied: -0.78 rad
+{41.12011} [DEBUG]: Movement: 33.31 px
+{41.13685} [COMMAND]: sending command: rotate 14.922678182900597
+{41.13685} [STATUS]: has ball: False
+{41.28867} [RESPONSE]: modified OK
+{41.28867} [FPS]: 3.915361874009912
+{41.28867} [STATUS]: generating frame
+{41.41152} [DEBUG]: failed to adjust target
+{41.41152} [DEBUG]: Delivery condition: 
+{41.41152} [DEBUG]: Target: (383.50, 155.50)
+{41.41152} [DEBUG]: From:   (420.00, 139.00)
+{41.41152} [DEBUG]: Angle to target: 0.53 rad
+{41.41152} [DEBUG]: Rotation applied: -0.37 rad
+{41.41152} [DEBUG]: Movement: 29.38 px
+{41.42959} [COMMAND]: sending command: rotate 7.071660971588219
+{41.42959} [STATUS]: has ball: False
+{41.55699} [RESPONSE]: modified OK
+{41.55699} [FPS]: 3.7268391160016776
+{41.55699} [STATUS]: generating frame
+{41.66424} [DEBUG]: failed to adjust target
+{41.66424} [DEBUG]: Delivery condition: 
+{41.66424} [DEBUG]: Target: (383.50, 155.50)
+{41.66424} [DEBUG]: From:   (416.00, 150.00)
+{41.66424} [DEBUG]: Angle to target: 0.58 rad
+{41.66424} [DEBUG]: Rotation applied: -0.25 rad
+{41.66424} [DEBUG]: Movement: 27.11 px
+{41.67227} [COMMAND]: sending command: rotate 4.869488977976286
+{41.67227} [STATUS]: has ball: False
+{41.74227} [RESPONSE]: modified OK
+{41.74653} [FPS]: 5.3972619309576295
+{41.74653} [STATUS]: generating frame
+{41.85545} [DEBUG]: failed to adjust target
+{41.85545} [DEBUG]: Delivery condition: 
+{41.85545} [DEBUG]: Target: (383.50, 155.50)
+{41.85545} [DEBUG]: From:   (411.00, 163.00)
+{41.85545} [DEBUG]: Angle to target: 0.61 rad
+{41.85545} [DEBUG]: Rotation applied: -0.11 rad
+{41.85545} [DEBUG]: Movement: 27.34 px
+{41.86390} [COMMAND]: sending command: rotate 2.0796399535833237
+{41.86390} [STATUS]: has ball: False
+{41.89776} [RESPONSE]: modified OK
+{41.89776} [FPS]: 6.612325717781043
+{41.89776} [STATUS]: generating frame
+{41.98780} [DEBUG]: failed to adjust target
+{41.98780} [DEBUG]: Delivery condition: 
+{41.98780} [DEBUG]: Target: (383.50, 155.50)
+{41.98780} [DEBUG]: From:   (408.00, 167.00)
+{41.98780} [DEBUG]: Angle to target: 0.63 rad
+{41.98780} [DEBUG]: Rotation applied: -0.06 rad
+{41.98780} [DEBUG]: Movement: 27.06 px
+{42.00459} [COMMAND]: sending command: drive 0.27064737205448713
+{42.00459} [STATUS]: has ball: False
+{42.03699} [RESPONSE]: modified OK
+{42.03699} [FPS]: 7.18261774940406
+{42.03699} [STATUS]: generating frame
+{42.13689} [DEBUG]: failed to adjust target
+{42.13689} [DEBUG]: Delivery condition: 
+{42.13689} [DEBUG]: Target: (383.50, 155.50)
+{42.13689} [DEBUG]: From:   (406.00, 170.00)
+{42.13689} [DEBUG]: Angle to target: 0.65 rad
+{42.13689} [DEBUG]: Rotation applied: -0.02 rad
+{42.13689} [DEBUG]: Movement: 26.77 px
+{42.15255} [COMMAND]: sending command: drive 0.26767517628648346
+{42.15255} [STATUS]: has ball: False
+{42.33294} [RESPONSE]: modified OK
+{42.33294} [FPS]: 3.3788654956156075
+{42.33294} [STATUS]: generating frame
+{42.44694} [DEBUG]: failed to adjust target
+{42.44694} [DEBUG]: Delivery condition: 
+{42.44694} [DEBUG]: Target: (383.50, 155.50)
+{42.44694} [DEBUG]: From:   (406.00, 171.00)
+{42.44694} [DEBUG]: Angle to target: 0.36 rad
+{42.44694} [DEBUG]: Rotation applied: 0.09 rad
+{42.44694} [DEBUG]: Movement: 27.32 px
+{42.45571} [COMMAND]: sending command: drive 0.273221521846285
+{42.45571} [STATUS]: has ball: False
+{42.62999} [RESPONSE]: modified OK
+{42.62999} [FPS]: 3.366501484074889
+{42.62999} [STATUS]: generating frame
+{42.74388} [DEBUG]: adjusted target
+{42.74388} [DEBUG]: Delivery condition: 
+{42.74388} [DEBUG]: Target: (470.50, 384.50)
+{42.74388} [DEBUG]: From:   (409.00, 176.00)
+{42.74388} [DEBUG]: Angle to target: 1.10 rad
+{42.74388} [DEBUG]: Rotation applied: -0.45 rad
+{42.74388} [DEBUG]: Movement: 205.13 px
+{42.75494} [COMMAND]: sending command: rotate 8.513851556114217
+{42.75494} [STATUS]: has ball: False
+{42.97995} [RESPONSE]: modified OK
+{42.97995} [FPS]: 2.8574823276778267
+{42.97995} [STATUS]: generating frame
+{43.07077} [DEBUG]: failed to adjust target
+{43.07077} [DEBUG]: Delivery condition: 
+{43.07077} [DEBUG]: Target: (470.50, 384.50)
+{43.07128} [DEBUG]: From:   (417.00, 182.00)
+{43.07128} [DEBUG]: Angle to target: 1.13 rad
+{43.07128} [DEBUG]: Rotation applied: -0.45 rad
+{43.07128} [DEBUG]: Movement: 196.84 px
+{43.08695} [COMMAND]: sending command: rotate 8.601253296184655
+{43.08695} [STATUS]: has ball: False
+{43.11597} [RESPONSE]: modified OK
+{43.11597} [FPS]: 7.351772781131467
+{43.11597} [STATUS]: generating frame
+{43.20493} [DEBUG]: failed to adjust target
+{43.20493} [DEBUG]: Delivery condition: 
+{43.20493} [DEBUG]: Target: (470.50, 384.50)
+{43.20493} [DEBUG]: From:   (429.00, 189.00)
+{43.20493} [DEBUG]: Angle to target: 1.15 rad
+{43.20493} [DEBUG]: Rotation applied: -0.49 rad
+{43.20493} [DEBUG]: Movement: 185.17 px
+{43.22138} [COMMAND]: sending command: rotate 9.28281978208116
+{43.22138} [STATUS]: has ball: False
+{43.28648} [RESPONSE]: modified OK
+{43.28648} [FPS]: 5.864510815840582
+{43.28648} [STATUS]: generating frame
+{43.35360} [DEBUG]: adjusted target
+{43.35360} [DEBUG]: Delivery condition: 
+{43.35360} [DEBUG]: Target: (439.50, 171.50)
+{43.35360} [DEBUG]: From:   (432.00, 192.00)
+{43.35360} [DEBUG]: Angle to target: 0.17 rad
+{43.35360} [DEBUG]: Rotation applied: 0.28 rad
+{43.35360} [DEBUG]: Movement: 35.00 px
+{43.36895} [COMMAND]: sending command: rotate -5.4079867105717625
+{43.36895} [STATUS]: has ball: False
+{43.48743} [RESPONSE]: modified OK
+{43.48743} [FPS]: 4.976476757954785
+{43.48743} [STATUS]: generating frame
+{43.55349} [DEBUG]: adjusted target
+{43.55349} [DEBUG]: Delivery condition: 
+{43.55349} [DEBUG]: Target: (502.50, 323.50)
+{43.55349} [DEBUG]: From:   (428.00, 195.00)
+{43.55349} [DEBUG]: Angle to target: 0.93 rad
+{43.55349} [DEBUG]: Rotation applied: -0.19 rad
+{43.55349} [DEBUG]: Movement: 145.89 px
+{43.56268} [COMMAND]: sending command: rotate 3.645003353131125
+{43.56268} [STATUS]: has ball: False
+{43.63694} [RESPONSE]: modified OK
+{43.63694} [FPS]: 6.688392000025514
+{43.63694} [STATUS]: generating frame
+{43.73818} [DEBUG]: failed to adjust target
+{43.73818} [DEBUG]: Delivery condition: 
+{43.73818} [DEBUG]: Target: (502.50, 323.50)
+{43.73818} [DEBUG]: From:   (423.00, 201.00)
+{43.73818} [DEBUG]: Angle to target: 0.94 rad
+{43.73818} [DEBUG]: Rotation applied: -0.10 rad
+{43.73818} [DEBUG]: Movement: 146.04 px
+{43.75506} [COMMAND]: sending command: drive 1.4603595447697117
+{43.75506} [STATUS]: has ball: False
+{43.79728} [RESPONSE]: modified OK
+{43.79728} [FPS]: 6.236864723078891
+{43.79728} [STATUS]: generating frame
+{43.89605} [DEBUG]: failed to adjust target
+{43.89605} [DEBUG]: Delivery condition: 
+{43.89605} [DEBUG]: Target: (502.50, 323.50)
+{43.89605} [DEBUG]: From:   (418.00, 203.00)
+{43.89605} [DEBUG]: Angle to target: 0.94 rad
+{43.89605} [DEBUG]: Rotation applied: -0.03 rad
+{43.89605} [DEBUG]: Movement: 147.18 px
+{43.90443} [COMMAND]: sending command: drive 1.4717506582298512
+{43.90443} [STATUS]: has ball: False
+{45.29234} [RESPONSE]: modified OK
+{45.29234} [FPS]: 0.6688702382131329
+{45.29234} [STATUS]: generating frame
+{45.38879} [DEBUG]: failed to adjust target
+{45.38879} [DEBUG]: Delivery condition: 
+{45.38879} [DEBUG]: Target: (502.50, 323.50)
+{45.38879} [DEBUG]: From:   (422.00, 201.00)
+{45.38879} [DEBUG]: Angle to target: 0.94 rad
+{45.38879} [DEBUG]: Rotation applied: -0.09 rad
+{45.38879} [DEBUG]: Movement: 146.58 px
+{45.39655} [COMMAND]: sending command: drive 1.4658274113960348
+{45.39655} [STATUS]: has ball: False
+{46.87734} [RESPONSE]: modified OK
+{46.87734} [FPS]: 0.6309123438364452
+{46.87734} [STATUS]: generating frame
+{46.96300} [DEBUG]: failed to adjust target
+{46.96300} [DEBUG]: Delivery condition: 
+{46.96300} [DEBUG]: Target: (502.50, 323.50)
+{46.96300} [DEBUG]: From:   (460.00, 249.00)
+{46.96300} [DEBUG]: Angle to target: 0.98 rad
+{46.96300} [DEBUG]: Rotation applied: -0.07 rad
+{46.96300} [DEBUG]: Movement: 85.77 px
+{46.97868} [COMMAND]: sending command: drive 0.8577004138975333
+{46.97868} [STATUS]: has ball: False
+{48.30008} [RESPONSE]: modified OK
+{48.30008} [FPS]: 0.7028710048684617
+{48.30008} [STATUS]: generating frame
+{48.40616} [DEBUG]: failed to adjust target
+{48.40616} [DEBUG]: Delivery condition: 
+{48.40616} [DEBUG]: Target: (502.50, 323.50)
+{48.40616} [DEBUG]: From:   (511.00, 301.00)
+{48.40616} [DEBUG]: Angle to target: 1.10 rad
+{48.40616} [DEBUG]: Rotation applied: -0.20 rad
+{48.40616} [DEBUG]: Movement: 35.00 px
+{48.42190} [COMMAND]: sending command: rotate 3.7331143378010054
+{48.42190} [STATUS]: has ball: False
+{49.23398} [RESPONSE]: modified OK
+{49.23398} [FPS]: 1.0707791408756266
+{49.23398} [STATUS]: generating frame
+{49.32613} [DEBUG]: failed to adjust target
+{49.32613} [DEBUG]: Delivery condition: 
+{49.32613} [DEBUG]: Target: (502.50, 323.50)
+{49.32613} [DEBUG]: From:   (557.00, 348.00)
+{49.32613} [DEBUG]: Angle to target: 1.46 rad
+{49.32613} [DEBUG]: Rotation applied: -0.58 rad
+{49.32613} [DEBUG]: Movement: 45.68 px
+{49.34231} [COMMAND]: sending command: rotate 10.982524752765249
+{49.34231} [STATUS]: has ball: False
+{49.34231} [RESPONSE]: modified OK
+{49.34231} [FPS]: 9.23086945230623
+{49.34231} [STATUS]: generating frame
+{49.44112} [DEBUG]: adjusted target
+{49.44112} [DEBUG]: Delivery condition: 
+{49.44112} [DEBUG]: Target: (417.50, 337.50)
+{49.44112} [DEBUG]: From:   (587.00, 380.00)
+{49.44112} [DEBUG]: Angle to target: 2.86 rad
+{49.44112} [DEBUG]: Rotation applied: -1.98 rad
+{49.44112} [DEBUG]: Movement: 17.08 px
+{49.45670} [COMMAND]: sending command: rotate 37.77012742425705
+{49.45670} [STATUS]: has ball: False
+{49.53189} [RESPONSE]: modified OK
+{49.53189} [FPS]: 5.27479912822467
+{49.53189} [STATUS]: generating frame
+{49.64213} [DEBUG]: adjusted target
+{49.64213} [DEBUG]: Delivery condition: 
+{49.64213} [DEBUG]: Target: (399.50, 331.50)
+{49.64213} [DEBUG]: From:   (589.00, 383.00)
+{49.64213} [DEBUG]: Angle to target: 2.96 rad
+{49.64213} [DEBUG]: Rotation applied: -2.06 rad
+{49.64213} [DEBUG]: Movement: 37.17 px
+{49.65009} [COMMAND]: sending command: rotate 39.32757448719092
+{49.65009} [STATUS]: has ball: False
+{50.04704} [RESPONSE]: modified OK
+{50.04704} [FPS]: 1.9411801186468447
+{50.04704} [STATUS]: generating frame
+{50.14708} [DEBUG]: adjusted target
+{50.14708} [DEBUG]: Delivery condition: 
+{50.14708} [DEBUG]: Target: (366.50, 322.50)
+{50.14708} [DEBUG]: From:   (585.00, 385.00)
+{50.14708} [DEBUG]: Angle to target: 3.05 rad
+{50.14708} [DEBUG]: Rotation applied: -2.10 rad
+{50.14708} [DEBUG]: Movement: 67.22 px
+{50.16429} [COMMAND]: sending command: rotate 40.07591892683405
+{50.16429} [STATUS]: has ball: False
+{50.54788} [RESPONSE]: modified OK
+{50.54788} [FPS]: 1.996643939072975
+{50.54788} [STATUS]: generating frame
+{50.64903} [DEBUG]: adjusted target
+{50.64903} [DEBUG]: Delivery condition: 
+{50.64903} [DEBUG]: Target: (286.50, 317.50)
+{50.64903} [DEBUG]: From:   (549.00, 397.00)
+{50.64903} [DEBUG]: Angle to target: 3.09 rad
+{50.64903} [DEBUG]: Rotation applied: -1.65 rad
+{50.64903} [DEBUG]: Movement: 158.03 px
+{50.65682} [COMMAND]: sending command: rotate 31.524902218465545
+{50.65743} [STATUS]: has ball: False
+{50.94963} [RESPONSE]: modified OK
+{50.94963} [FPS]: 2.48915686961063
+{50.94963} [STATUS]: generating frame
+{51.04236} [DEBUG]: adjusted target
+{51.04236} [DEBUG]: Delivery condition: 
+{51.04236} [DEBUG]: Target: (207.50, 321.50)
+{51.04236} [DEBUG]: From:   (535.00, 336.00)
+{51.04236} [DEBUG]: Angle to target: 3.10 rad
+{51.04236} [DEBUG]: Rotation applied: -2.19 rad
+{51.04236} [DEBUG]: Movement: 270.19 px
+{51.05897} [COMMAND]: sending command: rotate 41.87566021566323
+{51.05897} [STATUS]: has ball: False
+{51.47644} [RESPONSE]: modified OK
+{51.47644} [FPS]: 1.8981929101252246
+{51.47644} [STATUS]: generating frame
+{51.57911} [DEBUG]: adjusted target
+{51.57911} [DEBUG]: Delivery condition: 
+{51.57911} [DEBUG]: Target: (489.50, 370.50)
+{51.57911} [DEBUG]: From:   (571.00, 331.00)
+{51.57911} [DEBUG]: Angle to target: 2.09 rad
+{51.57911} [DEBUG]: Rotation applied: -1.76 rad
+{51.57911} [DEBUG]: Movement: 35.00 px
+{51.59663} [COMMAND]: sending command: rotate 33.59159470516655
+{51.59663} [STATUS]: has ball: False
+{52.09305} [RESPONSE]: modified OK
+{52.09305} [FPS]: 1.6217730254585216
+{52.09305} [STATUS]: generating frame
+{52.19269} [DEBUG]: adjusted target
+{52.19269} [DEBUG]: Delivery condition: 
+{52.19269} [DEBUG]: Target: (130.50, 292.50)
+{52.19269} [DEBUG]: From:   (469.00, 355.00)
+{52.19269} [DEBUG]: Angle to target: -3.09 rad
+{52.19269} [DEBUG]: Rotation applied: -0.50 rad
+{52.19269} [DEBUG]: Movement: 329.29 px
+{52.20159} [COMMAND]: sending command: rotate 9.598126080474929
+{52.20159} [STATUS]: has ball: False
+{52.28604} [RESPONSE]: modified OK
+{52.28604} [FPS]: 5.181767529202468
+{52.28604} [STATUS]: generating frame
+{52.37719} [DEBUG]: adjusted target
+{52.37719} [DEBUG]: Delivery condition: 
+{52.37719} [DEBUG]: Target: (160.50, 281.50)
+{52.37719} [DEBUG]: From:   (460.00, 318.00)
+{52.37719} [DEBUG]: Angle to target: -3.04 rad
+{52.37719} [DEBUG]: Rotation applied: -0.07 rad
+{52.37719} [DEBUG]: Movement: 301.72 px
+{52.38559} [COMMAND]: sending command: drive 3.017159259966235
+{52.38559} [STATUS]: has ball: False
+{52.44564} [RESPONSE]: modified OK
+{52.44564} [FPS]: 6.265588517804245
+{52.44564} [STATUS]: generating frame
+{52.56354} [DEBUG]: adjusted target
+{52.56354} [DEBUG]: Delivery condition: 
+{52.56354} [DEBUG]: Target: (171.50, 283.50)
+{52.56354} [DEBUG]: From:   (461.00, 310.00)
+{52.56354} [DEBUG]: Angle to target: -3.04 rad
+{52.56354} [DEBUG]: Rotation applied: 0.04 rad
+{52.56354} [DEBUG]: Movement: 290.71 px
+{52.57123} [COMMAND]: sending command: drive 2.9071033693351875
+{52.57123} [STATUS]: has ball: False
+{55.56743} [RESPONSE]: modified OK
+{55.56743} [FPS]: 0.3203291957295591
+{55.56743} [STATUS]: generating frame
+{55.67334} [DEBUG]: adjusted target
+{55.67334} [DEBUG]: Delivery condition: 
+{55.67334} [DEBUG]: Target: (178.50, 287.50)
+{55.67334} [DEBUG]: From:   (464.00, 298.00)
+{55.67334} [DEBUG]: Angle to target: -3.10 rad
+{55.67334} [DEBUG]: Rotation applied: 0.02 rad
+{55.67334} [DEBUG]: Movement: 285.69 px
+{55.69002} [COMMAND]: sending command: drive 2.8569301706552084
+{55.69002} [STATUS]: has ball: False
+{58.43345} [RESPONSE]: modified OK
+{58.43345} [FPS]: 0.3489151969589178
+{58.43345} [STATUS]: generating frame
+{58.55512} [DEBUG]: adjusted target
+{58.55512} [DEBUG]: Delivery condition: 
+{58.55512} [DEBUG]: Target: (125.50, 321.50)
+{58.55512} [DEBUG]: From:   (335.00, 252.00)
+{58.55512} [DEBUG]: Angle to target: 3.02 rad
+{58.55512} [DEBUG]: Rotation applied: 0.48 rad
+{58.55512} [DEBUG]: Movement: 206.11 px
+{58.57136} [COMMAND]: sending command: rotate -9.214087180693875
+{58.57136} [STATUS]: has ball: False
+{61.41270} [RESPONSE]: modified OK
+{61.41270} [FPS]: 0.33565508617843887
+{61.41270} [STATUS]: generating frame
+{61.53659} [DEBUG]: adjusted target
+{61.53659} [DEBUG]: Delivery condition: 
+{61.53659} [DEBUG]: Target: (182.50, 277.50)
+{61.53659} [DEBUG]: From:   (214.00, 222.00)
+{61.53659} [DEBUG]: Angle to target: 2.90 rad
+{61.53659} [DEBUG]: Rotation applied: 0.57 rad
+{61.53659} [DEBUG]: Movement: 30.11 px
+{61.55259} [COMMAND]: sending command: rotate -10.935153947656895
+{61.55327} [STATUS]: has ball: False
+{61.56553} [RESPONSE]: modified OK
+{61.56553} [FPS]: 6.543130990415335
+{61.56553} [STATUS]: generating frame
+{61.66680} [DEBUG]: failed to adjust target
+{61.66680} [DEBUG]: Delivery condition: 
+{61.66680} [DEBUG]: Target: (182.50, 277.50)
+{61.66680} [DEBUG]: From:   (117.00, 199.00)
+{61.66680} [DEBUG]: Angle to target: 0.19 rad
+{61.66680} [DEBUG]: Rotation applied: -1.68 rad
+{61.66680} [DEBUG]: Movement: 35.00 px
+{61.67545} [COMMAND]: sending command: rotate 32.14720003311169
+{61.67545} [STATUS]: has ball: False
+{61.75989} [RESPONSE]: modified OK
+{61.75989} [FPS]: 5.145267837537124
+{61.75989} [STATUS]: generating frame
+{61.85325} [DEBUG]: adjusted target
+{61.85325} [DEBUG]: Delivery condition: 
+{61.85325} [DEBUG]: Target: (633.50, 387.50)
+{61.85325} [DEBUG]: From:   (117.00, 201.00)
+{61.85325} [DEBUG]: Angle to target: 0.20 rad
+{61.85325} [DEBUG]: Rotation applied: -1.98 rad
+{61.85325} [DEBUG]: Movement: 418.30 px
+{61.86992} [COMMAND]: sending command: rotate 37.876459243552276
+{61.86992} [STATUS]: has ball: False
+{62.18861} [RESPONSE]: modified OK
+{62.18861} [FPS]: 2.3325234417186684
+{62.18861} [STATUS]: generating frame
+{62.28402} [DEBUG]: adjusted target
+{62.28402} [DEBUG]: Delivery condition: 
+{62.28402} [DEBUG]: Target: (382.50, 233.50)
+{62.28402} [DEBUG]: From:   (116.00, 205.00)
+{62.28402} [DEBUG]: Angle to target: -0.07 rad
+{62.28402} [DEBUG]: Rotation applied: -1.51 rad
+{62.28402} [DEBUG]: Movement: 221.07 px
+{62.29940} [COMMAND]: sending command: rotate 28.74766895662532
+{62.29940} [STATUS]: has ball: False
+{62.74450} [RESPONSE]: modified OK
+{62.74450} [FPS]: 1.7988990369253666
+{62.74450} [STATUS]: generating frame
+{62.84794} [DEBUG]: falied car length: 2
+{62.86657} [DEBUG]: falied car length: 2
+{62.88313} [DEBUG]: falied car length: 2
+{62.90492} [DEBUG]: falied car length: 1
+{62.93169} [DEBUG]: falied car length: 1
+{62.95362} [RETRY]: no car
+{62.96221} [COMMAND]: sending command: backward 0.1
+{62.96221} [STATUS]: has ball: False
+{63.03175} [RESPONSE]: modified OK
+{63.03175} [FPS]: 3.4813771442658137
+{63.03175} [STATUS]: generating frame
+{63.14037} [DEBUG]: adjusted target
+{63.14037} [DEBUG]: Delivery condition: 
+{63.14037} [DEBUG]: Target: (381.50, 233.50)
+{63.14037} [DEBUG]: From:   (143.00, 164.00)
+{63.14037} [DEBUG]: Angle to target: 0.13 rad
+{63.14037} [DEBUG]: Rotation applied: -2.57 rad
+{63.14037} [DEBUG]: Movement: 113.30 px
+{63.14569} [COMMAND]: sending command: rotate 49.12999928887162
+{63.14569} [STATUS]: has ball: False
+{63.15469} [RESPONSE]: modified OK
+{63.15469} [FPS]: 8.133792547084923
+{63.15469} [STATUS]: generating frame
+{63.25407} [DEBUG]: adjusted target
+{63.25407} [DEBUG]: Delivery condition: 
+{63.25407} [DEBUG]: Target: (383.50, 233.50)
+{63.25407} [DEBUG]: From:   (156.00, 157.00)
+{63.25407} [DEBUG]: Angle to target: 0.01 rad
+{63.25407} [DEBUG]: Rotation applied: -2.02 rad
+{63.25407} [DEBUG]: Movement: 109.74 px
+{63.26830} [COMMAND]: sending command: rotate 38.48778168729054
+{63.26830} [STATUS]: has ball: False
+{63.87861} [RESPONSE]: modified OK
+{63.87861} [FPS]: 1.381363808520098
+{63.87861} [STATUS]: generating frame
+{63.98115} [DEBUG]: failed to adjust target
+{63.98115} [DEBUG]: Delivery condition: 
+{63.98115} [DEBUG]: Target: (383.50, 233.50)
+{63.98115} [DEBUG]: From:   (166.00, 153.00)
+{63.98115} [DEBUG]: Angle to target: -0.00 rad
+{63.98115} [DEBUG]: Rotation applied: -1.86 rad
+{63.98115} [DEBUG]: Movement: 109.02 px
+{63.99582} [COMMAND]: sending command: rotate 35.452103533803566
+{63.99582} [STATUS]: has ball: False
+{64.20268} [RESPONSE]: modified OK
+{64.20268} [FPS]: 3.0857215165288223
+{64.20268} [STATUS]: generating frame
+{64.32516} [DEBUG]: adjusted target
+{64.32516} [DEBUG]: Delivery condition: 
+{64.32516} [DEBUG]: Target: (383.50, 233.50)
+{64.32516} [DEBUG]: From:   (212.00, 157.00)
+{64.32516} [DEBUG]: Angle to target: -0.03 rad
+{64.32516} [DEBUG]: Rotation applied: -1.20 rad
+{64.32516} [DEBUG]: Movement: 113.60 px
+{64.34095} [COMMAND]: sending command: rotate 22.98403795840218
+{64.34095} [STATUS]: has ball: False
+{64.68673} [RESPONSE]: modified OK
+{64.68673} [FPS]: 2.065927570696493
+{64.68673} [STATUS]: generating frame
+{64.78142} [DEBUG]: adjusted target
+{64.78142} [DEBUG]: Delivery condition: 
+{64.78142} [DEBUG]: Target: (382.50, 233.50)
+{64.78142} [DEBUG]: From:   (228.00, 165.00)
+{64.78142} [DEBUG]: Angle to target: -0.02 rad
+{64.78142} [DEBUG]: Rotation applied: -0.95 rad
+{64.78142} [DEBUG]: Movement: 116.87 px
+{64.78968} [COMMAND]: sending command: rotate 18.080550666865033
+{64.78968} [STATUS]: has ball: False
+{64.96082} [RESPONSE]: modified OK
+{64.96082} [FPS]: 3.648394700903769
+{64.96082} [STATUS]: generating frame
+{65.05175} [DEBUG]: adjusted target
+{65.05175} [DEBUG]: Delivery condition: 
+{65.05175} [DEBUG]: Target: (383.50, 233.50)
+{65.05175} [DEBUG]: From:   (250.00, 190.00)
+{65.05175} [DEBUG]: Angle to target: 0.00 rad
+{65.05175} [DEBUG]: Rotation applied: -0.51 rad
+{65.05175} [DEBUG]: Movement: 122.31 px
+{65.06727} [COMMAND]: sending command: rotate 9.772300094901786
+{65.06727} [STATUS]: has ball: False
+{65.24099} [RESPONSE]: modified OK
+{65.24099} [FPS]: 3.569331841255388
+{65.24099} [STATUS]: generating frame
+{65.35876} [DEBUG]: adjusted target
+{65.35876} [DEBUG]: Delivery condition: 
+{65.35876} [DEBUG]: Target: (383.50, 233.50)
+{65.35876} [DEBUG]: From:   (255.00, 202.00)
+{65.35876} [DEBUG]: Angle to target: 0.01 rad
+{65.35876} [DEBUG]: Rotation applied: -0.35 rad
+{65.35876} [DEBUG]: Movement: 123.59 px
+{65.37509} [COMMAND]: sending command: rotate 6.645505060440282
+{65.37509} [STATUS]: has ball: False
+{65.41222} [RESPONSE]: modified OK
+{65.41222} [FPS]: 5.839875915112125
+{65.41222} [STATUS]: generating frame
+{65.52570} [DEBUG]: adjusted target
+{65.52570} [DEBUG]: Delivery condition: 
+{65.52570} [DEBUG]: Target: (382.50, 233.50)
+{65.52570} [DEBUG]: From:   (258.00, 216.00)
+{65.52570} [DEBUG]: Angle to target: 0.03 rad
+{65.52570} [DEBUG]: Rotation applied: -0.16 rad
+{65.52570} [DEBUG]: Movement: 123.76 px
+{65.54236} [COMMAND]: sending command: rotate 3.0825948660319002
+{65.54236} [STATUS]: has ball: False
+{65.59225} [RESPONSE]: modified OK
+{65.59225} [FPS]: 5.55472209861632
+{65.59225} [STATUS]: generating frame
+{65.70198} [DEBUG]: adjusted target
+{65.70198} [DEBUG]: Delivery condition: 
+{65.70198} [DEBUG]: Target: (382.50, 233.50)
+{65.70198} [DEBUG]: From:   (258.00, 226.00)
+{65.70198} [DEBUG]: Angle to target: 0.03 rad
+{65.70198} [DEBUG]: Rotation applied: -0.04 rad
+{65.70198} [DEBUG]: Movement: 124.73 px
+{65.70957} [COMMAND]: sending command: drive 1.2472569903592443
+{65.70957} [STATUS]: has ball: False
+{65.71283} [RESPONSE]: modified OK
+{65.71283} [FPS]: 8.293350575292195
+{65.71283} [STATUS]: generating frame
+{65.82601} [DEBUG]: adjusted target
+{65.82601} [DEBUG]: Delivery condition: 
+{65.82601} [DEBUG]: Target: (382.50, 233.50)
+{65.82601} [DEBUG]: From:   (258.00, 230.00)
+{65.82601} [DEBUG]: Angle to target: 0.04 rad
+{65.82601} [DEBUG]: Rotation applied: 0.01 rad
+{65.82601} [DEBUG]: Movement: 124.55 px
+{65.84120} [COMMAND]: sending command: drive 1.245491870708115
+{65.84120} [STATUS]: has ball: False
+{67.04121} [RESPONSE]: modified OK
+{67.04121} [FPS]: 0.7527949570342101
+{67.04121} [STATUS]: generating frame
+{67.14789} [DEBUG]: adjusted target
+{67.14789} [DEBUG]: Delivery condition: 
+{67.14789} [DEBUG]: Target: (382.50, 233.50)
+{67.14789} [DEBUG]: From:   (257.00, 236.00)
+{67.14789} [DEBUG]: Angle to target: 0.04 rad
+{67.14789} [DEBUG]: Rotation applied: 0.08 rad
+{67.14789} [DEBUG]: Movement: 125.52 px
+{67.16449} [COMMAND]: sending command: drive 1.2552489792865797
+{67.16449} [STATUS]: has ball: False
+{68.38323} [RESPONSE]: modified OK
+{68.38323} [FPS]: 0.7451446966473584
+{68.38323} [STATUS]: generating frame
+{68.48597} [DEBUG]: adjusted target
+{68.48597} [DEBUG]: Delivery condition: 
+{68.48597} [DEBUG]: Target: (382.50, 233.50)
+{68.48597} [DEBUG]: From:   (309.00, 240.00)
+{68.48597} [DEBUG]: Angle to target: 0.03 rad
+{68.48597} [DEBUG]: Rotation applied: 0.10 rad
+{68.48597} [DEBUG]: Movement: 72.78 px
+{68.48894} [COMMAND]: sending command: rotate -1.9382234616796634
+{68.48894} [STATUS]: has ball: False
+{69.18829} [RESPONSE]: modified OK ball caught
+{72.97572} [FPS]: 0.21774684688402915
+{72.97572} [STATUS]: generating frame
+{73.50559} [DEBUG]: using provided target: (616.00, 242.00)
+{73.50559} [DEBUG]: Delivery condition: 
+{73.50559} [DEBUG]: Target: (616.00, 242.00)
+{73.50559} [DEBUG]: From:   (435.00, 242.00)
+{73.50759} [DEBUG]: Angle to target: 0.03 rad
+{73.50759} [DEBUG]: Rotation applied: 0.06 rad
+{73.50759} [DEBUG]: Movement: 181.00 px
+{73.52198} [COMMAND]: sending command: drive 1.81
+{73.52198} [STATUS]: has ball: True
+{73.52198} [RESPONSE]: modified OKOK
+{73.52198} [FPS]: 1.8306424897377536
+{73.52198} [STATUS]: generating frame
+{73.63160} [DEBUG]: using provided target: (616.00, 242.00)
+{73.63160} [DEBUG]: Delivery condition: 
+{73.63160} [DEBUG]: Target: (616.00, 242.00)
+{73.63160} [DEBUG]: From:   (457.00, 241.00)
+{73.63160} [DEBUG]: Angle to target: 0.04 rad
+{73.63160} [DEBUG]: Rotation applied: 0.05 rad
+{73.63160} [DEBUG]: Movement: 159.00 px
+{73.64490} [COMMAND]: sending command: drive 1.5900314462299163
+{73.64533} [STATUS]: has ball: True
+{75.44137} [RESPONSE]: modified OK
+{75.44137} [FPS]: 0.5209993867459363
+{75.44137} [STATUS]: generating frame
+{75.56933} [DEBUG]: using provided target: (616.00, 242.00)
+{75.56933} [DEBUG]: Delivery condition: 
+{75.56933} [DEBUG]: Target: (616.00, 242.00)
+{75.56933} [DEBUG]: From:   (457.00, 241.00)
+{75.56933} [DEBUG]: Angle to target: 0.04 rad
+{75.56933} [DEBUG]: Rotation applied: 0.05 rad
+{75.56933} [DEBUG]: Movement: 159.00 px
+{75.58612} [COMMAND]: sending command: drive 1.5900314462299163
+{75.58612} [STATUS]: has ball: True
+{77.07361} [RESPONSE]: modified OK
+{77.07361} [FPS]: 0.6126537274735708
+{77.07361} [STATUS]: generating frame
+{77.19370} [DEBUG]: using provided target: (616.00, 242.00)
+{77.19370} [DEBUG]: Delivery condition: 
+{77.19370} [DEBUG]: Target: (616.00, 242.00)
+{77.19370} [DEBUG]: From:   (538.00, 237.00)
+{77.19370} [DEBUG]: Angle to target: 0.05 rad
+{77.19370} [DEBUG]: Rotation applied: -0.01 rad
+{77.19370} [DEBUG]: Movement: 78.16 px
+{77.20876} [COMMAND]: sending command: drive 0.7816009211867653
+{77.20876} [STATUS]: has ball: True
+{78.71290} [RESPONSE]: modified OK
+{78.71290} [FPS]: 0.610019091893719
+{78.71290} [STATUS]: generating frame
+{78.84971} [DEBUG]: using provided target: (616.00, 242.00)
+{78.84971} [DEBUG]: Delivery condition: 
+{78.84971} [DEBUG]: Target: (616.00, 242.00)
+{78.84971} [DEBUG]: From:   (604.00, 234.00)
+{78.84971} [DEBUG]: Angle to target: -0.02 rad
+{78.84971} [DEBUG]: Rotation applied: -0.12 rad
+{78.84971} [DEBUG]: Movement: 35.00 px
+{78.86648} [COMMAND]: sending command: rotate 2.244307108953204
+{78.86648} [STATUS]: has ball: True
+{79.53764} [RESPONSE]: modified OK
+{79.53764} [FPS]: 1.2125009792678516
+{79.53764} [STATUS]: generating frame
+{79.64023} [DEBUG]: using provided target: (616.00, 242.00)
+{79.64023} [DEBUG]: Delivery condition: 
+{79.64023} [DEBUG]: Target: (616.00, 242.00)
+{79.64023} [DEBUG]: From:   (604.00, 234.00)
+{79.64023} [DEBUG]: Angle to target: -0.17 rad
+{79.64023} [DEBUG]: Rotation applied: -0.14 rad
+{79.64023} [DEBUG]: Movement: 35.00 px
+{79.65706} [COMMAND]: sending command: rotate 2.667224751785185
+{79.65706} [STATUS]: has ball: True
+{79.65706} [RESPONSE]: modified OK
+{79.65706} [FPS]: 8.374338127830177
+{79.65706} [STATUS]: generating frame
+{79.78989} [DEBUG]: using provided target: (616.00, 242.00)
+{79.78989} [DEBUG]: Delivery condition: 
+{79.78989} [DEBUG]: Target: (616.00, 242.00)
+{79.78989} [DEBUG]: From:   (605.00, 234.00)
+{79.78989} [DEBUG]: Angle to target: 0.05 rad
+{79.78989} [DEBUG]: Rotation applied: -0.08 rad
+{79.78989} [DEBUG]: Movement: 35.00 px
+{79.80549} [COMMAND]: sending command: drive 0.35
+{79.80549} [STATUS]: has ball: True
+{79.80549} [RESPONSE]: modified OK
+{79.80549} [FPS]: 6.7370044187305345
+{79.80549} [STATUS]: generating frame
+{79.96343} [DEBUG]: using provided target: (616.00, 242.00)
+{79.96343} [DEBUG]: Delivery condition: 
+{79.96343} [DEBUG]: Target: (616.00, 242.00)
+{79.96343} [DEBUG]: From:   (605.00, 234.00)
+{79.96343} [DEBUG]: Angle to target: -0.06 rad
+{79.96343} [DEBUG]: Rotation applied: -0.15 rad
+{79.96343} [DEBUG]: Movement: 35.00 px
+{79.97463} [COMMAND]: sending command: rotate 2.8407324587327287
+{79.97463} [STATUS]: has ball: True
+{80.25542} [RESPONSE]: modified OK
+{80.25542} [FPS]: 2.2225740777833947
+{80.25542} [STATUS]: generating frame
+{80.39629} [DEBUG]: using provided target: (616.00, 242.00)
+{80.39629} [DEBUG]: Delivery condition: 
+{80.39629} [DEBUG]: Target: (616.00, 242.00)
+{80.39629} [DEBUG]: From:   (605.00, 235.00)
+{80.39629} [DEBUG]: Angle to target: -0.06 rad
+{80.39629} [DEBUG]: Rotation applied: -0.13 rad
+{80.39629} [DEBUG]: Movement: 35.00 px
+{80.41324} [COMMAND]: sending command: rotate 2.5187813521464872
+{80.41324} [STATUS]: has ball: True
+{80.41324} [RESPONSE]: modified OK
+{80.41324} [FPS]: 6.336428803432361
+{80.41324} [STATUS]: generating frame
+{80.53138} [DEBUG]: using provided target: (616.00, 242.00)
+{80.53138} [DEBUG]: Delivery condition: 
+{80.53138} [DEBUG]: Target: (616.00, 242.00)
+{80.53138} [DEBUG]: From:   (605.00, 235.00)
+{80.53138} [DEBUG]: Angle to target: 0.04 rad
+{80.53138} [DEBUG]: Rotation applied: -0.07 rad
+{80.53138} [DEBUG]: Movement: 35.00 px
+{80.54758} [COMMAND]: sending command: drive 0.35
+{80.54758} [STATUS]: has ball: True
+{80.56434} [RESPONSE]: modified OK
+{80.56434} [FPS]: 6.617938773513754
+{80.56434} [STATUS]: generating frame
+{81.13524} [DEBUG]: using provided target: (-1.00, -1.00)
+{81.13524} [DEBUG]: Delivery condition: 
+{81.13524} [DEBUG]: Target: (-1.00, -1.00)
+{81.13524} [DEBUG]: From:   (605.00, 236.00)
+{81.13524} [DEBUG]: Angle to target: -2.71 rad
+{81.13524} [DEBUG]: Rotation applied: 2.69 rad
+{81.13524} [DEBUG]: Movement: 476.73 px
+{81.14352} [COMMAND]: sending command: rotate -51.28199766248675
+{81.14352} [STATUS]: has ball: True
+{81.14352} [RESPONSE]: modified OK
+{81.14352} [FPS]: 1.726583214332319
+{81.14352} [STATUS]: generating frame
+{81.25974} [DEBUG]: using provided target: (-1.00, -1.00)
+{81.25974} [DEBUG]: Delivery condition: 
+{81.25974} [DEBUG]: Target: (-1.00, -1.00)
+{81.25974} [DEBUG]: From:   (605.00, 237.00)
+{81.25974} [DEBUG]: Angle to target: -2.70 rad
+{81.25974} [DEBUG]: Rotation applied: 2.45 rad
+{81.25974} [DEBUG]: Movement: 527.15 px
+{81.27547} [COMMAND]: sending command: rotate -46.81465552871206
+{81.27547} [STATUS]: has ball: True
+{81.88925} [RESPONSE]: modified OK
+{81.88925} [FPS]: 1.3409753369859527
+{81.88925} [STATUS]: generating frame
+{82.01666} [DEBUG]: using provided target: (-1.00, -1.00)
+{82.01666} [DEBUG]: Delivery condition: 
+{82.01666} [DEBUG]: Target: (-1.00, -1.00)
+{82.01666} [DEBUG]: From:   (605.00, 237.00)
+{82.01666} [DEBUG]: Angle to target: -2.70 rad
+{82.01666} [DEBUG]: Rotation applied: 2.52 rad
+{82.01666} [DEBUG]: Movement: 520.66 px
+{82.02981} [COMMAND]: sending command: rotate -48.12876479111026
+{82.02981} [STATUS]: has ball: True
+{82.40155} [RESPONSE]: modified OK
+{82.40155} [FPS]: 1.9519802973180134
+{82.40155} [STATUS]: generating frame
+{82.50917} [DEBUG]: using provided target: (-1.00, -1.00)
+{82.50917} [DEBUG]: Delivery condition: 
+{82.50917} [DEBUG]: Target: (-1.00, -1.00)
+{82.50917} [DEBUG]: From:   (591.00, 196.00)
+{82.50917} [DEBUG]: Angle to target: -2.69 rad
+{82.50917} [DEBUG]: Rotation applied: 2.08 rad
+{82.50917} [DEBUG]: Movement: 486.01 px
+{82.50917} [COMMAND]: sending command: rotate -39.63546593112026
+{82.50917} [STATUS]: has ball: True
+{82.91659} [RESPONSE]: modified OK
+{82.91659} [FPS]: 1.941597966515649
+{82.91659} [STATUS]: generating frame
+{83.02242} [DEBUG]: using provided target: (-1.00, -1.00)
+{83.02242} [DEBUG]: Delivery condition: 
+{83.02242} [DEBUG]: Target: (-1.00, -1.00)
+{83.02242} [DEBUG]: From:   (562.00, 172.00)
+{83.02242} [DEBUG]: Angle to target: -2.69 rad
+{83.02242} [DEBUG]: Rotation applied: 1.57 rad
+{83.02242} [DEBUG]: Movement: 494.21 px
+{83.03592} [COMMAND]: sending command: rotate -29.892693189094445
+{83.03592} [STATUS]: has ball: True
+{83.42430} [RESPONSE]: modified OK
+{83.42430} [FPS]: 1.9696154597502518
+{83.42430} [STATUS]: generating frame
+{83.55566} [DEBUG]: using provided target: (-1.00, -1.00)
+{83.55623} [DEBUG]: Delivery condition: 
+{83.55623} [DEBUG]: Target: (-1.00, -1.00)
+{83.55623} [DEBUG]: From:   (524.00, 163.00)
+{83.55623} [DEBUG]: Angle to target: -2.70 rad
+{83.55623} [DEBUG]: Rotation applied: 1.03 rad
+{83.55623} [DEBUG]: Movement: 500.88 px
+{83.56339} [COMMAND]: sending command: rotate -19.61701877420192
+{83.56339} [STATUS]: has ball: True
+{83.73689} [RESPONSE]: modified OK
+{83.73689} [FPS]: 3.199026175350979
+{83.73689} [STATUS]: generating frame
+{83.86210} [DEBUG]: using provided target: (-1.00, -1.00)
+{83.86210} [DEBUG]: Delivery condition: 
+{83.86210} [DEBUG]: Target: (-1.00, -1.00)
+{83.86210} [DEBUG]: From:   (494.00, 170.00)
+{83.86210} [DEBUG]: Angle to target: -2.71 rad
+{83.86210} [DEBUG]: Rotation applied: 0.62 rad
+{83.86210} [DEBUG]: Movement: 503.70 px
+{83.87849} [COMMAND]: sending command: rotate -11.904181135042982
+{83.87849} [STATUS]: has ball: True
+{84.00635} [RESPONSE]: modified OK
+{84.00635} [FPS]: 3.7111593037258435
+{84.00635} [STATUS]: generating frame
+{84.09958} [DEBUG]: using provided target: (-1.00, -1.00)
+{84.09958} [DEBUG]: Delivery condition: 
+{84.09958} [DEBUG]: Target: (-1.00, -1.00)
+{84.09958} [DEBUG]: From:   (481.00, 177.00)
+{84.09958} [DEBUG]: Angle to target: -2.71 rad
+{84.09958} [DEBUG]: Rotation applied: 0.44 rad
+{84.09958} [DEBUG]: Movement: 503.50 px
+{84.11692} [COMMAND]: sending command: rotate -8.375110685550682
+{84.11692} [STATUS]: has ball: True
+{84.20503} [RESPONSE]: modified OK
+{84.20503} [FPS]: 5.0333480138677045
+{84.20503} [STATUS]: generating frame
+{84.31706} [DEBUG]: using provided target: (-1.00, -1.00)
+{84.31706} [DEBUG]: Delivery condition: 
+{84.31706} [DEBUG]: Target: (-1.00, -1.00)
+{84.31706} [DEBUG]: From:   (469.00, 187.00)
+{84.31706} [DEBUG]: Angle to target: -2.72 rad
+{84.31706} [DEBUG]: Rotation applied: 0.23 rad
+{84.31706} [DEBUG]: Movement: 503.14 px
+{84.33401} [COMMAND]: sending command: rotate -4.4742317466939685
+{84.33401} [STATUS]: has ball: True
+{84.35893} [RESPONSE]: modified OK
+{84.35893} [FPS]: 6.497457902808545
+{84.35893} [STATUS]: generating frame
+{84.46763} [DEBUG]: using provided target: (-1.00, -1.00)
+{84.46763} [DEBUG]: Delivery condition: 
+{84.46763} [DEBUG]: Target: (-1.00, -1.00)
+{84.46763} [DEBUG]: From:   (462.00, 195.00)
+{84.46763} [DEBUG]: Angle to target: -2.72 rad
+{84.46763} [DEBUG]: Rotation applied: 0.11 rad
+{84.46763} [DEBUG]: Movement: 502.06 px
+{84.48510} [COMMAND]: sending command: rotate -2.1297781441740935
+{84.48510} [STATUS]: has ball: True
+{84.48510} [RESPONSE]: modified OK
+{84.48510} [FPS]: 7.9262088293153985
+{84.48510} [STATUS]: generating frame
+{85.09419} [DEBUG]: using provided target: (615.00, 239.00)
+{85.09419} [DEBUG]: Delivery condition: 
+{85.09419} [DEBUG]: Target: (615.00, 239.00)
+{85.09419} [DEBUG]: From:   (460.00, 200.00)
+{85.09419} [DEBUG]: Angle to target: -0.06 rad
+{85.09419} [DEBUG]: Rotation applied: -2.62 rad
+{85.09419} [DEBUG]: Movement: 27.04 px
+{85.09419} [COMMAND]: sending command: rotate 50.039055884862385
+{85.09419} [STATUS]: has ball: True
+{85.09419} [RESPONSE]: modified OK
+{85.09419} [FPS]: 1.6417797575477644
+{85.09419} [STATUS]: generating frame
+{85.15898} [DEBUG]: using provided target: (615.00, 239.00)
+{85.15898} [DEBUG]: Delivery condition: 
+{85.15898} [DEBUG]: Target: (615.00, 239.00)
+{85.15898} [DEBUG]: From:   (456.00, 206.00)
+{85.15898} [DEBUG]: Angle to target: -0.03 rad
+{85.15898} [DEBUG]: Rotation applied: -2.74 rad
+{85.15898} [DEBUG]: Movement: 27.54 px
+{85.15898} [COMMAND]: sending command: rotate 52.36307070796132
+{85.15898} [STATUS]: has ball: True
+{85.78082} [RESPONSE]: modified OK
+{85.78082} [FPS]: 1.4563944938805655
+{85.78082} [STATUS]: generating frame
+{85.90648} [DEBUG]: using provided target: (615.00, 239.00)
+{85.90648} [DEBUG]: Delivery condition: 
+{85.90648} [DEBUG]: Target: (615.00, 239.00)
+{85.90648} [DEBUG]: From:   (456.00, 206.00)
+{85.90648} [DEBUG]: Angle to target: -0.03 rad
+{85.90648} [DEBUG]: Rotation applied: -2.74 rad
+{85.90648} [DEBUG]: Movement: 27.54 px
+{85.92313} [COMMAND]: sending command: rotate 52.36307070796132
+{85.92313} [STATUS]: has ball: True
+{86.40031} [RESPONSE]: modified OK
+{86.40031} [FPS]: 1.6142244663900798
+{86.40031} [STATUS]: generating frame
+{86.52552} [DEBUG]: using provided target: (615.00, 239.00)
+{86.52552} [DEBUG]: Delivery condition: 
+{86.52552} [DEBUG]: Target: (615.00, 239.00)
+{86.52552} [DEBUG]: From:   (483.00, 176.00)
+{86.52552} [DEBUG]: Angle to target: -0.12 rad
+{86.52552} [DEBUG]: Rotation applied: -2.13 rad
+{86.52552} [DEBUG]: Movement: 19.53 px
+{86.54238} [COMMAND]: sending command: rotate 40.76810602760376
+{86.54238} [STATUS]: has ball: True
+{87.00631} [RESPONSE]: modified OK
+{87.00631} [FPS]: 1.650156722052152
+{87.00631} [STATUS]: generating frame
+{87.12535} [DEBUG]: using provided target: (615.00, 239.00)
+{87.12535} [DEBUG]: Delivery condition: 
+{87.12535} [DEBUG]: Target: (615.00, 239.00)
+{87.12535} [DEBUG]: From:   (535.00, 162.00)
+{87.12535} [DEBUG]: Angle to target: 0.09 rad
+{87.12535} [DEBUG]: Rotation applied: -1.90 rad
+{87.12535} [DEBUG]: Movement: 35.00 px
+{87.14183} [COMMAND]: sending command: rotate 36.30184670860574
+{87.14183} [STATUS]: has ball: True
+{87.52080} [RESPONSE]: modified OK
+{87.52080} [FPS]: 1.9437007158825077
+{87.52080} [STATUS]: generating frame
+{87.68744} [DEBUG]: using provided target: (615.00, 239.00)
+{87.68744} [DEBUG]: Delivery condition: 
+{87.68744} [DEBUG]: Target: (615.00, 239.00)
+{87.68744} [DEBUG]: From:   (579.00, 180.00)
+{87.68744} [DEBUG]: Angle to target: -0.12 rad
+{87.68744} [DEBUG]: Rotation applied: -0.78 rad
+{87.68744} [DEBUG]: Movement: 35.00 px
+{87.70492} [COMMAND]: sending command: rotate 14.983450096715261
+{87.70492} [STATUS]: has ball: True
+{87.87459} [RESPONSE]: modified OK
+{87.87660} [FPS]: 2.8265313480310397
+{87.87660} [STATUS]: generating frame
+{88.00990} [DEBUG]: using provided target: (615.00, 239.00)
+{88.00990} [DEBUG]: Delivery condition: 
+{88.00990} [DEBUG]: Target: (615.00, 239.00)
+{88.00990} [DEBUG]: From:   (601.00, 212.00)
+{88.00990} [DEBUG]: Angle to target: -0.06 rad
+{88.00990} [DEBUG]: Rotation applied: -0.32 rad
+{88.00990} [DEBUG]: Movement: 35.00 px
+{88.01761} [COMMAND]: sending command: rotate 6.047577481564994
+{88.01761} [STATUS]: has ball: True
+{88.08851} [RESPONSE]: modified OK
+{88.08851} [FPS]: 4.718947100769333
+{88.08851} [STATUS]: generating frame
+{88.18602} [DEBUG]: using provided target: (615.00, 239.00)
+{88.18602} [DEBUG]: Delivery condition: 
+{88.18602} [DEBUG]: Target: (615.00, 239.00)
+{88.18602} [DEBUG]: From:   (606.00, 232.00)
+{88.18602} [DEBUG]: Angle to target: -0.02 rad
+{88.18602} [DEBUG]: Rotation applied: -0.08 rad
+{88.18602} [DEBUG]: Movement: 35.00 px
+{88.20267} [COMMAND]: sending command: drive 0.35
+{88.20267} [STATUS]: has ball: True
+{88.22118} [RESPONSE]: modified OK
+{88.22118} [FPS]: 7.537679375320113
+{88.22118} [STATUS]: generating frame
+{88.33566} [DEBUG]: using provided target: (615.00, 239.00)
+{88.33566} [DEBUG]: Delivery condition: 
+{88.33566} [DEBUG]: Target: (615.00, 239.00)
+{88.33566} [DEBUG]: From:   (604.00, 240.00)
+{88.33566} [DEBUG]: Angle to target: -0.16 rad
+{88.33566} [DEBUG]: Rotation applied: -0.01 rad
+{88.33566} [DEBUG]: Movement: 35.00 px
+{88.35170} [COMMAND]: sending command: drive 0.35
+{88.35170} [STATUS]: has ball: True
+{88.65487} [RESPONSE]: modified OK
+{88.65487} [FPS]: 2.305744648218015
+{88.65487} [STATUS]: generating frame
+{88.74016} [DEBUG]: using provided target: (615.00, 239.00)
+{88.74016} [DEBUG]: Delivery condition: 
+{88.74016} [DEBUG]: Target: (615.00, 239.00)
+{88.74016} [DEBUG]: From:   (603.00, 247.00)
+{88.74016} [DEBUG]: Angle to target: 0.01 rad
+{88.74016} [DEBUG]: Rotation applied: 0.09 rad
+{88.74016} [DEBUG]: Movement: 35.00 px
+{88.75655} [COMMAND]: sending command: drive 0.35
+{88.75655} [STATUS]: has ball: True
+{88.97210} [RESPONSE]: modified OK
+{88.97210} [FPS]: 3.1523084438765925
+{88.97210} [STATUS]: generating frame
+{89.59534} [DEBUG]: using provided target: (602.00, 125.00)
+{89.59534} [DEBUG]: Delivery condition: 
+{89.59534} [DEBUG]: Target: (602.00, 125.00)
+{89.59534} [DEBUG]: From:   (603.00, 250.00)
+{89.59534} [DEBUG]: Angle to target: -0.91 rad
+{89.59534} [DEBUG]: Rotation applied: 1.02 rad
+{89.59534} [DEBUG]: Movement: 54.48 px
+{89.60134} [COMMAND]: sending command: rotate -19.408011639225027
+{89.60134} [STATUS]: has ball: True
+{89.60134} [RESPONSE]: modified OK
+{89.60134} [FPS]: 1.589228283636606
+{89.60134} [STATUS]: generating frame
+{89.72503} [DEBUG]: using provided target: (602.00, 125.00)
+{89.72503} [DEBUG]: Delivery condition: 
+{89.72503} [DEBUG]: Target: (602.00, 125.00)
+{89.72503} [DEBUG]: From:   (603.00, 250.00)
+{89.72503} [DEBUG]: Angle to target: -1.09 rad
+{89.72503} [DEBUG]: Rotation applied: 0.99 rad
+{89.72503} [DEBUG]: Movement: 78.60 px
+{89.74167} [COMMAND]: sending command: rotate -18.897370331285554
+{89.74204} [STATUS]: has ball: True
+{89.97765} [RESPONSE]: modified OK
+{89.97765} [FPS]: 2.657338988903214
+{89.97765} [STATUS]: generating frame
+{90.10166} [DEBUG]: using provided target: (602.00, 125.00)
+{90.10166} [DEBUG]: Delivery condition: 
+{90.10166} [DEBUG]: Target: (602.00, 125.00)
+{90.10166} [DEBUG]: From:   (603.00, 250.00)
+{90.10166} [DEBUG]: Angle to target: -1.09 rad
+{90.10166} [DEBUG]: Rotation applied: 0.99 rad
+{90.10166} [DEBUG]: Movement: 78.60 px
+{90.11882} [COMMAND]: sending command: rotate -18.897370331285554
+{90.11882} [STATUS]: has ball: True
+{90.23056} [RESPONSE]: modified OK
+{90.23056} [FPS]: 3.9540816759415245
+{90.23056} [STATUS]: generating frame
+{90.33829} [DEBUG]: using provided target: (602.00, 125.00)
+{90.33829} [DEBUG]: Delivery condition: 
+{90.33829} [DEBUG]: Target: (602.00, 125.00)
+{90.33829} [DEBUG]: From:   (604.00, 242.00)
+{90.33829} [DEBUG]: Angle to target: -0.93 rad
+{90.33829} [DEBUG]: Rotation applied: 0.89 rad
+{90.33829} [DEBUG]: Movement: 58.71 px
+{90.35568} [COMMAND]: sending command: rotate -16.956171840566963
+{90.35568} [STATUS]: has ball: True
+{90.49365} [RESPONSE]: modified OK
+{90.49365} [FPS]: 3.8010028337802555
+{90.49365} [STATUS]: generating frame
+{90.59881} [DEBUG]: using provided target: (602.00, 125.00)
+{90.59881} [DEBUG]: Delivery condition: 
+{90.59881} [DEBUG]: Target: (602.00, 125.00)
+{90.59881} [DEBUG]: From:   (602.00, 231.00)
+{90.59881} [DEBUG]: Angle to target: -0.95 rad
+{90.59881} [DEBUG]: Rotation applied: 0.76 rad
+{90.59881} [DEBUG]: Movement: 61.61 px
+{90.60682} [COMMAND]: sending command: rotate -14.494821877054461
+{90.60682} [STATUS]: has ball: True
+{90.74941} [RESPONSE]: modified OK
+{90.74941} [FPS]: 3.9098907286188105
+{90.74941} [STATUS]: generating frame
+{90.86222} [DEBUG]: using provided target: (602.00, 125.00)
+{90.86222} [DEBUG]: Delivery condition: 
+{90.86222} [DEBUG]: Target: (602.00, 125.00)
+{90.86222} [DEBUG]: From:   (600.00, 219.00)
+{90.86222} [DEBUG]: Angle to target: -0.97 rad
+{90.86222} [DEBUG]: Rotation applied: 0.61 rad
+{90.86222} [DEBUG]: Movement: 62.29 px
+{90.87788} [COMMAND]: sending command: rotate -11.581988324641623
+{90.87788} [STATUS]: has ball: True
+{90.96549} [RESPONSE]: modified OK
+{90.96549} [FPS]: 4.62790133155616
+{90.96549} [STATUS]: generating frame
+{91.09525} [DEBUG]: using provided target: (602.00, 125.00)
+{91.09525} [DEBUG]: Delivery condition: 
+{91.09525} [DEBUG]: Target: (602.00, 125.00)
+{91.09525} [DEBUG]: From:   (593.00, 206.00)
+{91.09525} [DEBUG]: Angle to target: -0.98 rad
+{91.09525} [DEBUG]: Rotation applied: 0.43 rad
+{91.09525} [DEBUG]: Movement: 64.30 px
+{91.11155} [COMMAND]: sending command: rotate -8.123827852449429
+{91.11155} [STATUS]: has ball: True
+{91.17292} [RESPONSE]: modified OK
+{91.17292} [FPS]: 4.820778647590303
+{91.17292} [STATUS]: generating frame
+{91.28801} [DEBUG]: using provided target: (602.00, 125.00)
+{91.28801} [DEBUG]: Delivery condition: 
+{91.28801} [DEBUG]: Target: (602.00, 125.00)
+{91.28801} [DEBUG]: From:   (585.00, 196.00)
+{91.28801} [DEBUG]: Angle to target: -1.00 rad
+{91.28801} [DEBUG]: Rotation applied: 0.27 rad
+{91.28801} [DEBUG]: Movement: 65.68 px
+{91.30493} [COMMAND]: sending command: rotate -5.161994110260007
+{91.30577} [STATUS]: has ball: True
+{91.30577} [RESPONSE]: modified OK
+{91.30577} [FPS]: 7.527682058350563
+{91.30577} [STATUS]: generating frame
+{91.42271} [DEBUG]: using provided target: (602.00, 125.00)
+{91.42271} [DEBUG]: Delivery condition: 
+{91.42271} [DEBUG]: Target: (602.00, 125.00)
+{91.42271} [DEBUG]: From:   (577.00, 189.00)
+{91.42271} [DEBUG]: Angle to target: -1.01 rad
+{91.42271} [DEBUG]: Rotation applied: 0.14 rad
+{91.42271} [DEBUG]: Movement: 66.67 px
+{91.43916} [COMMAND]: sending command: rotate -2.7072916997197587
+{91.43916} [STATUS]: has ball: True
+{91.47265} [RESPONSE]: modified OK
+{91.47344} [FPS]: 5.9922138296671665
+{91.47344} [STATUS]: generating frame
+{91.60363} [DEBUG]: using provided target: (602.00, 125.00)
+{91.60363} [DEBUG]: Delivery condition: 
+{91.60363} [DEBUG]: Target: (602.00, 125.00)
+{91.60363} [DEBUG]: From:   (570.00, 183.00)
+{91.60363} [DEBUG]: Angle to target: -1.02 rad
+{91.60363} [DEBUG]: Rotation applied: 0.03 rad
+{91.60363} [DEBUG]: Movement: 66.24 px
+{91.61233} [COMMAND]: sending command: drive 0.6624198064671678
+{91.61233} [STATUS]: has ball: True
+{91.61306} [RESPONSE]: modified OK
+{91.61306} [FPS]: 7.162269834412263
+{91.61306} [STATUS]: generating frame
+{92.24707} [DEBUG]: using provided target: (610.00, 239.00)
+{92.24707} [DEBUG]: Delivery condition: 
+{92.24707} [DEBUG]: Target: (610.00, 239.00)
+{92.24707} [DEBUG]: From:   (566.00, 180.00)
+{92.24707} [DEBUG]: Angle to target: -0.21 rad
+{92.24707} [DEBUG]: Rotation applied: -0.84 rad
+{92.24707} [DEBUG]: Movement: 35.00 px
+{92.25504} [COMMAND]: sending command: rotate 16.12962900360763
+{92.25504} [STATUS]: has ball: True
+{92.32929} [RESPONSE]: modified OK
+{92.33702} [FPS]: 1.3962094695021579
+{92.34104} [STATUS]: generating frame
+{92.47590} [DEBUG]: using provided target: (610.00, 239.00)
+{92.47590} [DEBUG]: Delivery condition: 
+{92.47590} [DEBUG]: Target: (610.00, 239.00)
+{92.47590} [DEBUG]: From:   (568.00, 162.00)
+{92.47590} [DEBUG]: Angle to target: -0.04 rad
+{92.47590} [DEBUG]: Rotation applied: -1.09 rad
+{92.47590} [DEBUG]: Movement: 35.00 px
+{92.49246} [COMMAND]: sending command: rotate 20.814898820917673
+{92.49303} [STATUS]: has ball: True
+{92.59833} [RESPONSE]: modified OK
+{92.59833} [FPS]: 3.826968592664505
+{92.59833} [STATUS]: generating frame
+{92.71735} [DEBUG]: using provided target: (610.00, 239.00)
+{92.71735} [DEBUG]: Delivery condition: 
+{92.71735} [DEBUG]: Target: (610.00, 239.00)
+{92.71735} [DEBUG]: From:   (570.00, 155.00)
+{92.71735} [DEBUG]: Angle to target: 0.04 rad
+{92.71735} [DEBUG]: Rotation applied: -1.17 rad
+{92.71735} [DEBUG]: Movement: 35.00 px
+{92.72609} [COMMAND]: sending command: rotate 22.356547722950825
+{92.72609} [STATUS]: has ball: True
+{92.95760} [RESPONSE]: modified OK
+{92.95760} [FPS]: 2.783351007282375
+{92.95760} [STATUS]: generating frame
+{93.06238} [DEBUG]: using provided target: (610.00, 239.00)
+{93.06238} [DEBUG]: Delivery condition: 
+{93.06238} [DEBUG]: Target: (610.00, 239.00)
+{93.06238} [DEBUG]: From:   (575.00, 154.00)
+{93.06238} [DEBUG]: Angle to target: 0.10 rad
+{93.06238} [DEBUG]: Rotation applied: -1.17 rad
+{93.06238} [DEBUG]: Movement: 35.00 px
+{93.07845} [COMMAND]: sending command: rotate 22.440355752984853
+{93.07845} [STATUS]: has ball: True
+{93.22775} [RESPONSE]: modified OK
+{93.22775} [FPS]: 3.7016806388951893
+{93.22775} [STATUS]: generating frame
+{93.35062} [DEBUG]: using provided target: (610.00, 239.00)
+{93.35062} [DEBUG]: Delivery condition: 
+{93.35062} [DEBUG]: Target: (610.00, 239.00)
+{93.35062} [DEBUG]: From:   (544.00, 197.00)
+{93.35062} [DEBUG]: Angle to target: 1.33 rad
+{93.35062} [DEBUG]: Rotation applied: 1.26 rad
+{93.35062} [DEBUG]: Movement: 17.61 px
+{93.36709} [COMMAND]: sending command: rotate -24.01028675328099
+{93.36709} [STATUS]: has ball: True
+{93.55899} [RESPONSE]: modified OK
+{93.55899} [FPS]: 3.0189422375837545
+{93.55899} [STATUS]: generating frame
+{93.64611} [DEBUG]: using provided target: (610.00, 239.00)
+{93.64611} [DEBUG]: Delivery condition: 
+{93.64611} [DEBUG]: Target: (610.00, 239.00)
+{93.64611} [DEBUG]: From:   (600.00, 177.00)
+{93.64611} [DEBUG]: Angle to target: 0.14 rad
+{93.64611} [DEBUG]: Rotation applied: -0.74 rad
+{93.64611} [DEBUG]: Movement: 35.00 px
+{93.65415} [COMMAND]: sending command: rotate 14.058679903585883
+{93.65415} [STATUS]: has ball: True
+{93.93143} [RESPONSE]: modified OK
+{93.93143} [FPS]: 2.6850127103155526
+{93.93143} [STATUS]: generating frame
+{94.06169} [DEBUG]: using provided target: (610.00, 239.00)
+{94.06169} [DEBUG]: Delivery condition: 
+{94.06169} [DEBUG]: Target: (610.00, 239.00)
+{94.06169} [DEBUG]: From:   (601.00, 185.00)
+{94.06169} [DEBUG]: Angle to target: 0.14 rad
+{94.06169} [DEBUG]: Rotation applied: -0.63 rad
+{94.06169} [DEBUG]: Movement: 35.00 px
+{94.06943} [COMMAND]: sending command: rotate 12.05135635599487
+{94.06943} [STATUS]: has ball: True
+{94.19399} [RESPONSE]: modified OK
+{94.19399} [FPS]: 3.8087032641326792
+{94.19399} [STATUS]: generating frame
+{94.32664} [DEBUG]: using provided target: (610.00, 239.00)
+{94.32664} [DEBUG]: Delivery condition: 
+{94.32664} [DEBUG]: Target: (610.00, 239.00)
+{94.32664} [DEBUG]: From:   (599.00, 184.00)
+{94.32664} [DEBUG]: Angle to target: 0.11 rad
+{94.32664} [DEBUG]: Rotation applied: -0.64 rad
+{94.32664} [DEBUG]: Movement: 35.00 px
+{94.34284} [COMMAND]: sending command: rotate 12.261918137795115
+{94.34319} [STATUS]: has ball: True
+{94.38738} [RESPONSE]: modified OK
+{94.39217} [FPS]: 5.17095843191017
+{94.39217} [STATUS]: generating frame
+{94.53611} [DEBUG]: using provided target: (610.00, 239.00)
+{94.53611} [DEBUG]: Delivery condition: 
+{94.53611} [DEBUG]: Target: (610.00, 239.00)
+{94.53611} [DEBUG]: From:   (556.00, 192.00)
+{94.53611} [DEBUG]: Angle to target: 1.32 rad
+{94.53611} [DEBUG]: Rotation applied: 1.45 rad
+{94.53611} [DEBUG]: Movement: 23.18 px
+{94.55299} [COMMAND]: sending command: rotate -27.64310606050915
+{94.55299} [STATUS]: has ball: True
+{94.58746} [RESPONSE]: modified OK
+{94.58746} [FPS]: 5.120618824784733
+{94.58746} [STATUS]: generating frame
+{94.72240} [DEBUG]: using provided target: (610.00, 239.00)
+{94.72240} [DEBUG]: Delivery condition: 
+{94.72240} [DEBUG]: Target: (610.00, 239.00)
+{94.72240} [DEBUG]: From:   (600.00, 187.00)
+{94.72240} [DEBUG]: Angle to target: 0.12 rad
+{94.72240} [DEBUG]: Rotation applied: -0.60 rad
+{94.72240} [DEBUG]: Movement: 35.00 px
+{94.73931} [COMMAND]: sending command: rotate 11.367798787818474
+{94.73931} [STATUS]: has ball: True
+{94.98849} [RESPONSE]: modified OK
+{94.98849} [FPS]: 2.493574190940195
+{94.98849} [STATUS]: generating frame
+{95.67219} [DEBUG]: using provided target: (615.00, 250.00)
+{95.67219} [DEBUG]: Delivery condition: 
+{95.67219} [DEBUG]: Target: (615.00, 250.00)
+{95.67219} [DEBUG]: From:   (604.00, 196.00)
+{95.67219} [DEBUG]: Angle to target: 0.24 rad
+{95.67219} [DEBUG]: Rotation applied: -0.58 rad
+{95.67219} [DEBUG]: Movement: 35.00 px
+{95.67898} [COMMAND]: sending command: rotate 11.158759432034222
+{95.67955} [STATUS]: has ball: True
+{95.67955} [RESPONSE]: modified OK
+{95.67955} [FPS]: 1.4470497194948735
+{95.67955} [STATUS]: generating frame
+{95.78950} [DEBUG]: using provided target: (615.00, 250.00)
+{95.78950} [DEBUG]: Delivery condition: 
+{95.78950} [DEBUG]: Target: (615.00, 250.00)
+{95.78950} [DEBUG]: From:   (599.00, 188.00)
+{95.78950} [DEBUG]: Angle to target: 0.22 rad
+{95.78950} [DEBUG]: Rotation applied: -0.68 rad
+{95.78950} [DEBUG]: Movement: 35.00 px
+{95.80630} [COMMAND]: sending command: rotate 13.020048069908752
+{95.80630} [STATUS]: has ball: True
+{95.86615} [RESPONSE]: modified OK
+{95.86615} [FPS]: 5.358859108250307
+{95.86615} [STATUS]: generating frame
+{95.98737} [DEBUG]: using provided target: (615.00, 250.00)
+{95.98840} [DEBUG]: Delivery condition: 
+{95.98840} [DEBUG]: Target: (615.00, 250.00)
+{95.98840} [DEBUG]: From:   (599.00, 188.00)
+{95.98840} [DEBUG]: Angle to target: 0.22 rad
+{95.98840} [DEBUG]: Rotation applied: -0.68 rad
+{95.98840} [DEBUG]: Movement: 35.00 px
+{96.00544} [COMMAND]: sending command: rotate 13.020048069908752
+{96.00544} [STATUS]: has ball: True
+{96.07193} [RESPONSE]: modified OK
+{96.07193} [FPS]: 4.859636886072136
+{96.07193} [STATUS]: generating frame
+{96.18907} [DEBUG]: using provided target: (615.00, 250.00)
+{96.18907} [DEBUG]: Delivery condition: 
+{96.18907} [DEBUG]: Target: (615.00, 250.00)
+{96.18907} [DEBUG]: From:   (599.00, 189.00)
+{96.18907} [DEBUG]: Angle to target: 0.22 rad
+{96.18907} [DEBUG]: Rotation applied: -0.67 rad
+{96.18907} [DEBUG]: Movement: 35.00 px
+{96.20597} [COMMAND]: sending command: rotate 12.829562323072446
+{96.20597} [STATUS]: has ball: True
+{96.27461} [RESPONSE]: modified OK
+{96.27461} [FPS]: 4.933848405143817
+{96.27461} [STATUS]: generating frame
+{96.37171} [DEBUG]: using provided target: (615.00, 250.00)
+{96.37171} [DEBUG]: Delivery condition: 
+{96.37171} [DEBUG]: Target: (615.00, 250.00)
+{96.37171} [DEBUG]: From:   (602.00, 197.00)
+{96.37171} [DEBUG]: Angle to target: 0.24 rad
+{96.37171} [DEBUG]: Rotation applied: -0.57 rad
+{96.37171} [DEBUG]: Movement: 35.00 px
+{96.38733} [COMMAND]: sending command: rotate 10.866406223257338
+{96.38733} [STATUS]: has ball: True
+{96.53221} [RESPONSE]: modified OK
+{96.53221} [FPS]: 3.8820260597051948
+{96.53266} [STATUS]: generating frame
+{96.64258} [DEBUG]: using provided target: (615.00, 250.00)
+{96.64258} [DEBUG]: Delivery condition: 
+{96.64258} [DEBUG]: Target: (615.00, 250.00)
+{96.64258} [DEBUG]: From:   (598.00, 196.00)
+{96.64258} [DEBUG]: Angle to target: 0.85 rad
+{96.64258} [DEBUG]: Rotation applied: -1.27 rad
+{96.64258} [DEBUG]: Movement: 34.63 px
+{96.65747} [COMMAND]: sending command: rotate 24.297113877427247
+{96.65747} [STATUS]: has ball: True
+{96.72446} [RESPONSE]: modified OK
+{96.72446} [FPS]: 5.201527853564165
+{96.72446} [STATUS]: generating frame
+{96.82695} [DEBUG]: using provided target: (615.00, 250.00)
+{96.82695} [DEBUG]: Delivery condition: 
+{96.82695} [DEBUG]: Target: (615.00, 250.00)
+{96.82695} [DEBUG]: From:   (605.00, 217.00)
+{96.82695} [DEBUG]: Angle to target: 0.29 rad
+{96.82695} [DEBUG]: Rotation applied: -0.52 rad
+{96.82695} [DEBUG]: Movement: 35.00 px
+{96.83546} [COMMAND]: sending command: rotate 9.975905554673476
+{96.83546} [STATUS]: has ball: True
+{97.07591} [RESPONSE]: modified OK
+{97.07591} [FPS]: 2.84540155651315
+{97.07591} [STATUS]: generating frame
+{97.18730} [DEBUG]: using provided target: (615.00, 250.00)
+{97.18838} [DEBUG]: Delivery condition: 
+{97.18838} [DEBUG]: Target: (615.00, 250.00)
+{97.18872} [DEBUG]: From:   (604.00, 222.00)
+{97.18872} [DEBUG]: Angle to target: 0.26 rad
+{97.18872} [DEBUG]: Rotation applied: -0.43 rad
+{97.18872} [DEBUG]: Movement: 35.00 px
+{97.19642} [COMMAND]: sending command: rotate 8.259035552769094
+{97.19642} [STATUS]: has ball: True
+{97.24210} [RESPONSE]: modified OK
+{97.24643} [FPS]: 6.017065766897921
+{97.24643} [STATUS]: generating frame
+{97.38018} [DEBUG]: using provided target: (615.00, 250.00)
+{97.38018} [DEBUG]: Delivery condition: 
+{97.38018} [DEBUG]: Target: (615.00, 250.00)
+{97.38018} [DEBUG]: From:   (602.00, 235.00)
+{97.38018} [DEBUG]: Angle to target: 0.57 rad
+{97.38018} [DEBUG]: Rotation applied: -0.07 rad
+{97.38018} [DEBUG]: Movement: 19.85 px
+{97.39666} [COMMAND]: sending command: drive 0.19849433241279207
+{97.39666} [STATUS]: has ball: True
+{97.43809} [RESPONSE]: modified OK
+{97.43809} [FPS]: 5.217483897130716
+{97.43809} [STATUS]: generating frame
+{97.55434} [DEBUG]: using provided target: (615.00, 250.00)
+{97.55510} [DEBUG]: Delivery condition: 
+{97.55510} [DEBUG]: Target: (615.00, 250.00)
+{97.55510} [DEBUG]: From:   (599.00, 247.00)
+{97.55510} [DEBUG]: Angle to target: 0.32 rad
+{97.55510} [DEBUG]: Rotation applied: 0.02 rad
+{97.55510} [DEBUG]: Movement: 16.28 px
+{97.57160} [COMMAND]: sending command: drive 0.16278820596099705
+{97.57160} [STATUS]: has ball: True
+{97.67699} [RESPONSE]: modified OK
+{97.67802} [FPS]: 4.167829944194477
+{97.67802} [STATUS]: generating frame
+{98.45832} [DEBUG]: using provided target: (610.00, 242.00)
+{98.45832} [DEBUG]: Delivery condition: 
+{98.45832} [DEBUG]: Target: (610.00, 242.00)
+{98.45832} [DEBUG]: From:   (598.00, 251.00)
+{98.45832} [DEBUG]: Angle to target: 0.09 rad
+{98.45832} [DEBUG]: Rotation applied: 0.14 rad
+{98.45832} [DEBUG]: Movement: 35.00 px
+{98.46655} [COMMAND]: sending command: rotate -2.6148448179655612
+{98.46697} [STATUS]: has ball: True
+{98.46697} [RESPONSE]: modified OK
+{98.46697} [FPS]: 1.2675097987664283
+{98.46763} [STATUS]: generating frame
+{98.59247} [DEBUG]: using provided target: (610.00, 242.00)
+{98.59247} [DEBUG]: Delivery condition: 
+{98.59247} [DEBUG]: Target: (610.00, 242.00)
+{98.59247} [DEBUG]: From:   (598.00, 259.00)
+{98.59247} [DEBUG]: Angle to target: 0.26 rad
+{98.59247} [DEBUG]: Rotation applied: 0.21 rad
+{98.59247} [DEBUG]: Movement: 35.00 px
+{98.60769} [COMMAND]: sending command: rotate -4.032315565580832
+{98.60769} [STATUS]: has ball: True
+{98.62402} [RESPONSE]: modified OK
+{98.62402} [FPS]: 6.367606202576614
+{98.62402} [STATUS]: generating frame
+{98.74032} [DEBUG]: using provided target: (610.00, 242.00)
+{98.74032} [DEBUG]: Delivery condition: 
+{98.74032} [DEBUG]: Target: (610.00, 242.00)
+{98.74032} [DEBUG]: From:   (550.00, 229.00)
+{98.74134} [DEBUG]: Angle to target: -0.96 rad
+{98.74134} [DEBUG]: Rotation applied: -1.63 rad
+{98.74134} [DEBUG]: Movement: 35.80 px
+{98.74438} [COMMAND]: sending command: rotate 31.070736586703063
+{98.74438} [STATUS]: has ball: True
+{98.78333} [RESPONSE]: modified OK
+{98.78333} [FPS]: 6.277028250566074
+{98.78333} [STATUS]: generating frame
+{98.83216} [DEBUG]: using provided target: (610.00, 242.00)
+{98.83216} [DEBUG]: Delivery condition: 
+{98.83216} [DEBUG]: Target: (610.00, 242.00)
+{98.83317} [DEBUG]: From:   (598.00, 259.00)
+{98.83317} [DEBUG]: Angle to target: 0.06 rad
+{98.83317} [DEBUG]: Rotation applied: 0.24 rad
+{98.83317} [DEBUG]: Movement: 35.00 px
+{98.83621} [COMMAND]: sending command: rotate -4.65262117249527
+{98.83621} [STATUS]: has ball: True
+{99.30522} [RESPONSE]: modified OK
+{99.30522} [FPS]: 1.9161172428916016
+{99.30522} [STATUS]: generating frame
+{99.36110} [DEBUG]: using provided target: (610.00, 242.00)
+{99.36110} [DEBUG]: Delivery condition: 
+{99.36110} [DEBUG]: Target: (610.00, 242.00)
+{99.36110} [DEBUG]: From:   (598.00, 258.00)
+{99.36110} [DEBUG]: Angle to target: 0.59 rad
+{99.36110} [DEBUG]: Rotation applied: 0.30 rad
+{99.36110} [DEBUG]: Movement: 35.00 px
+{99.36566} [COMMAND]: sending command: rotate -5.794129627075972
+{99.36566} [STATUS]: has ball: True
+{99.39420} [RESPONSE]: modified OK
+{99.39420} [FPS]: 11.237612461753626
+{99.39420} [STATUS]: generating frame
+{99.45221} [DEBUG]: using provided target: (610.00, 242.00)
+{99.45221} [DEBUG]: Delivery condition: 
+{99.45221} [DEBUG]: Target: (610.00, 242.00)
+{99.45221} [DEBUG]: From:   (546.00, 240.00)
+{99.45322} [DEBUG]: Angle to target: -0.91 rad
+{99.45322} [DEBUG]: Rotation applied: -1.44 rad
+{99.45322} [DEBUG]: Movement: 35.00 px
+{99.45733} [COMMAND]: sending command: rotate 27.549206880035882
+{99.45733} [STATUS]: has ball: True
+{99.52401} [RESPONSE]: modified OK
+{99.52505} [FPS]: 7.642334077347059
+{99.52505} [STATUS]: generating frame
+{99.58274} [DEBUG]: using provided target: (610.00, 242.00)
+{99.58274} [DEBUG]: Delivery condition: 
+{99.58274} [DEBUG]: Target: (610.00, 242.00)
+{99.58274} [DEBUG]: From:   (580.00, 280.00)
+{99.58274} [DEBUG]: Angle to target: 0.06 rad
+{99.58274} [DEBUG]: Rotation applied: 0.57 rad
+{99.58274} [DEBUG]: Movement: 16.13 px
+{99.58679} [COMMAND]: sending command: rotate -10.956529683701307
+{99.58679} [STATUS]: has ball: True
+{100.01373} [RESPONSE]: modified OK
+{100.01373} [FPS]: 2.0463323590296776
+{100.01373} [STATUS]: generating frame
+{100.07081} [DEBUG]: using provided target: (610.00, 242.00)
+{100.07081} [DEBUG]: Delivery condition: 
+{100.07081} [DEBUG]: Target: (610.00, 242.00)
+{100.07081} [DEBUG]: From:   (584.00, 277.00)
+{100.07081} [DEBUG]: Angle to target: 0.02 rad
+{100.07081} [DEBUG]: Rotation applied: 0.50 rad
+{100.07081} [DEBUG]: Movement: 16.10 px
+{100.07398} [COMMAND]: sending command: rotate -9.586750138646142
+{100.07398} [STATUS]: has ball: True
+{100.18642} [RESPONSE]: modified OK
+{100.18744} [FPS]: 5.790894016647958
+{100.18744} [STATUS]: generating frame
+{100.24408} [DEBUG]: using provided target: (610.00, 242.00)
+{100.24408} [DEBUG]: Delivery condition: 
+{100.24408} [DEBUG]: Target: (610.00, 242.00)
+{100.24408} [DEBUG]: From:   (568.00, 290.00)
+{100.24408} [DEBUG]: Angle to target: 0.05 rad
+{100.24408} [DEBUG]: Rotation applied: 0.74 rad
+{100.24408} [DEBUG]: Movement: 19.88 px
+{100.24721} [COMMAND]: sending command: rotate -14.166959716407247
+{100.24721} [STATUS]: has ball: True
+{100.35164} [RESPONSE]: modified OK
+{100.35164} [FPS]: 6.090237594980637
+{100.35164} [STATUS]: generating frame
+{100.40642} [DEBUG]: using provided target: (610.00, 242.00)
+{100.40642} [DEBUG]: Delivery condition: 
+{100.40642} [DEBUG]: Target: (610.00, 242.00)
+{100.40642} [DEBUG]: From:   (565.00, 291.00)
+{100.40642} [DEBUG]: Angle to target: 0.34 rad
+{100.40642} [DEBUG]: Rotation applied: 0.72 rad
+{100.40642} [DEBUG]: Movement: 35.00 px
+{100.41005} [COMMAND]: sending command: rotate -13.790756690170888
+{100.41005} [STATUS]: has ball: True
+{100.58654} [RESPONSE]: modified OK
+{100.58654} [FPS]: 4.257130735392929
+{100.58654} [STATUS]: generating frame
+{101.23331} [DEBUG]: using provided target: (614.00, 237.00)
+{101.23331} [DEBUG]: Delivery condition: 
+{101.23331} [DEBUG]: Target: (614.00, 237.00)
+{101.23331} [DEBUG]: From:   (574.00, 286.00)
+{101.23331} [DEBUG]: Angle to target: -0.01 rad
+{101.23331} [DEBUG]: Rotation applied: 0.73 rad
+{101.23331} [DEBUG]: Movement: 22.01 px
+{101.23755} [COMMAND]: sending command: rotate -13.905060544515822
+{101.23755} [STATUS]: has ball: True
+{101.23832} [RESPONSE]: modified OK
+{101.23832} [FPS]: 1.5342569178302923
+{101.23832} [STATUS]: generating frame
+{101.29417} [DEBUG]: using provided target: (614.00, 237.00)
+{101.29417} [DEBUG]: Delivery condition: 
+{101.29417} [DEBUG]: Target: (614.00, 237.00)
+{101.29417} [DEBUG]: From:   (591.00, 268.00)
+{101.29417} [DEBUG]: Angle to target: 0.20 rad
+{101.29417} [DEBUG]: Rotation applied: 0.39 rad
+{101.29417} [DEBUG]: Movement: 35.00 px
+{101.29821} [COMMAND]: sending command: rotate -7.402692057077231
+{101.29821} [STATUS]: has ball: True
+{101.48937} [RESPONSE]: modified OK
+{101.48937} [FPS]: 3.98318711645372
+{101.48937} [STATUS]: generating frame
+{101.54499} [DEBUG]: using provided target: (614.00, 237.00)
+{101.54499} [DEBUG]: Delivery condition: 
+{101.54499} [DEBUG]: Target: (614.00, 237.00)
+{101.54499} [DEBUG]: From:   (591.00, 269.00)
+{101.54599} [DEBUG]: Angle to target: 0.20 rad
+{101.54599} [DEBUG]: Rotation applied: 0.40 rad
+{101.54599} [DEBUG]: Movement: 35.00 px
+{101.55000} [COMMAND]: sending command: rotate -7.574065114439368
+{101.55000} [STATUS]: has ball: True
+{101.62639} [RESPONSE]: modified OK
+{101.62639} [FPS]: 7.29809713386879
+{101.62639} [STATUS]: generating frame
+{101.67781} [DEBUG]: using provided target: (614.00, 237.00)
+{101.67781} [DEBUG]: Delivery condition: 
+{101.67879} [DEBUG]: Target: (614.00, 237.00)
+{101.67879} [DEBUG]: From:   (592.00, 268.00)
+{101.67879} [DEBUG]: Angle to target: 0.19 rad
+{101.67879} [DEBUG]: Rotation applied: 0.38 rad
+{101.67879} [DEBUG]: Movement: 35.00 px
+{101.68181} [COMMAND]: sending command: rotate -7.300981877761267
+{101.68181} [STATUS]: has ball: True
+{101.79713} [RESPONSE]: modified OK
+{101.79713} [FPS]: 5.8569276120017815
+{101.79713} [STATUS]: generating frame
+{101.84903} [DEBUG]: using provided target: (614.00, 237.00)
+{101.85002} [DEBUG]: Delivery condition: 
+{101.85002} [DEBUG]: Target: (614.00, 237.00)
+{101.85002} [DEBUG]: From:   (594.00, 264.00)
+{101.85002} [DEBUG]: Angle to target: -0.02 rad
+{101.85002} [DEBUG]: Rotation applied: 0.34 rad
+{101.85002} [DEBUG]: Movement: 16.01 px
+{101.85346} [COMMAND]: sending command: rotate -6.467324631520955
+{101.85346} [STATUS]: has ball: True
+{101.95512} [RESPONSE]: modified OK
+{101.95512} [FPS]: 6.329696863601448
+{101.95512} [STATUS]: generating frame
+{102.00515} [DEBUG]: using provided target: (614.00, 237.00)
+{102.00515} [DEBUG]: Delivery condition: 
+{102.00617} [DEBUG]: Target: (614.00, 237.00)
+{102.00617} [DEBUG]: From:   (596.00, 261.00)
+{102.00617} [DEBUG]: Angle to target: 0.18 rad
+{102.00617} [DEBUG]: Rotation applied: 0.29 rad
+{102.00617} [DEBUG]: Movement: 35.00 px
+{102.00920} [COMMAND]: sending command: rotate -5.578491056058424
+{102.00920} [STATUS]: has ball: True
+{102.11779} [RESPONSE]: modified OK
+{102.11779} [FPS]: 6.147463951855684
+{102.11880} [STATUS]: generating frame
+{102.17110} [DEBUG]: using provided target: (614.00, 237.00)
+{102.17110} [DEBUG]: Delivery condition: 
+{102.17110} [DEBUG]: Target: (614.00, 237.00)
+{102.17110} [DEBUG]: From:   (599.00, 256.00)
+{102.17110} [DEBUG]: Angle to target: -0.06 rad
+{102.17212} [DEBUG]: Rotation applied: 0.25 rad
+{102.17212} [DEBUG]: Movement: 35.00 px
+{102.17511} [COMMAND]: sending command: rotate -4.76426117674711
+{102.17511} [STATUS]: has ball: True
+{102.25924} [RESPONSE]: modified OK
+{102.25924} [FPS]: 7.069532254720686
+{102.25924} [STATUS]: generating frame
+{102.31337} [DEBUG]: using provided target: (614.00, 237.00)
+{102.31337} [DEBUG]: Delivery condition: 
+{102.31448} [DEBUG]: Target: (614.00, 237.00)
+{102.31448} [DEBUG]: From:   (599.00, 252.00)
+{102.31448} [DEBUG]: Angle to target: 0.16 rad
+{102.31448} [DEBUG]: Rotation applied: 0.19 rad
+{102.31548} [DEBUG]: Movement: 35.00 px
+{102.31848} [COMMAND]: sending command: rotate -3.6069031492679695
+{102.31848} [STATUS]: has ball: True
+{102.40566} [RESPONSE]: modified OK
+{102.40566} [FPS]: 6.829545658081776
+{102.40566} [STATUS]: generating frame
+{102.46060} [DEBUG]: using provided target: (614.00, 237.00)
+{102.46060} [DEBUG]: Delivery condition: 
+{102.46060} [DEBUG]: Target: (614.00, 237.00)
+{102.46060} [DEBUG]: From:   (600.00, 250.00)
+{102.46060} [DEBUG]: Angle to target: -0.04 rad
+{102.46060} [DEBUG]: Rotation applied: 0.16 rad
+{102.46060} [DEBUG]: Movement: 35.00 px
+{102.46571} [COMMAND]: sending command: rotate -2.9873876518571496
+{102.46571} [STATUS]: has ball: True
+{102.51367} [RESPONSE]: modified OK
+{102.51367} [FPS]: 9.258397402362332
+{102.51367} [STATUS]: generating frame
+{102.56844} [DEBUG]: using provided target: (614.00, 237.00)
+{102.56903} [DEBUG]: Delivery condition: 
+{102.56903} [DEBUG]: Target: (614.00, 237.00)
+{102.56903} [DEBUG]: From:   (601.00, 249.00)
+{102.56903} [DEBUG]: Angle to target: 0.14 rad
+{102.56903} [DEBUG]: Rotation applied: 0.15 rad
+{102.56903} [DEBUG]: Movement: 35.00 px
+{102.57214} [COMMAND]: sending command: rotate -2.7910256914171234
+{102.57214} [STATUS]: has ball: True
+{102.65199} [RESPONSE]: modified OK
+{102.65294} [FPS]: 7.180588820390436
+{102.65294} [STATUS]: generating frame
+{103.33078} [DEBUG]: using provided target: (613.00, 237.00)
+{103.33179} [DEBUG]: Delivery condition: 
+{103.33179} [DEBUG]: Target: (613.00, 237.00)
+{103.33179} [DEBUG]: From:   (601.00, 245.00)
+{103.33179} [DEBUG]: Angle to target: -0.06 rad
+{103.33179} [DEBUG]: Rotation applied: 0.10 rad
+{103.33179} [DEBUG]: Movement: 35.00 px
+{103.33589} [COMMAND]: sending command: rotate -1.9307959284611738
+{103.33589} [STATUS]: has ball: True
+{103.33589} [RESPONSE]: modified OK
+{103.33589} [FPS]: 1.4642375258204146
+{103.33589} [STATUS]: generating frame
+{103.39466} [DEBUG]: using provided target: (613.00, 237.00)
+{103.39466} [DEBUG]: Delivery condition: 
+{103.39466} [DEBUG]: Target: (613.00, 237.00)
+{103.39466} [DEBUG]: From:   (601.00, 242.00)
+{103.39466} [DEBUG]: Angle to target: 0.13 rad
+{103.39466} [DEBUG]: Rotation applied: 0.07 rad
+{103.39466} [DEBUG]: Movement: 35.00 px
+{103.39812} [COMMAND]: sending command: drive 0.35
+{103.39812} [STATUS]: has ball: True
+{103.49695} [RESPONSE]: modified OK
+{103.49695} [FPS]: 6.2086879805315345
+{103.49695} [STATUS]: generating frame
+{103.55339} [DEBUG]: using provided target: (613.00, 237.00)
+{103.55339} [DEBUG]: Delivery condition: 
+{103.55339} [DEBUG]: Target: (613.00, 237.00)
+{103.55339} [DEBUG]: From:   (601.00, 242.00)
+{103.55339} [DEBUG]: Angle to target: 0.13 rad
+{103.55339} [DEBUG]: Rotation applied: 0.07 rad
+{103.55339} [DEBUG]: Movement: 35.00 px
+{103.55840} [COMMAND]: sending command: drive 0.35
+{103.55840} [STATUS]: has ball: True
+{104.11941} [RESPONSE]: modified OK
+{104.11941} [FPS]: 1.606523068060469
+{104.11941} [STATUS]: generating frame
+{104.17859} [DEBUG]: using provided target: (613.00, 237.00)
+{104.17859} [DEBUG]: Delivery condition: 
+{104.17859} [DEBUG]: Target: (613.00, 237.00)
+{104.17859} [DEBUG]: From:   (601.00, 242.00)
+{104.17859} [DEBUG]: Angle to target: -0.06 rad
+{104.17859} [DEBUG]: Rotation applied: 0.06 rad
+{104.17859} [DEBUG]: Movement: 35.00 px
+{104.18186} [COMMAND]: sending command: drive 0.35
+{104.18186} [STATUS]: has ball: True
+{104.25824} [RESPONSE]: modified OK
+{104.25824} [FPS]: 7.20303212965205
+{104.25824} [STATUS]: generating frame
+{104.31795} [DEBUG]: using provided target: (613.00, 237.00)
+{104.31795} [DEBUG]: Delivery condition: 
+{104.31795} [DEBUG]: Target: (613.00, 237.00)
+{104.31795} [DEBUG]: From:   (602.00, 242.00)
+{104.31795} [DEBUG]: Angle to target: 0.10 rad
+{104.31795} [DEBUG]: Rotation applied: 0.07 rad
+{104.31897} [DEBUG]: Movement: 35.00 px
+{104.32105} [COMMAND]: sending command: drive 0.35
+{104.32105} [STATUS]: has ball: True
+{104.64600} [RESPONSE]: modified OK
+{104.64600} [FPS]: 2.578940669602863
+{104.64600} [STATUS]: generating frame
+{104.69678} [DEBUG]: using provided target: (613.00, 237.00)
+{104.69678} [DEBUG]: Delivery condition: 
+{104.69678} [DEBUG]: Target: (613.00, 237.00)
+{104.69678} [DEBUG]: From:   (602.00, 242.00)
+{104.69678} [DEBUG]: Angle to target: 0.09 rad
+{104.69678} [DEBUG]: Rotation applied: 0.07 rad
+{104.69678} [DEBUG]: Movement: 35.00 px
+{104.70006} [COMMAND]: sending command: drive 0.35
+{104.70006} [STATUS]: has ball: True
+{105.02207} [RESPONSE]: modified OK
+{105.02207} [FPS]: 2.6590725238944155
+{105.02207} [STATUS]: generating frame
+{105.07933} [DEBUG]: using provided target: (613.00, 237.00)
+{105.07933} [DEBUG]: Delivery condition: 
+{105.07933} [DEBUG]: Target: (613.00, 237.00)
+{105.07933} [DEBUG]: From:   (603.00, 242.00)
+{105.07933} [DEBUG]: Angle to target: -0.16 rad
+{105.07933} [DEBUG]: Rotation applied: 0.05 rad
+{105.07933} [DEBUG]: Movement: 35.00 px
+{105.08261} [COMMAND]: sending command: drive 0.35
+{105.08261} [STATUS]: has ball: True
+{105.40391} [RESPONSE]: modified OK
+{105.40391} [FPS]: 2.6189094787161906
+{105.40391} [STATUS]: generating frame
+{105.45617} [DEBUG]: using provided target: (613.00, 237.00)
+{105.45617} [DEBUG]: Delivery condition: 
+{105.45617} [DEBUG]: Target: (613.00, 237.00)
+{105.45717} [DEBUG]: From:   (607.00, 242.00)
+{105.45717} [DEBUG]: Angle to target: 0.05 rad
+{105.45717} [DEBUG]: Rotation applied: 0.06 rad
+{105.45717} [DEBUG]: Movement: 35.00 px
+{105.46017} [COMMAND]: sending command: drive 0.35
+{105.46017} [STATUS]: has ball: True
+{105.84864} [RESPONSE]: modified OK
+{105.84864} [FPS]: 2.2485237426146925
+{105.84864} [STATUS]: generating frame
+{105.90099} [DEBUG]: using provided target: (613.00, 237.00)
+{105.90199} [DEBUG]: Delivery condition: 
+{105.90199} [DEBUG]: Target: (613.00, 237.00)
+{105.90199} [DEBUG]: From:   (603.00, 242.00)
+{105.90199} [DEBUG]: Angle to target: 0.03 rad
+{105.90199} [DEBUG]: Rotation applied: 0.06 rad
+{105.90199} [DEBUG]: Movement: 35.00 px
+{105.90644} [COMMAND]: sending command: drive 0.35
+{105.90644} [STATUS]: has ball: True
+{106.17273} [RESPONSE]: modified OK
+{106.17375} [FPS]: 3.08556034466904
+{106.17375} [STATUS]: generating frame
+{106.22279} [DEBUG]: using provided target: (613.00, 237.00)
+{106.22279} [DEBUG]: Delivery condition: 
+{106.22279} [DEBUG]: Target: (613.00, 237.00)
+{106.22279} [DEBUG]: From:   (603.00, 242.00)
+{106.22377} [DEBUG]: Angle to target: -0.14 rad
+{106.22377} [DEBUG]: Rotation applied: 0.05 rad
+{106.22377} [DEBUG]: Movement: 35.00 px
+{106.22677} [COMMAND]: sending command: drive 0.35
+{106.22677} [STATUS]: has ball: True
+{106.67709} [RESPONSE]: modified OK
+{106.67709} [FPS]: 1.986722042016552
+{106.67709} [STATUS]: generating frame
+{107.40099} [DEBUG]: using provided target: (614.00, 312.00)
+{107.40099} [DEBUG]: Delivery condition: 
+{107.40099} [DEBUG]: Target: (614.00, 312.00)
+{107.40099} [DEBUG]: From:   (604.00, 242.00)
+{107.40099} [DEBUG]: Angle to target: 0.65 rad
+{107.40099} [DEBUG]: Rotation applied: -0.58 rad
+{107.40099} [DEBUG]: Movement: 35.20 px
+{107.40544} [COMMAND]: sending command: rotate 11.062757279927839
+{107.40544} [STATUS]: has ball: True
+{107.40544} [RESPONSE]: modified OK
+{107.40544} [FPS]: 1.3729650884931999
+{107.40544} [STATUS]: generating frame
+{107.46181} [DEBUG]: using provided target: (614.00, 312.00)
+{107.46181} [DEBUG]: Delivery condition: 
+{107.46181} [DEBUG]: Target: (614.00, 312.00)
+{107.46181} [DEBUG]: From:   (603.00, 242.00)
+{107.46181} [DEBUG]: Angle to target: 0.65 rad
+{107.46181} [DEBUG]: Rotation applied: -0.77 rad
+{107.46281} [DEBUG]: Movement: 30.82 px
+{107.46581} [COMMAND]: sending command: rotate 14.769771195504743
+{107.46581} [STATUS]: has ball: True
+{107.63404} [RESPONSE]: modified OK
+{107.63404} [FPS]: 4.374562210443536
+{107.63404} [STATUS]: generating frame
+{107.68694} [DEBUG]: using provided target: (614.00, 312.00)
+{107.68694} [DEBUG]: Delivery condition: 
+{107.68694} [DEBUG]: Target: (614.00, 312.00)
+{107.68694} [DEBUG]: From:   (604.00, 242.00)
+{107.68694} [DEBUG]: Angle to target: 0.63 rad
+{107.68694} [DEBUG]: Rotation applied: -0.58 rad
+{107.68694} [DEBUG]: Movement: 33.93 px
+{107.69095} [COMMAND]: sending command: rotate 11.156988091548577
+{107.69095} [STATUS]: has ball: True
+{107.86402} [RESPONSE]: modified OK
+{107.86504} [FPS]: 4.348240406884526
+{107.86504} [STATUS]: generating frame
+{107.91762} [DEBUG]: using provided target: (614.00, 312.00)
+{107.91762} [DEBUG]: Delivery condition: 
+{107.91762} [DEBUG]: Target: (614.00, 312.00)
+{107.91762} [DEBUG]: From:   (603.00, 243.00)
+{107.91762} [DEBUG]: Angle to target: 0.63 rad
+{107.91762} [DEBUG]: Rotation applied: -0.58 rad
+{107.91762} [DEBUG]: Movement: 35.07 px
+{107.92232} [COMMAND]: sending command: rotate 11.016468865801203
+{107.92232} [STATUS]: has ball: True
+{108.03910} [RESPONSE]: modified OK
+{108.03910} [FPS]: 5.745039543936642
+{108.03910} [STATUS]: generating frame
+{108.08952} [DEBUG]: using provided target: (614.00, 312.00)
+{108.08952} [DEBUG]: Delivery condition: 
+{108.09055} [DEBUG]: Target: (614.00, 312.00)
+{108.09055} [DEBUG]: From:   (602.00, 252.00)
+{108.09055} [DEBUG]: Angle to target: 0.61 rad
+{108.09055} [DEBUG]: Rotation applied: -0.65 rad
+{108.09055} [DEBUG]: Movement: 29.80 px
+{108.09466} [COMMAND]: sending command: rotate 12.419347809080099
+{108.09466} [STATUS]: has ball: True
+{108.24472} [RESPONSE]: modified OK
+{108.24472} [FPS]: 4.863203614788911
+{108.24472} [STATUS]: generating frame
+{108.29923} [DEBUG]: using provided target: (614.00, 312.00)
+{108.29923} [DEBUG]: Delivery condition: 
+{108.29923} [DEBUG]: Target: (614.00, 312.00)
+{108.29923} [DEBUG]: From:   (579.00, 238.00)
+{108.29923} [DEBUG]: Angle to target: 1.27 rad
+{108.30027} [DEBUG]: Rotation applied: 2.76 rad
+{108.30027} [DEBUG]: Movement: 19.23 px
+{108.30324} [COMMAND]: sending command: rotate -52.78690578580992
+{108.30324} [STATUS]: has ball: True
+{108.45772} [RESPONSE]: modified OK
+{108.45772} [FPS]: 4.6948448877023905
+{108.45772} [STATUS]: generating frame
+{108.50891} [DEBUG]: using provided target: (614.00, 312.00)
+{108.50891} [DEBUG]: Delivery condition: 
+{108.50989} [DEBUG]: Target: (614.00, 312.00)
+{108.50989} [DEBUG]: From:   (596.00, 272.00)
+{108.50989} [DEBUG]: Angle to target: 0.98 rad
+{108.50989} [DEBUG]: Rotation applied: -0.11 rad
+{108.50989} [DEBUG]: Movement: 42.82 px
+{108.51405} [COMMAND]: sending command: rotate 2.0866047576723212
+{108.51405} [STATUS]: has ball: True
+{109.13058} [RESPONSE]: modified OK
+{109.13058} [FPS]: 1.486211374681315
+{109.13058} [STATUS]: generating frame
+{109.19042} [DEBUG]: using provided target: (614.00, 312.00)
+{109.19042} [DEBUG]: Delivery condition: 
+{109.19042} [DEBUG]: Target: (614.00, 312.00)
+{109.19042} [DEBUG]: From:   (590.00, 280.00)
+{109.19042} [DEBUG]: Angle to target: 0.65 rad
+{109.19042} [DEBUG]: Rotation applied: -0.19 rad
+{109.19042} [DEBUG]: Movement: 37.47 px
+{109.19446} [COMMAND]: sending command: rotate 3.5947659558542013
+{109.19446} [STATUS]: has ball: True
+{109.22412} [RESPONSE]: modified OK
+{109.22412} [FPS]: 10.690646235095608
+{109.22412} [STATUS]: generating frame
+{109.27830} [DEBUG]: using provided target: (614.00, 312.00)
+{109.27830} [DEBUG]: Delivery condition: 
+{109.27830} [DEBUG]: Target: (614.00, 312.00)
+{109.27830} [DEBUG]: From:   (599.00, 239.00)
+{109.27830} [DEBUG]: Angle to target: 0.63 rad
+{109.27830} [DEBUG]: Rotation applied: -1.17 rad
+{109.27830} [DEBUG]: Movement: 21.90 px
+{109.28310} [COMMAND]: sending command: rotate 22.252177858537124
+{109.28310} [STATUS]: has ball: True
+{109.33571} [RESPONSE]: modified OK
+{109.33571} [FPS]: 8.961307221939723
+{109.33571} [STATUS]: generating frame
+{109.38713} [DEBUG]: using provided target: (614.00, 312.00)
+{109.38812} [DEBUG]: Delivery condition: 
+{109.38812} [DEBUG]: Target: (614.00, 312.00)
+{109.38812} [DEBUG]: From:   (602.00, 245.00)
+{109.38812} [DEBUG]: Angle to target: 0.62 rad
+{109.38812} [DEBUG]: Rotation applied: -0.55 rad
+{109.38812} [DEBUG]: Movement: 35.56 px
+{109.39175} [COMMAND]: sending command: rotate 10.432174101453716
+{109.39175} [STATUS]: has ball: True
+{109.68168} [RESPONSE]: modified OK
+{109.68168} [FPS]: 2.890424732083112
+{109.68168} [STATUS]: generating frame
+{110.45230} [DEBUG]: using provided target: (616.00, 247.00)
+{110.45230} [DEBUG]: Delivery condition: 
+{110.45230} [DEBUG]: Target: (616.00, 247.00)
+{110.45230} [DEBUG]: From:   (602.00, 247.00)
+{110.45230} [DEBUG]: Angle to target: 0.00 rad
+{110.45230} [DEBUG]: Rotation applied: 0.00 rad
+{110.45230} [DEBUG]: Movement: 35.00 px
+{110.45702} [COMMAND]: sending command: drive 0.35
+{110.45702} [STATUS]: has ball: True
+{110.45780} [RESPONSE]: modified OK
+{110.45780} [FPS]: 1.2884503437308101
+{110.45780} [STATUS]: generating frame
+{110.51170} [DEBUG]: using provided target: (616.00, 247.00)
+{110.51170} [DEBUG]: Delivery condition: 
+{110.51170} [DEBUG]: Target: (616.00, 247.00)
+{110.51170} [DEBUG]: From:   (546.00, 248.00)
+{110.51170} [DEBUG]: Angle to target: -0.90 rad
+{110.51170} [DEBUG]: Rotation applied: -1.70 rad
+{110.51270} [DEBUG]: Movement: 17.69 px
+{110.51582} [COMMAND]: sending command: rotate 32.544636272831845
+{110.51582} [STATUS]: has ball: True
+{110.87375} [RESPONSE]: modified OK
+{110.87526} [FPS]: 2.404126498099594
+{110.87526} [STATUS]: generating frame
+{110.92583} [DEBUG]: using provided target: (616.00, 247.00)
+{110.92583} [DEBUG]: Delivery condition: 
+{110.92683} [DEBUG]: Target: (616.00, 247.00)
+{110.92683} [DEBUG]: From:   (593.00, 276.00)
+{110.92683} [DEBUG]: Angle to target: 0.15 rad
+{110.92683} [DEBUG]: Rotation applied: 0.35 rad
+{110.92683} [DEBUG]: Movement: 35.00 px
+{110.93097} [COMMAND]: sending command: rotate -6.697661821398117
+{110.93097} [STATUS]: has ball: True
+{111.37439} [RESPONSE]: modified OK
+{111.37526} [FPS]: 1.9999828340096415
+{111.37526} [STATUS]: generating frame
+{111.43289} [DEBUG]: using provided target: (616.00, 247.00)
+{111.43289} [DEBUG]: Delivery condition: 
+{111.43289} [DEBUG]: Target: (616.00, 247.00)
+{111.43289} [DEBUG]: From:   (598.00, 279.00)
+{111.43289} [DEBUG]: Angle to target: -0.10 rad
+{111.43289} [DEBUG]: Rotation applied: 0.42 rad
+{111.43289} [DEBUG]: Movement: 35.00 px
+{111.43712} [COMMAND]: sending command: rotate -8.009512670389578
+{111.43712} [STATUS]: has ball: True
+{111.54988} [RESPONSE]: modified OK
+{111.55084} [FPS]: 5.726887933718193
+{111.55084} [STATUS]: generating frame
+{111.60605} [DEBUG]: using provided target: (616.00, 247.00)
+{111.60605} [DEBUG]: Delivery condition: 
+{111.60605} [DEBUG]: Target: (616.00, 247.00)
+{111.60710} [DEBUG]: From:   (585.00, 282.00)
+{111.60710} [DEBUG]: Angle to target: -0.52 rad
+{111.60710} [DEBUG]: Rotation applied: 0.56 rad
+{111.60710} [DEBUG]: Movement: 40.08 px
+{111.61022} [COMMAND]: sending command: rotate -10.666338885562913
+{111.61022} [STATUS]: has ball: True
+{111.68292} [RESPONSE]: modified OK
+{111.68391} [FPS]: 7.571055177692097
+{111.68391} [STATUS]: generating frame
+{111.73756} [DEBUG]: using provided target: (616.00, 247.00)
+{111.73848} [DEBUG]: Delivery condition: 
+{111.73848} [DEBUG]: Target: (616.00, 247.00)
+{111.73848} [DEBUG]: From:   (545.00, 259.00)
+{111.73848} [DEBUG]: Angle to target: -0.97 rad
+{111.73848} [DEBUG]: Rotation applied: -1.30 rad
+{111.73946} [DEBUG]: Movement: 35.00 px
+{111.74257} [COMMAND]: sending command: rotate 24.89071134279126
+{111.74257} [STATUS]: has ball: True
+{111.87813} [RESPONSE]: modified OK
+{111.87813} [FPS]: 5.148823860134984
+{111.87813} [STATUS]: generating frame
+{111.93084} [DEBUG]: using provided target: (616.00, 247.00)
+{111.93084} [DEBUG]: Delivery condition: 
+{111.93084} [DEBUG]: Target: (616.00, 247.00)
+{111.93084} [DEBUG]: From:   (586.00, 295.00)
+{111.93084} [DEBUG]: Angle to target: -0.12 rad
+{111.93084} [DEBUG]: Rotation applied: 0.65 rad
+{111.93084} [DEBUG]: Movement: 20.59 px
+{111.93519} [COMMAND]: sending command: rotate -12.390454483148027
+{111.93519} [STATUS]: has ball: True
+{112.24720} [RESPONSE]: modified OK
+{112.24720} [FPS]: 2.7095267134544025
+{112.24720} [STATUS]: generating frame
+{112.31121} [DEBUG]: using provided target: (616.00, 247.00)
+{112.31121} [DEBUG]: Delivery condition: 
+{112.31221} [DEBUG]: Target: (616.00, 247.00)
+{112.31221} [DEBUG]: From:   (590.00, 290.00)
+{112.31221} [DEBUG]: Angle to target: 0.14 rad
+{112.31221} [DEBUG]: Rotation applied: 0.52 rad
+{112.31221} [DEBUG]: Movement: 35.00 px
+{112.31622} [COMMAND]: sending command: rotate -9.97814551786753
+{112.31622} [STATUS]: has ball: True
+{112.46611} [RESPONSE]: modified OK
+{112.46611} [FPS]: 4.568052956821196
+{112.46708} [STATUS]: generating frame
+{112.52663} [DEBUG]: using provided target: (616.00, 247.00)
+{112.52663} [DEBUG]: Delivery condition: 
+{112.52663} [DEBUG]: Target: (616.00, 247.00)
+{112.52663} [DEBUG]: From:   (586.00, 295.00)
+{112.52663} [DEBUG]: Angle to target: -0.12 rad
+{112.52663} [DEBUG]: Rotation applied: 0.64 rad
+{112.52663} [DEBUG]: Movement: 20.72 px
+{112.53163} [COMMAND]: sending command: rotate -12.235916494370903
+{112.53163} [STATUS]: has ball: True
+{112.62787} [RESPONSE]: modified OK
+{112.62787} [FPS]: 6.182149416172652
+{112.62787} [STATUS]: generating frame
+{112.68722} [DEBUG]: using provided target: (616.00, 247.00)
+{112.68722} [DEBUG]: Delivery condition: 
+{112.68722} [DEBUG]: Target: (616.00, 247.00)
+{112.68823} [DEBUG]: From:   (580.00, 300.00)
+{112.68823} [DEBUG]: Angle to target: 0.16 rad
+{112.68823} [DEBUG]: Rotation applied: 0.68 rad
+{112.68823} [DEBUG]: Movement: 35.00 px
+{112.69122} [COMMAND]: sending command: rotate -12.928698598965177
+{112.69122} [STATUS]: has ball: True
+{112.84145} [RESPONSE]: modified OK
+{112.84145} [FPS]: 4.6819371143318955
+{112.84145} [STATUS]: generating frame
+{113.62466} [DEBUG]: using provided target: (610.00, 298.00)
+{113.62466} [DEBUG]: Delivery condition: 
+{113.62466} [DEBUG]: Target: (610.00, 298.00)
+{113.62466} [DEBUG]: From:   (548.00, 260.00)
+{113.62466} [DEBUG]: Angle to target: 0.26 rad
+{113.62466} [DEBUG]: Rotation applied: -2.71 rad
+{113.62466} [DEBUG]: Movement: 26.68 px
+{113.62880} [COMMAND]: sending command: rotate 51.750518915422305
+{113.62880} [STATUS]: has ball: True
+{113.62966} [RESPONSE]: modified OK
+{113.62966} [FPS]: 1.2687017862474104
+{113.62966} [STATUS]: generating frame
+{113.68711} [DEBUG]: using provided target: (610.00, 298.00)
+{113.68711} [DEBUG]: Delivery condition: 
+{113.68711} [DEBUG]: Target: (610.00, 298.00)
+{113.68711} [DEBUG]: From:   (598.00, 275.00)
+{113.68711} [DEBUG]: Angle to target: 0.57 rad
+{113.68711} [DEBUG]: Rotation applied: -0.14 rad
+{113.68711} [DEBUG]: Movement: 21.55 px
+{113.69150} [COMMAND]: sending command: rotate 2.6971557699222775
+{113.69150} [STATUS]: has ball: True
+{114.35590} [RESPONSE]: modified OK
+{114.35590} [FPS]: 1.376959497213123
+{114.35690} [STATUS]: generating frame
+{114.40562} [DEBUG]: using provided target: (610.00, 298.00)
+{114.40562} [DEBUG]: Delivery condition: 
+{114.40562} [DEBUG]: Target: (610.00, 298.00)
+{114.40562} [DEBUG]: From:   (598.00, 276.00)
+{114.40562} [DEBUG]: Angle to target: 0.57 rad
+{114.40562} [DEBUG]: Rotation applied: -0.13 rad
+{114.40562} [DEBUG]: Movement: 21.13 px
+{114.40963} [COMMAND]: sending command: rotate 2.509262812788053
+{114.40963} [STATUS]: has ball: True
+{114.41307} [RESPONSE]: modified OK
+{114.41307} [FPS]: 17.49193652647163
+{114.41400} [STATUS]: generating frame
+{114.45946} [DEBUG]: using provided target: (610.00, 298.00)
+{114.45946} [DEBUG]: Delivery condition: 
+{114.45946} [DEBUG]: Target: (610.00, 298.00)
+{114.46047} [DEBUG]: From:   (564.00, 311.00)
+{114.46047} [DEBUG]: Angle to target: 0.65 rad
+{114.46047} [DEBUG]: Rotation applied: 0.42 rad
+{114.46047} [DEBUG]: Movement: 20.35 px
+{114.46447} [COMMAND]: sending command: rotate -8.102154861303115
+{114.46447} [STATUS]: has ball: True
+{114.55781} [RESPONSE]: modified OK
+{114.55781} [FPS]: 6.909048979201876
+{114.55781} [STATUS]: generating frame
+{114.60044} [DEBUG]: using provided target: (610.00, 298.00)
+{114.60044} [DEBUG]: Delivery condition: 
+{114.60044} [DEBUG]: Target: (610.00, 298.00)
+{114.60044} [DEBUG]: From:   (560.00, 313.00)
+{114.60044} [DEBUG]: Angle to target: 0.66 rad
+{114.60044} [DEBUG]: Rotation applied: 0.48 rad
+{114.60044} [DEBUG]: Movement: 20.00 px
+{114.60376} [COMMAND]: sending command: rotate -9.103164410370526
+{114.60376} [STATUS]: has ball: True
+{114.75438} [RESPONSE]: modified OK
+{114.75539} [FPS]: 5.087112611825892
+{114.75539} [STATUS]: generating frame
+{114.79830} [DEBUG]: using provided target: (610.00, 298.00)
+{114.79830} [DEBUG]: Delivery condition: 
+{114.79830} [DEBUG]: Target: (610.00, 298.00)
+{114.79830} [DEBUG]: From:   (562.00, 313.00)
+{114.79830} [DEBUG]: Angle to target: 0.65 rad
+{114.79830} [DEBUG]: Rotation applied: 0.45 rad
+{114.79830} [DEBUG]: Movement: 19.49 px
+{114.80218} [COMMAND]: sending command: rotate -8.65292308718688
+{114.80218} [STATUS]: has ball: True
+{114.93718} [RESPONSE]: modified OK
+{114.93718} [FPS]: 5.500661631534841
+{114.93718} [STATUS]: generating frame
+{114.98474} [DEBUG]: using provided target: (610.00, 298.00)
+{114.98474} [DEBUG]: Delivery condition: 
+{114.98474} [DEBUG]: Target: (610.00, 298.00)
+{114.98574} [DEBUG]: From:   (559.00, 313.00)
+{114.98574} [DEBUG]: Angle to target: 0.66 rad
+{114.98574} [DEBUG]: Rotation applied: 0.49 rad
+{114.98574} [DEBUG]: Movement: 20.42 px
+{114.98897} [COMMAND]: sending command: rotate -9.29105736750475
+{114.98897} [STATUS]: has ball: True
+{115.10041} [RESPONSE]: modified OK
+{115.10041} [FPS]: 6.126514902536462
+{115.10041} [STATUS]: generating frame
+{115.14618} [DEBUG]: using provided target: (610.00, 298.00)
+{115.14618} [DEBUG]: Delivery condition: 
+{115.14618} [DEBUG]: Target: (610.00, 298.00)
+{115.14618} [DEBUG]: From:   (566.00, 310.00)
+{115.14618} [DEBUG]: Angle to target: 0.63 rad
+{115.14618} [DEBUG]: Rotation applied: 0.40 rad
+{115.14718} [DEBUG]: Movement: 21.08 px
+{115.15020} [COMMAND]: sending command: rotate -7.629054704291451
+{115.15020} [STATUS]: has ball: True
+{115.27075} [RESPONSE]: modified OK
+{115.27177} [FPS]: 5.835780733023339
+{115.27177} [STATUS]: generating frame
+{115.30902} [DEBUG]: using provided target: (610.00, 298.00)
+{115.30902} [DEBUG]: Delivery condition: 
+{115.30902} [DEBUG]: Target: (610.00, 298.00)
+{115.30902} [DEBUG]: From:   (570.00, 308.00)
+{115.30902} [DEBUG]: Angle to target: 0.63 rad
+{115.30902} [DEBUG]: Rotation applied: 0.35 rad
+{115.30902} [DEBUG]: Movement: 20.90 px
+{115.31316} [COMMAND]: sending command: rotate -6.634495341747809
+{115.31316} [STATUS]: has ball: True
+{115.43696} [RESPONSE]: modified OK
+{115.43796} [FPS]: 6.053496095244006
+{115.43796} [STATUS]: generating frame
+{115.48550} [DEBUG]: using provided target: (610.00, 298.00)
+{115.48550} [DEBUG]: Delivery condition: 
+{115.48550} [DEBUG]: Target: (610.00, 298.00)
+{115.48550} [DEBUG]: From:   (579.00, 286.00)
+{115.48550} [DEBUG]: Angle to target: 0.19 rad
+{115.48550} [DEBUG]: Rotation applied: -0.11 rad
+{115.48550} [DEBUG]: Movement: 32.39 px
+{115.48886} [COMMAND]: sending command: rotate 2.185444723593035
+{115.48886} [STATUS]: has ball: True
+{115.57674} [RESPONSE]: modified OK
+{115.57674} [FPS]: 7.205630773406725
+{115.57674} [STATUS]: generating frame
+{116.40082} [DEBUG]: using provided target: (-1.00, -1.00)
+{116.40082} [DEBUG]: Delivery condition: 
+{116.40082} [DEBUG]: Target: (-1.00, -1.00)
+{116.40082} [DEBUG]: From:   (582.00, 299.00)
+{116.40082} [DEBUG]: Angle to target: -2.68 rad
+{116.40082} [DEBUG]: Rotation applied: -3.04 rad
+{116.40082} [DEBUG]: Movement: 506.75 px
+{116.40441} [COMMAND]: sending command: rotate 58.05091485290893
+{116.40441} [STATUS]: has ball: True
+{116.40441} [RESPONSE]: modified OK
+{116.40441} [FPS]: 1.208211903971111
+{116.40441} [STATUS]: generating frame
+{116.44629} [DEBUG]: using provided target: (-1.00, -1.00)
+{116.44629} [DEBUG]: Delivery condition: 
+{116.44629} [DEBUG]: Target: (-1.00, -1.00)
+{116.44629} [DEBUG]: From:   (585.00, 295.00)
+{116.44629} [DEBUG]: Angle to target: -2.68 rad
+{116.44629} [DEBUG]: Rotation applied: -3.10 rad
+{116.44629} [DEBUG]: Movement: 512.44 px
+{116.45030} [COMMAND]: sending command: rotate 59.15553648625714
+{116.45030} [STATUS]: has ball: True
+{117.11613} [RESPONSE]: modified OK
+{117.11613} [FPS]: 1.4050535382405476
+{117.11710} [STATUS]: generating frame
+{117.18047} [DEBUG]: using provided target: (-1.00, -1.00)
+{117.18047} [DEBUG]: Delivery condition: 
+{117.18047} [DEBUG]: Target: (-1.00, -1.00)
+{117.18047} [DEBUG]: From:   (585.00, 295.00)
+{117.18149} [DEBUG]: Angle to target: -2.68 rad
+{117.18149} [DEBUG]: Rotation applied: -3.10 rad
+{117.18149} [DEBUG]: Movement: 510.67 px
+{117.18500} [COMMAND]: sending command: rotate 59.297301562547666
+{117.18500} [STATUS]: has ball: True
+{117.75745} [RESPONSE]: modified OK
+{117.75745} [FPS]: 1.5592776242405857
+{117.75745} [STATUS]: generating frame
+{117.82967} [DEBUG]: using provided target: (-1.00, -1.00)
+{117.82967} [DEBUG]: Delivery condition: 
+{117.82967} [DEBUG]: Target: (-1.00, -1.00)
+{117.82967} [DEBUG]: From:   (545.00, 319.00)
+{117.82967} [DEBUG]: Angle to target: -2.73 rad
+{117.82967} [DEBUG]: Rotation applied: -1.92 rad
+{117.82967} [DEBUG]: Movement: 520.84 px
+{117.83411} [COMMAND]: sending command: rotate 36.65341449634797
+{117.83411} [STATUS]: has ball: True
+{118.54945} [RESPONSE]: modified OK
+{118.54945} [FPS]: 1.262618952722351
+{118.54945} [STATUS]: generating frame
+{118.61472} [DEBUG]: using provided target: (-1.00, -1.00)
+{118.61472} [DEBUG]: Delivery condition: 
+{118.61472} [DEBUG]: Target: (-1.00, -1.00)
+{118.61472} [DEBUG]: From:   (490.00, 313.00)
+{118.61472} [DEBUG]: Angle to target: -2.70 rad
+{118.61472} [DEBUG]: Rotation applied: -1.78 rad
+{118.61472} [DEBUG]: Movement: 490.12 px
+{118.61903} [COMMAND]: sending command: rotate 34.03291595584229
+{118.61903} [STATUS]: has ball: True
+{118.86814} [RESPONSE]: modified OK
+{118.86814} [FPS]: 3.137837906583895
+{118.86814} [STATUS]: generating frame
+{118.92795} [DEBUG]: using provided target: (-1.00, -1.00)
+{118.92795} [DEBUG]: Delivery condition: 
+{118.92795} [DEBUG]: Target: (-1.00, -1.00)
+{118.92795} [DEBUG]: From:   (451.00, 263.00)
+{118.92795} [DEBUG]: Angle to target: -2.73 rad
+{118.92795} [DEBUG]: Rotation applied: -0.67 rad
+{118.92795} [DEBUG]: Movement: 499.51 px
+{118.93195} [COMMAND]: sending command: rotate 12.808939169029784
+{118.93195} [STATUS]: has ball: True
+{119.36528} [RESPONSE]: modified OK
+{119.36528} [FPS]: 2.0115157403846062
+{119.36528} [STATUS]: generating frame
+{119.42948} [DEBUG]: using provided target: (-1.00, -1.00)
+{119.42948} [DEBUG]: Delivery condition: 
+{119.42948} [DEBUG]: Target: (-1.00, -1.00)
+{119.42948} [DEBUG]: From:   (447.00, 244.00)
+{119.43048} [DEBUG]: Angle to target: -2.72 rad
+{119.43048} [DEBUG]: Rotation applied: -0.43 rad
+{119.43048} [DEBUG]: Movement: 500.21 px
+{119.43350} [COMMAND]: sending command: rotate 8.251482261322348
+{119.43350} [STATUS]: has ball: True
+{119.52432} [RESPONSE]: modified OK
+{119.52432} [FPS]: 6.287878197305733
+{119.52432} [STATUS]: generating frame
+{119.58138} [DEBUG]: using provided target: (-1.00, -1.00)
+{119.58138} [DEBUG]: Delivery condition: 
+{119.58138} [DEBUG]: Target: (-1.00, -1.00)
+{119.58138} [DEBUG]: From:   (457.00, 208.00)
+{119.58138} [DEBUG]: Angle to target: -2.71 rad
+{119.58138} [DEBUG]: Rotation applied: 0.02 rad
+{119.58239} [DEBUG]: Movement: 503.43 px
+{119.58539} [COMMAND]: sending command: drive 5.034332130481659
+{119.58539} [STATUS]: has ball: True
+{119.72603} [RESPONSE]: modified OK
+{119.72603} [FPS]: 4.957571746016737
+{119.72603} [STATUS]: generating frame
+{119.78207} [DEBUG]: using provided target: (-1.00, -1.00)
+{119.78207} [DEBUG]: Delivery condition: 
+{119.78207} [DEBUG]: Target: (-1.00, -1.00)
+{119.78207} [DEBUG]: From:   (460.00, 203.00)
+{119.78207} [DEBUG]: Angle to target: -2.71 rad
+{119.78207} [DEBUG]: Rotation applied: 0.10 rad
+{119.78207} [DEBUG]: Movement: 503.52 px
+{119.78557} [COMMAND]: sending command: rotate -1.959555630225809
+{119.78557} [STATUS]: has ball: True
+{124.89237} [RESPONSE]: modified OK
+{124.89237} [FPS]: 0.1935604154537329
+{124.89237} [STATUS]: generating frame
+{124.98259} [DEBUG]: using provided target: (-1.00, -1.00)
+{124.98259} [DEBUG]: Delivery condition: 
+{124.98259} [DEBUG]: Target: (-1.00, -1.00)
+{124.98259} [DEBUG]: From:   (463.00, 199.00)
+{124.98259} [DEBUG]: Angle to target: -2.70 rad
+{124.98259} [DEBUG]: Rotation applied: 0.16 rad
+{124.98259} [DEBUG]: Movement: 503.78 px
+{124.98532} [COMMAND]: sending command: rotate -3.0951589495969647
+{124.98532} [STATUS]: has ball: True
+{124.98532} [RESPONSE]: modified OK
+{124.98789} [FPS]: 10.75923279968602
+{124.98789} [STATUS]: generating frame
+{125.93877} [DEBUG]: using provided target: (615.00, 248.00)
+{125.93877} [DEBUG]: Delivery condition: 
+{125.93877} [DEBUG]: Target: (615.00, 248.00)
+{125.93877} [DEBUG]: From:   (280.00, 73.00)
+{125.93877} [DEBUG]: Angle to target: 0.44 rad
+{125.93877} [DEBUG]: Rotation applied: -2.96 rad
+{125.93877} [DEBUG]: Movement: 211.42 px
+{125.93877} [COMMAND]: sending command: rotate 56.49567359553482
+{125.93877} [STATUS]: has ball: True
+{125.93877} [RESPONSE]: modified OK
+{125.93877} [FPS]: 1.0516510276047162
+{125.93877} [STATUS]: generating frame
+{126.05544} [DEBUG]: using provided target: (615.00, 248.00)
+{126.05544} [DEBUG]: Delivery condition: 
+{126.05544} [DEBUG]: Target: (615.00, 248.00)
+{126.05544} [DEBUG]: From:   (278.00, 73.00)
+{126.05544} [DEBUG]: Angle to target: 0.44 rad
+{126.05544} [DEBUG]: Rotation applied: -2.98 rad
+{126.05544} [DEBUG]: Movement: 212.52 px
+{126.05544} [COMMAND]: sending command: rotate 56.843625388047776
+{126.05544} [STATUS]: has ball: True
+{126.63555} [RESPONSE]: modified OK
+{126.63555} [FPS]: 1.435169857184602
+{126.63555} [STATUS]: generating frame
+{126.73772} [DEBUG]: using provided target: (615.00, 248.00)
+{126.73772} [DEBUG]: Delivery condition: 
+{126.73772} [DEBUG]: Target: (615.00, 248.00)
+{126.73772} [DEBUG]: From:   (278.00, 73.00)
+{126.73772} [DEBUG]: Angle to target: 0.44 rad
+{126.73772} [DEBUG]: Rotation applied: -2.98 rad
+{126.73772} [DEBUG]: Movement: 212.52 px
+{126.75497} [COMMAND]: sending command: rotate 56.843625388047776
+{126.75497} [STATUS]: has ball: True
+{127.34778} [RESPONSE]: modified OK
+{127.34778} [FPS]: 1.404037604324417
+{127.34778} [STATUS]: generating frame
+{127.47072} [DEBUG]: using provided target: (615.00, 248.00)
+{127.47128} [DEBUG]: Delivery condition: 
+{127.47128} [DEBUG]: Target: (615.00, 248.00)
+{127.47128} [DEBUG]: From:   (291.00, 63.00)
+{127.47256} [DEBUG]: Angle to target: 0.42 rad
+{127.47256} [DEBUG]: Rotation applied: -2.68 rad
+{127.47256} [DEBUG]: Movement: 213.69 px
+{127.48650} [COMMAND]: sending command: rotate 51.229834233754076
+{127.48650} [STATUS]: has ball: True
+{127.97636} [RESPONSE]: modified OK
+{127.97636} [FPS]: 1.5909046599811032
+{127.97636} [STATUS]: generating frame
+{128.11792} [DEBUG]: using provided target: (615.00, 248.00)
+{128.11792} [DEBUG]: Delivery condition: 
+{128.11792} [DEBUG]: Target: (615.00, 248.00)
+{128.11792} [DEBUG]: From:   (313.00, 57.00)
+{128.11792} [DEBUG]: Angle to target: 0.38 rad
+{128.11792} [DEBUG]: Rotation applied: -2.25 rad
+{128.11792} [DEBUG]: Movement: 214.60 px
+{128.13487} [COMMAND]: sending command: rotate 43.063695998165706
+{128.13487} [STATUS]: has ball: True
+{128.58135} [RESPONSE]: modified OK
+{128.58135} [FPS]: 1.6529127026631878
+{128.58135} [STATUS]: generating frame
+{128.69779} [DEBUG]: using provided target: (615.00, 248.00)
+{128.69779} [DEBUG]: Delivery condition: 
+{128.69779} [DEBUG]: Target: (615.00, 248.00)
+{128.69779} [DEBUG]: From:   (346.00, 60.00)
+{128.69779} [DEBUG]: Angle to target: 0.36 rad
+{128.69779} [DEBUG]: Rotation applied: -1.76 rad
+{128.69779} [DEBUG]: Movement: 217.68 px
+{128.71451} [COMMAND]: sending command: rotate 33.59395721640115
+{128.71451} [STATUS]: has ball: True
+{129.09898} [RESPONSE]: modified OK
+{129.09898} [FPS]: 1.9318814719556647
+{129.09898} [STATUS]: generating frame
+{129.22650} [DEBUG]: using provided target: (615.00, 248.00)
+{129.22650} [DEBUG]: Delivery condition: 
+{129.22650} [DEBUG]: Target: (615.00, 248.00)
+{129.22650} [DEBUG]: From:   (385.00, 80.00)
+{129.22650} [DEBUG]: Angle to target: 0.35 rad
+{129.22650} [DEBUG]: Rotation applied: -1.14 rad
+{129.22650} [DEBUG]: Movement: 223.78 px
+{129.24364} [COMMAND]: sending command: rotate 21.729451227664526
+{129.24364} [STATUS]: has ball: True
+{129.62270} [ERROR]: An error occurred:
+ 	 [WinError 10054] An existing connection was forcibly closed by the remote host
+{129.62270} [ERROR]: Stack trace:
+ <traceback object at 0x000001DCC23B80C0>
+{129.62270} [STATUS]: Closing connection without error
+{129.62270} [STATUS]: Client socket closed
+{129.62270} [STATUS]: Server socket closed
+{129.62270} [STATUS]: closing log

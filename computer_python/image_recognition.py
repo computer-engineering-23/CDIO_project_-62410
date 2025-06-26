@@ -1,22 +1,49 @@
 import cv2
 import numpy as np
-from typing import List,Tuple,Union
+from typing import List, Tuple, Union
 import math
+from classes import Point, Wall, Line, polygonArea
+from Log import printLog
 
 # Start kameraet
 class Camera:
     def __init__(self, APIid:int = cv2.CAP_DSHOW, debug:bool = False):
         self.debug = debug
         self.capture = cv2.VideoCapture(1, APIid)
-        self.walls:List[List[List[int | float]]] = []
+        self.walls:List[List[tuple[int | float,int | float,int | float,int | float]]] = []
         if not self.capture.isOpened():
-            print("Kunne ikke åbne kamera")
+            printLog("error","Kunne ikke åbne kamera", producer="Camera")
             exit(1)
         initial_frame:Union[np.ndarray,None] = self.getFrame()
         if initial_frame is None:
-            print("Kunne ikke hente billede fra kamera")
+            printLog("error","Kunne ikke hente billede fra kamera", producer="Camera")
             exit(1)
         self.shape:Tuple[int,...] = np.shape(initial_frame)
+        self.corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (None,None,None,None)
+        self.cross:Tuple[Wall,Wall] | None= None
+
+        self.hsv_thresholds = {
+        'Ball_Orange': {
+            'low': np.array([11, 111, 186]),
+            'high': np.array([30, 255, 255])
+        },
+        'Ball_White': {
+            'low': np.array([0, 0, 208]),
+            'high': np.array([180, 38, 255])
+        },
+        'Egg': {
+            'low': np.array([0, 0, 208]),
+            'high': np.array([180, 38, 255])
+        },
+        'Wall': {
+            'low': np.array([5, 135, 150]),  # red range
+            'high': np.array([171, 240, 255])
+        },
+        'Car': {
+            'low': np.array([28, 76, 62]),   # green range
+            'high': np.array([102, 255, 156])
+        }
+}
     
     def displayFrame(self,frame:np.ndarray,name:str = "detection window", debug:bool = False):
         if(debug == True and not self.debug):
@@ -24,9 +51,68 @@ class Camera:
         cv2.imshow(name, frame)
         if cv2.waitKey(1) & 0xFF == 27:
             return
-        pass
+    
+    def adjustWithSliders(self):
+        object_names = ['Ball_Orange', 'Ball_White', 'Egg', 'Wall', 'Car']
 
-    def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:Union[List[list[tuple[int,int,int,int]]],None] = None, goals:Union[List[Tuple[int,int]],None] = None, name:Union[str,None] = None, debug:bool = False) -> None:
+        for name in object_names:
+            cv2.namedWindow(name)
+
+            # Initialize trackbars with defaults from self.hsv_thresholds
+            low = self.hsv_thresholds[name]['low']
+            high = self.hsv_thresholds[name]['high']
+            cv2.createTrackbar('H low', name, low[0], 179, lambda x: None)
+            cv2.createTrackbar('H high', name, high[0], 179, lambda x: None)
+            cv2.createTrackbar('S low', name, low[1], 255, lambda x: None)
+            cv2.createTrackbar('S high', name, high[1], 255, lambda x: None)
+            cv2.createTrackbar('V low', name, low[2], 255, lambda x: None)
+            cv2.createTrackbar('V high', name, high[2], 255, lambda x: None)
+
+        while True:
+            frame = self.getFrame()
+            if frame is None:
+                continue
+            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+            for name in object_names:
+                h_low = cv2.getTrackbarPos('H low', name)
+                h_high = cv2.getTrackbarPos('H high', name)
+                s_low = cv2.getTrackbarPos('S low', name)
+                s_high = cv2.getTrackbarPos('S high', name)
+                v_low = cv2.getTrackbarPos('V low', name)
+                v_high = cv2.getTrackbarPos('V high', name)
+
+                
+                # Update the live threshold values
+                self.hsv_thresholds[name]['low'] = np.array([h_low, s_low, v_low])
+                self.hsv_thresholds[name]['high'] = np.array([h_high, s_high, v_high])
+
+                if name == "Wall":
+                    lower = self.hsv_thresholds[name]['low']
+                    upper = self.hsv_thresholds[name]['high']
+                    low_hue = lower[0]
+                    high_hue = upper[0]
+                    
+                    low_std = lower[1:3]
+                    high_std = upper[1:3]
+                    
+                    low_ = cv2.inRange(hsv, np.array([0,*low_std]), np.array([low_hue,*high_std]))
+                    high_= cv2.inRange(hsv, np.array([high_hue,*low_std]), np.array([180,*high_std]))
+                    mask = cv2.bitwise_or(low_, high_)
+                else:
+                    # Generate and show the mask
+                    lower = self.hsv_thresholds[name]['low']
+                    upper = self.hsv_thresholds[name]['high']
+                    mask = cv2.inRange(hsv, lower, upper)
+                result = cv2.bitwise_and(frame, frame, mask=mask)
+                cv2.imshow(name, result)
+
+            if cv2.waitKey(1) & 0xFF == 27:
+                break
+
+        cv2.destroyAllWindows()
+
+    def displayWithDetails(self,frame:np.ndarray,circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, name:Union[str,None] = None, debug:bool = False) -> None:
         if(debug == True and not self.debug):
             return
         data = np.zeros(np.shape(frame), dtype=np.uint8)
@@ -38,7 +124,10 @@ class Camera:
             self.displayFrame(frame, "with camera", debug)
             self.displayFrame(data, "without camera", True)
 
-    def drawToFrame(self, frame:np.ndarray, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:Union[List[list[tuple[int,int,int,int]]],None] = None, goals:Union[List[Tuple[int,int]],None] = None) -> np.ndarray:
+    def drawToFrame(self, frame:np.ndarray | None, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, points:list[Point] | None = None) -> np.ndarray:
+        if frame is None:
+            printLog("error","Kunne ikke tegne på billede, billede er None", producer="drawToFrame")
+            return np.zeros(self.shape, dtype=np.uint8)
         if circles is not None:
             names:List[str] = [a[1] for a in circles]
             _circles:List[List[Union[int,float]]] = [a[0] for a in circles]
@@ -50,100 +139,100 @@ class Camera:
                 cv2.putText(frame, names[i], (x - 10, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
         
-        # if lines is not None:
-        #     for i in range (0,len(lines)):
-        #         (x1, y1, x2,y2) = lines[i][0]
-        #         cv2.line(frame,(x1,y1),(x2,y2),(0,0,255),3, cv2.LINE_AA)
+        if lines is not None:
+            for i in range (0,len(lines)):
+                (x1, y1, x2, y2) = (lines[i].start.x, lines[i].start.y, lines[i].end.x, lines[i].end.y)
+                cv2.line(frame,(int(x1),int(y1)),(int(x2),int(y2)),(255,0,255),3, cv2.LINE_AA)
         
         if goals is not None:
             for goal in goals:
-                cv2.circle(frame, goal, 5, (255, 0, 0), 0)
-                cv2.putText(frame, "goal", (goal[0] - 10, goal[1] - 10),
+                cv2.circle(frame, (int(goal.x),int(goal.y)), 5, (255, 0, 0), 0)
+                cv2.putText(frame, "goal", (int(goal.x) - 10, int(goal.y) - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
+        for i,corner in enumerate(self.corners):
+            if(corner is not None):
+                cv2.circle(frame, (int(corner.x), int(corner.y)), 5, (0, 0, 255), 0)
+                cv2.putText(frame, "corner" + str(i), (int(corner.x) - 10, int(corner.y) - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        
+        if points is not None:
+            for p in points:
+                cv2.circle(frame,(int(p.x),int(p.y)),4,(255,255,255),0)
+        
         return frame
+    
 
     def getFrame(self) -> Union[np.ndarray,None]:
         ret, frame = self.capture.read()
         if not ret:
-            print("Kunne ikke hente billede fra kamera")
+            printLog("error","Kunne ikke hente billede fra kamera", producer="Camera")
             return None
         self.shape = np.shape(frame)
         return frame
     
-    def findCircle(self,frame:np.ndarray) -> Union[List[Tuple[List[Union[int,float]],str]],None]:
+    def findCircle(self, frame: np.ndarray) -> Union[List[Tuple[List[Union[int, float]], str]], None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        
-        
-        
-        
-        # Orange farveområde (kan justeres)
-        # lower_orange = np.array([0, 30, 100])
-        # lower_orange = np.array([40, 30, 100])
-        # upper_orange = np.array([30, 255, 255])
-        
-        # Hvid farveområde (HSV)
-        lower_white = np.array([0, 0, 165])
-        upper_white = np.array([180, 35, 255])
-        
-        # Skab maske kun med orange
-        # mask_orange = cv2.inRange(hsv, lower_orange, upper_orange)
-        mask_white = cv2.inRange(hsv, lower_white, upper_white)
-        
-        # Kombinerer masker
-        # mask = cv2.bitwise_or(mask_orange, mask_white)
-        
-        # Brug masken til at finde relevante områder
-        # masked = cv2.bitwise_and(frame, frame, mask=mask)
-        masked = cv2.bitwise_and(frame, frame, mask=mask_white)
+
+        # Get current HSV thresholds for orange and white balls
+        low_orange = self.hsv_thresholds['Ball_Orange']['low']
+        high_orange = self.hsv_thresholds['Ball_Orange']['high']
+        low_white = self.hsv_thresholds['Ball_White']['low']
+        high_white = self.hsv_thresholds['Ball_White']['high']
+
+        # Create masks
+        mask_orange = cv2.inRange(hsv, low_orange, high_orange)
+        mask_white = cv2.inRange(hsv, low_white, high_white)
+
+        # Combine both masks
+        mask = cv2.bitwise_or(mask_orange, mask_white)
+        masked = cv2.bitwise_and(frame, frame, mask=mask)
+
         self.displayFrame(masked, "masked circle", debug=True)
 
-        # Konverter til gråskala og blur igen
+        # Convert to grayscale and blur
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(mask_white, (15, 15), 0)
+        gray = cv2.GaussianBlur(gray, (11, 11), 0)
 
-        self.displayFrame(gray, "brur circle", debug=False)
-
-
-        # Find cirkler med Hough Circle Transform
+        # Detect circles
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
             dp=1,
             minDist=1,
             param1=50,
-            param2=14,
-            minRadius=5,
-            maxRadius=8
+            param2=15,
+            minRadius=3,
+            maxRadius=7
         )
-        if(__circles is not None):
-            circles:List[List[List[Union[int,float]]]] = __circles.tolist()
-            names = ["ball"]*len(circles[0])
-            if(len(circles[0]) == 1):
-                return [*zip(circles[0],names)]
+
+        if __circles is not None and len(__circles) > 0:
+            circle_data = __circles[0]
+            if isinstance(circle_data, np.ndarray):
+                circle_list = circle_data.tolist()
             else:
-                return [*zip(circles[0],names)]
-        return __circles
-    
-    def findEgg(self, frame:np.ndarray) -> Union[List[Tuple[List[int | float], str]],None]:
+                circle_list = circle_data
+
+            if isinstance(circle_list[0], list) and len(circle_list[0]) == 3:
+                names = ["ball"] * len(circle_list)
+                return list(zip(circle_list, names))
+
+        return None
+
+    def findEgg(self, frame: np.ndarray) -> Union[List[Tuple[List[int | float], str]], None]:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        
-        # Hvid farveområde (HSV)
-        lower_white = np.array([0, 0, 0])
-        upper_white = np.array([180, 35, 255])
-        
-        mask_white = cv2.inRange(hsv, lower_white, upper_white)
-        
-        # Brug masken til at finde relevante områder
+
+        # Get white range from sliders
+        low = self.hsv_thresholds['Egg']['low']
+        high = self.hsv_thresholds['Egg']['high']
+
+        mask_white = cv2.inRange(hsv, low, high)
         masked = cv2.bitwise_and(frame, frame, mask=mask_white)
         self.displayFrame(masked, "masked egg", debug=True)
 
-
-        # Konverter til gråskala og blur igen
         gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
 
-        # Find cirkler med Hough Circle Transform
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
@@ -154,100 +243,223 @@ class Camera:
             minRadius=12,
             maxRadius=15
         )
-        if(__circles is not None):
-            circles = __circles.tolist()
-            names = ["eggs"]*len(circles[0])
-            if(len(circles[0]) == 1):
-                return [*zip(circles[0],names)]
+
+        if __circles is not None and len(__circles) > 0:
+            circle_data = __circles[0]
+            if isinstance(circle_data, np.ndarray):
+                circle_list = circle_data.tolist()
             else:
-                return [*zip(circles[0],names)]
-        return __circles
+                circle_list = circle_data
 
-    def findWall(self, frame:np.ndarray, noMask:bool = False) -> List[List[List[Union[int,float]]]]:
-        if(not noMask):
-            hsv:np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            if isinstance(circle_list[0], list) and len(circle_list[0]) == 3:
+                names = ["eggs"] * len(circle_list)
+                return list(zip(circle_list, names))
+
+        return None
+
+    def findWall(self, frame: np.ndarray, noMask: bool = False) -> List[List[tuple[int | float, int | float, int | float, int | float]]]:
+        if not noMask:
+            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            low = self.hsv_thresholds['Wall']['low']
+            high = self.hsv_thresholds['Wall']['high']
             
-            hueMid = 170
-            hueWidth = 25
-            sat = 30
-            bri = 60
-            hue0 = hueMid - hueWidth
-            hue1 = (hueMid + hueWidth) % 180
+            low_hue = low[0]
+            high_hue = high[0]
             
-            # Rød farveområde (HSV)
-            lower_red0 = np.array([hue0, sat, bri])
-            upper_red0 = np.array([180 , 200, 200])
-
-            lower_red1 = np.array([0   , sat, bri])
-            upper_red1 = np.array([hue1, 200, 200])
-
-            # Skab maske
-            mask0:np.ndarray = cv2.inRange(hsv, lower_red0, upper_red0)
-            mask1:np.ndarray = cv2.inRange(hsv, lower_red1, upper_red1)
+            low_std = low[1:3]
+            high_std = high[1:3]
             
-            mask:np.ndarray = cv2.bitwise_or(mask0,mask1)
+            low_ = cv2.inRange(hsv, np.array([0,*low_std]), np.array([low_hue,*high_std]))
+            high_= cv2.inRange(hsv, np.array([high_hue,*low_std]), np.array([180,*high_std]))
+            
+            # low_hue = cv2.inRange(hsv, low, np.array([180,*high[2:4]]))
+            # high_hue = cv2.inRange(hsv, np.array([0,*low[2:4]]), high)
+            
+            mask = cv2.bitwise_or(low_, high_)
+            # mask = cv2.inRange(hsv, low, high)
+            masked = cv2.bitwise_and(frame, frame, mask=mask)
+            masked_gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
 
+            self.displayFrame(masked, "walls masked", debug=True)
+            self.displayFrame(masked_gray, "walls edges", debug=True)
 
-            # Brug masken til at finde relevante områder
-            masked:np.ndarray = cv2.bitwise_and(frame, frame, mask=mask)
-            masked:np.ndarray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
-            edges:np.ndarray = cv2.Canny(masked, 50, 200, None, 3)
-            self.displayFrame(masked, "walls masked", debug = True)
-            self.displayFrame(edges, "walls edges", debug = True)
-        
+            edges = masked_gray
         else:
-            edges:np.ndarray = frame
-            edges:np.ndarray = cv2.cvtColor(edges, cv2.COLOR_BGR2GRAY)
+            edges = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        linesP: Union[np.ndarray, None] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5)
+
+        # Pylance-safe assignment
+        wall_lines: List[List[tuple[int | float, int | float, int | float, int | float]]] = linesP.tolist() if linesP is not None else []
+
+        self.walls = wall_lines
+        return wall_lines
+
+    def generateWall(self, frameNumber) ->List[List[tuple[int | float,int | float,int | float,int | float]]]:
+        """many iterations to find walls more acurately"""
         
-
-        linesP:List[List[List[Union[int,float]]]] = cv2.HoughLinesP(edges, 1, np.pi / 180, 35, None, 5, 5).tolist()
-        
-        self.walls = linesP
-
-        return linesP
-
-    def generateWall(self, frameNumber) ->List[List[List[int | float]]]:
         rawWalls = []
         for i in range (frameNumber):
             current = self.getFrame()
             if(current is None):
-                print("Kunne ikke hente billede fra kamera")
+                printLog("error","Kunne ikke hente billede fra kamera", producer="generateWall")
                 return []
             rawWalls.append(self.findWall(current))
         buffer = np.zeros(self.shape, dtype=np.uint8)
         for walls in rawWalls:
             if walls is not None:
                 for i in range (0,len(walls)):
-                    (x1, y1, x2,y2) = walls[i][0]
+                    (x1, y1, x2, y2) = walls[i][0]
                     cv2.line(buffer,(x1,y1),(x2,y2),(255,255,255),1, cv2.LINE_AA)
         self.displayFrame(buffer, "walls", True)
         self.walls = self.findWall(buffer,True)
+        self.corners = self.findCorners(self.walls)
         return self.walls
 
-    def findCar(self, frame:np.ndarray) -> Tuple[List[Tuple[List[int | float],str]],Tuple[List[int | float],str]] | None:
+    def findCorners(self,walls:List[List[tuple[Union[int,float],int | float,int | float,int | float]]]) -> tuple[Point|None,Point|None,Point|None,Point|None]:
+        old = self.corners
+        if(not any (corner is None for corner in self.corners)):
+            oldArea = polygonArea([c for c in old if c is not None])
+        else:
+            oldArea = -1
+        
+        wallClass:list[Wall] = []
+        for wall in walls:
+            wallClass.append(Wall(wall))
+        intersects:List[Point] = []
+        for i in range (0,len(wallClass)):
+            for j in range (i+1, len(wallClass)):
+                if wallClass[i]._asLine()._intersects(wallClass[j],30):
+                    intersection = wallClass[i].intersect(wallClass[j])
+                    if(type(intersection) != bool):
+                        intersects.append(intersection)
+        
+        intersects = [Point(intersect.y,intersect.x) for intersect in intersects]
+        frame = self.drawToFrame(self.getFrame(),points = intersects)
+        self.displayFrame(frame,"intersects of walls")
+        
+        split:tuple[list[Point],list[Point],list[Point],list[Point]] = ([],[],[],[])
+        cornerArea = 2/5
+        cornerAreaI = 1 - cornerArea
+        
+        width = self.shape[1]
+        height = self.shape[0]
+
+        for intersect in intersects:
+            if intersect.x < width * cornerArea and intersect.y < height * cornerArea:  # top-left
+                split[0].append(intersect)
+            elif intersect.x >= width * cornerAreaI and intersect.y < height * cornerArea:  # top-right
+                split[1].append(intersect)
+            elif intersect.x < width * cornerArea and intersect.y >= height * cornerAreaI:  # bottom-left
+                split[2].append(intersect) 
+            elif intersect.x >= width * cornerAreaI and intersect.y >= height * cornerAreaI:  # bottom-right
+                split[3].append(intersect)
+        if(any(len(split[i]) == 0 for i in range(0,4))):
+            printLog("error","Kunne ikke finde alle hjørner", producer="findCorners")
+            return (None,None,None,None)
+        
+        x0 = float(np.median(np.array([p.x for p in split[0]])))
+        y0 = float(np.median(np.array([p.y for p in split[0]])))
+        x1 = float(np.median(np.array([p.x for p in split[1]])))
+        y1 = float(np.median(np.array([p.y for p in split[1]])))
+        x2 = float(np.median(np.array([p.x for p in split[2]])))
+        y2 = float(np.median(np.array([p.y for p in split[2]])))
+        x3 = float(np.median(np.array([p.x for p in split[3]])))
+        y3 = float(np.median(np.array([p.y for p in split[3]])))
+        corners:Tuple[Point|None,Point|None,Point|None,Point|None] = (
+            Point(x0, y0), Point(x2, y2), Point(x3, y3),Point(x1, y1)
+        )
+        
+        margin = 0.05
+        
+        for i in range(0,4):
+            if(corners[i] is None):
+                printLog("error","Kunne ikke finde hjørner, et eller flere hjørner er None", producer="findCorners")
+                return old
+        
+        newArea = polygonArea([c for c in corners if c is not None])
+        if(oldArea != -1 and (newArea < oldArea * (1 - margin))):
+            printLog("error","Kunne ikke finde hjørner, for lille område", producer="findCorners")
+            return old
+        
+        for i in range(0,4):
+            j = (i + 1) % 4
+            old1 = old[i]
+            old2 = old[j]
+            if(old1 is None or old2 is None):
+                break
+            if(Line(corners[i], corners[(i + 1) % 4]).length() < Line(old1, old2).length() * (1 - margin)):
+                printLog("error","Kunne ikke finde hjørner, for lille afstand mellem hjørner", producer="findCorners")
+                return old
+        
+        self.corners = corners
+        return corners
+
+    def findCross(self, walls: List[List[tuple[Union[int, float], int | float, int | float, int | float]]]) -> tuple[Wall, Wall] | None:
+        # Convert raw walls to Wall objects
+        wallClass: List[Wall] = [Wall(w) for w in walls]
+
+        # Find all intersections
+        intersects: List[Point] = []
+        for i in range(len(wallClass)):
+            for j in range(i + 1, len(wallClass)):
+                if wallClass[i]._asLine()._intersects(wallClass[j], 30):
+                    intersection = wallClass[i].intersect(wallClass[j])
+                    if isinstance(intersection, Point):
+                        intersects.append(intersection)
+
+        intersects = [Point(intersect.y,intersect.x) for intersect in intersects]
+        frame = self.drawToFrame(self.getFrame(),points = intersects)
+        self.displayFrame(frame,"intersects of cross")
+
+        # Filter intersections near the center of the frame
+        middleIntersects: List[Point] = []
+        for pt in intersects:
+            if (self.shape[1] / 3 < pt.x < self.shape[1] * 2 / 3) and (self.shape[0] / 3 < pt.y < self.shape[0] * 2 / 3):
+                middleIntersects.append(pt)
+
+
+        # Find walls that intersect near those points
+        validWalls: List[Wall] = []
+        for wall in wallClass:
+            for pt in middleIntersects:
+                if wall._asLine().distanceTo(pt) <= 0.001:
+                    validWalls.append(wall)
+                    break
+
+        if len(validWalls) < 2:
+            return None
+
+        # Find bounding box of intersecting walls
+        max_X = max([wall.start.x for wall in validWalls] + [wall.end.x for wall in validWalls])
+        min_X = min([wall.start.x for wall in validWalls] + [wall.end.x for wall in validWalls])
+        max_Y = max([wall.start.y for wall in validWalls] + [wall.end.y for wall in validWalls])
+        min_Y = min([wall.start.y for wall in validWalls] + [wall.end.y for wall in validWalls])
+
+        mid_X = (max_X + min_X) / 2
+        mid_Y = (max_Y + min_Y) / 2
+
+        # Return two perpendicular walls forming the cross
+        crossWalls: tuple[Wall, Wall] = (
+        Wall([(min_X, mid_Y, max_X, mid_Y)]),  # Horizontal wall
+        Wall([(mid_X, min_Y, mid_X, max_Y)])  # Vertical wall
+        )
+        return crossWalls
+
+
+    def findCar(self, frame: np.ndarray) -> Tuple[List[Tuple[List[int | float], str]], Tuple[List[int | float], str]] | None:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        
-        huemiddle = 150//2
-        satmiddle = 60
-        brightmiddle = 60
-        
-        hueWidth = 20
-        satWidth = 60
-        brightWidth = 15
-        # grøn farveområde (HSV)
-        lower_green = np.array([max(huemiddle - hueWidth,0), 20, 20])
-        upper_green = np.array([min(huemiddle + hueWidth,360), 255, 255])
-        # lower_green = np.array([max(huemiddle - hueWidth,0), max(satmiddle - satWidth,0), max(brightmiddle - brightWidth,0)])
-        # upper_green = np.array([min(huemiddle + hueWidth,360), min(satmiddle + satWidth,255), min(brightmiddle + brightWidth,255)])
-        
-        mask_green = cv2.inRange(hsv, lower_green, upper_green)
-        
-        # Konverter til gråskala og blur igen
+        low = self.hsv_thresholds['Car']['low']
+        high = self.hsv_thresholds['Car']['high']
+        mask_green = cv2.inRange(hsv, low, high)
+
         gray = cv2.GaussianBlur(mask_green, (15, 15), 0)
-        gray = cv2.inRange(gray, np.array([20]), np.array([255]))  # For at sikre at det er binært
+        gray = cv2.inRange(gray, np.array([20]), np.array([255]))
         gray = cv2.GaussianBlur(gray, (11, 11), 0)
-        
-        # Find cirkler med Hough Circle Transform
+
+        self.displayFrame(mask_green, "car mask", debug=True)
+        self.displayFrame(gray, "car blur", debug=True)
+
         __circles = cv2.HoughCircles(
             gray,
             cv2.HOUGH_GRADIENT,
@@ -258,74 +470,94 @@ class Camera:
             minRadius=2,
             maxRadius=10
         )
-        self.displayFrame(mask_green,"car mask", debug=True)
-        self.displayFrame(gray, "car blur", debug=True)
-        closest:Union[Tuple[int,int], None] = None
-        distance = 1000000
-        front: Union[List[Union[int, float]],None] = None
-        if(__circles is not None):
-            circles:List[List[List[Union[int,float]]]] = __circles.tolist()
-            while(len(circles[0]) > 4):
-                furtherstDist = 0
-                furthestID = -1
-                for i in range (0, len(circles[0])):
-                    dist = 0
-                    for j in range (0, len(circles[0])):
-                        if(i == j):
+
+        closest = None
+        front = None
+        if __circles is not None and len(__circles) > 0:
+            circle_data = __circles[0]
+            if isinstance(circle_data, np.ndarray):
+                circle_list = circle_data.tolist()
+            else:
+                circle_list = circle_data
+
+            if isinstance(circle_list, list) and isinstance(circle_list[0], list):
+                while len(circle_list) > 4:
+                    i_to_remove = max(range(len(circle_list)), key=lambda i: sum(
+                        math.dist(circle_list[i], circle_list[j]) for j in range(len(circle_list)) if i != j
+                    ))
+                    circle_list.pop(i_to_remove)
+
+                for i in range(len(circle_list)):
+                    for j in range(len(circle_list)):
+                        if i == j:
                             continue
-                        dist += math.sqrt((circles[0][i][0] - circles[0][j][0]) ** 2 + (circles[0][i][1] - circles[0][j][1]) ** 2)
-                    if(dist > furtherstDist):
-                        furtherstDist = dist
-                        furthestID = i
-                circles[0].remove(circles[0][furthestID])
-            for i in range (0, len(circles[0])):
-                for j in range (0, len(circles[0])):
-                    if(i == j):
-                        continue
-                    (y0, x0, r) = circles[0][i]
-                    (y1, x1, r) = circles[0][j]
-                    currentDistance = math.sqrt((y0 - y1) ** 2 + (x0 - x1) ** 2)
-                    if(currentDistance < distance):
-                        distance = currentDistance
-                        closest = (i,j)
-            if(closest is not None):
-                front = [(circles[0][closest[0]][0] + circles[0][closest[1]][0]) // 2, (circles[0][closest[0]][1] + circles[0][closest[1]][1]) // 2, 5]
-                circles[0].remove(circles[0][closest[1]])
-                circles[0].remove(circles[0][closest[0]])
-                circles[0].append(front)
-            if(len(circles[0]) > 1):
-                lines:List[List[Tuple[int,int,int,int]]] = []
-                for i in range (0,len(circles[0])):
-                    (y0, x0, r) = circles[0][i]
-                    (y1, x1, r) = circles[0][(i+1) % len(circles[0])]
-                    lines.append([(int(y0), int(x0), int(y1), int(x1))])
-                self.displayWithDetails(frame, lines= lines, name="car", debug=True)
-                
-            names = ["car"]*len(circles[0])
-            circles_ = [*zip(circles[0],names)]
-            if(front is not None):
-                return (circles_, (front, "front"))
-        else:
-            return None
+                        d = math.dist(circle_list[i][:2], circle_list[j][:2])
+                        if closest is None or d < math.dist(circle_list[closest[0]][:2], circle_list[closest[1]][:2]):
+                            closest = (i, j)
+
+                if closest:
+                    x = (circle_list[closest[0]][0] + circle_list[closest[1]][0]) // 2
+                    y = (circle_list[closest[0]][1] + circle_list[closest[1]][1]) // 2
+                    front = [x, y, 5]
+                    for idx in sorted(closest, reverse=True):
+                        circle_list.pop(idx)
+                    circle_list.append(front)
+
+                names = ["car"] * len(circle_list)
+                results = list(zip(circle_list, names))
+                if front:
+                    return results, (front, "front")
+
+        return None
 
     def close(self):
         self.capture.release()
     
-    def midpointWalls(self, width, lines:List[List[List[Union[int,float]]]]) -> List[Tuple[int,int]]:
+    def makeWalls(self, corners:tuple[Point|None,Point|None,Point|None,Point|None]) -> List[Wall]|None:
+        if corners is None or len(corners) < 4:
+            printLog("error","Kunne ikke lave vægge, hjørner mangler", producer="makeWalls")
+            return None
         
+        output:List[Wall] = []
+        for i in range(0,4):
+            corner1 = corners[i]
+            corner2 = corners[(i + 1) % 4]
+            if corner1 is None or corner2 is None:
+                printLog("error","Kunne ikke lave væg, et eller flere hjørner er None", producer="makeWalls")
+                return None
+            output.append(Wall([(corner1.x, corner1.y, corner2.x, corner2.y)]))
+        return output
+    
+    def makeGoals(self, corners:tuple[Point | None,Point  | None,Point  | None,Point  | None]) -> tuple[Point,Point] | None:
+        if corners is None or len(corners) < 4:
+            printLog("error","Kunne ikke lave mål, hjørner mangler", producer="makeGoals")
+            return None
+        if(corners[0] is None or corners[1] is None or corners[2] is None or corners[3] is None):
+            printLog("error","Kunne ikke lave mål, et eller flere hjørner er None", producer="makeGoals")
+            return None
+        return ( \
+            Point( \
+                (corners[0].x + corners[1].x) / 2, \
+                (corners[0].y + corners[1].y) / 2  \
+            ), \
+            Point( \
+                (corners[2].x + corners[3].x) / 2, \
+                (corners[2].y + corners[3].y) / 2  \
+            ) \
+        )
+    
+    def midpointWalls(self, width, lines:List[List[tuple[int | float,int | float,int | float,int | float]]]) -> List[Tuple[int,int]]:
         if(lines is None or len(lines) == 0):
             return [(0,0),(0,0)]
-
         veritcalLines = []
         for i in range (0,len(lines)):
-            (y1, x1, y2,x2) = lines[i][0]
-            if(y1 == y2): # For at undgå division med 0
+            (x1, y1, x2, y2) = lines[i][0]
+            if(x1 == x2): # For at undgå division med 0
                 veritcalLines.append(lines[i])
                 break
-            a = abs(x1 - x2) / abs(y1 - y2)
-            if(a < -7 or a > 7):
+            a = abs(y1 - y2) / abs(x1 - x2)
+            if(a < -4 or a > 4):
                 veritcalLines.append(lines[i])
-        
         rightLines = []
         leftLines = []
         for i in range (0,len(veritcalLines)):
@@ -334,108 +566,84 @@ class Camera:
                 rightLines.append(veritcalLines[i])
             elif(x1 < (width // 3) and x2 < (width // 3)):
                 leftLines.append(veritcalLines[i])
-        
         rightTop = -1
         rightBottom = -1    
         rightIner = -1
         rightOut = -1
         for i in range (0,len(rightLines)):
-            (y1, x1, y2, x2) = rightLines[i][0]
+            (x1, y1, x2, y2) = rightLines[i][0]
             if(y1 > rightBottom or rightBottom == -1):
                 rightBottom = y1
-            
             if(y2 > rightBottom):
                 rightBottom = y2
-            
             if(y1 < rightTop or rightTop == -1):
                 rightTop = y1
-            
             if(y2 < rightTop):
                 rightTop = y2
-            
             if(x1 > rightIner or rightIner == -1):
                 rightIner = x1
-            
             if(x2 > rightIner):
                 rightIner = x2
-            
             if(x1 < rightOut or rightOut == -1):
                 rightOut = x1
-            
             if(x2 < rightOut):
                 rightOut = x2
-        
         rightMidY = (rightTop + rightBottom) // 2
         rightMidX = (rightIner + rightOut) // 2
-
         leftTop = -1
         leftBottom = -1    
         leftIner = -1
         leftOut = -1
         for i in range (0,len(leftLines)):
-            (y1, x1, y2, x2) = leftLines[i][0]
+            (x1, y1, x2, y2) = leftLines[i][0]
             if(y1 > leftBottom or leftBottom == -1):
                 leftBottom = y1
-            
             if(y2 > leftBottom):
                 leftBottom = y2
-            
             if(y1 < leftTop or leftTop == -1):
                 leftTop = y1
-            
             if(y2 < leftTop):
                 leftTop = y2
-            
             if(x1 > leftIner or leftIner == -1):
                 leftIner = x1
-            
             if(x2 > leftIner):
                 leftIner = x2
-            
             if(x1 < leftOut or leftOut == -1):
                 leftOut = x1
-            
             if(x2 < leftOut):
                 leftOut = x2
-        
         leftMidY = (leftTop + leftBottom) // 2
         leftMidX = (leftIner + leftOut) // 2
-
-
-        goals = [(rightMidY,rightMidX), (leftMidY,leftMidX)]
-
-        self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=rightLines, goals=[goals[0]]), "right lines", debug=True)
-        self.displayFrame(self.drawToFrame(np.zeros(self.shape, dtype=np.uint8),lines=leftLines, goals=[goals[1]]), "left lines", debug=True)
-        
+        goals = [(rightMidX,rightMidY), (leftMidX,leftMidY)]
         return goals
 
-    def Test(self, useOldWall = False):
-        if(useOldWall):
-            walls = self.walls
+    def Test(self, generateWalls = False):
+        self.debug = True
+        if(generateWalls):
+            self.walls = self.generateWall(40)
         else:
-            walls = self.generateWall(40)
+            pass
         frame:Union[np.ndarray,None] = self.getFrame()
         if(frame is None): return
-        eggs = self.findEgg(np.copy(frame))
-        circles = self.findCircle(np.copy(frame))
-        __car = self.findCar(np.copy(frame))# type: ignore
-        car, front = __car if __car is not None else (None, None)
-        goals = self.midpointWalls(self.shape[1], walls)# type: ignore
-        if(circles is None):
-            circles = []
-        if(eggs is None):
+
+        balls = self.findCircle(frame)
+        eggs = self.findEgg(frame)
+        car = self.findCar(frame)
+        if balls is None:
+            balls = []
+        if eggs is None:
             eggs = []
-        if(car is None):
-            car = []
-        if(walls is None):
-            walls = []
-        if(goals is None):
-            goals = []
-        if(front is None):
-            front = []
-        else:
-            front = [front]
-        self.displayWithDetails(frame, circles + eggs + car + front, walls, goals)# type: ignore
+        if car is None:
+            car = ([], None)
+        self.corners = self.findCorners(self.walls)
+        goals:tuple[Point, Point] | None = self.makeGoals(self.corners)
+        walls:list[Wall]|None = self.makeWalls(self.corners)
+        cross:tuple[Wall,Wall] | None = self.findCross(self.walls)
+        if walls is None or len(walls) == 0: walls = []
+        lines:list[Line] = [wall._asLine() for wall in walls]
+        if cross is not None:
+            lines += [cross[0]._asLine(), cross[1]._asLine()]
+        self.displayWithDetails(frame,circles=balls+eggs, lines=lines, goals=goals, name="detection", debug=True)
 
     def setDebug(self, debug:bool):
         self.debug = debug
