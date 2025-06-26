@@ -139,6 +139,7 @@ class Line:
                 return True
         return False
     
+
     def _intersects(self, wall: Wall, extend: int = 0, tolerance: float = 1e-3) -> bool:
         """Checks if this line segment intersects with a wall segment."""
         # Extend the current line by the specified amount
@@ -155,6 +156,7 @@ class Line:
         # If determinant is close to zero, lines are parallel or coincident
         if abs(det) < tolerance:
             # Check for collinearity and overlap if parallel
+
             # A more robust collinearity check using cross product
             # (P2-P1) x (P3-P1) == 0 where P1,P2 are on one line, P3 on other
             collinear_check1 = (extended_line.end.x - extended_line.start.x) * (extended_wall.start.y - extended_line.start.y) - \
@@ -216,8 +218,6 @@ class Line:
         
         offset = abs(offset)
         
-        out = []
-        
         offset_y = offset * math.cos(angle)
         offset_x = offset * math.sin(angle)
         
@@ -256,7 +256,6 @@ class Line:
         # Project the point onto the segment
         closest_x = self.start.x + t * px
         closest_y = self.start.y + t * py
-
         # Calculate the distance
         return math.hypot(point.x - closest_x, point.y - closest_y)
 

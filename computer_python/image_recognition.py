@@ -23,7 +23,7 @@ class Camera:
         self.cross:Tuple[Wall,Wall] | None= None
 
         self.hsv_thresholds = {
-        'Ball_Orange': {
+                'Ball_Orange': {
             'low': np.array([11, 111, 186]),
             'high': np.array([30, 255, 255])
         },

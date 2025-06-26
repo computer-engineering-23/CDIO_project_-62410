@@ -109,6 +109,7 @@ try:
 
                 if car_front.distanceTo(approach_point) < 10:
                     delivering = True
+                    rotating_to_deliver = True
                     path = []
             elif rotating_to_deliver:
                 rotating_to_deliver = False
