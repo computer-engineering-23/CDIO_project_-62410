@@ -153,7 +153,7 @@ try:
             if step.distance > 0:
                 cmd = f"drive {step.distance / 200}"
             elif step.distance < 0:
-                cmd = f"backward {abs(step.distance) / 200}"
+                cmd = f"drive {abs(step.distance) / 200}"
             else:
                 printLog("ERROR", "zero movement ignored", step.distance, producer="client sender")
                 continue
