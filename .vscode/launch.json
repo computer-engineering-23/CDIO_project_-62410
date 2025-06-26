@@ -26,6 +26,14 @@
             "program": "robot_client_controller.py",
             "console": "externalTerminal",
             "cwd": "${workspaceFolder}/computer_python",
+        },
+        {
+            "name": "intersectTest",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "test_classes.py",
+            "console": "internalConsole",
+            "cwd": "${workspaceFolder}/computer_python",
         }
     ]
 }

@@ -127,7 +127,7 @@ class Camera:
     def drawToFrame(self, frame:np.ndarray | None, circles:Union[List[Tuple[List[Union[int,float]],str]],None] = None, lines:list[Line]|None = None, goals:tuple[Point, Point] | None = None, points:list[Point] | None = None) -> np.ndarray:
         if frame is None:
             printLog("error","Kunne ikke tegne på billede, billede er None", producer="drawToFrame")
-            frame = np.zeros(self.shape, dtype=np.uint8)
+            return np.zeros(self.shape, dtype=np.uint8)
         if circles is not None:
             names:List[str] = [a[1] for a in circles]
             _circles:List[List[Union[int,float]]] = [a[0] for a in circles]
@@ -142,7 +142,7 @@ class Camera:
         if lines is not None:
             for i in range (0,len(lines)):
                 (x1, y1, x2, y2) = (lines[i].start.x, lines[i].start.y, lines[i].end.x, lines[i].end.y)
-                cv2.line(frame,(int(x1),int(y1)),(int(x2),int(y2)),(0,0,255),3, cv2.LINE_AA)
+                cv2.line(frame,(int(x1),int(y1)),(int(x2),int(y2)),(255,0,255),3, cv2.LINE_AA)
         
         if goals is not None:
             for goal in goals:
@@ -357,6 +357,7 @@ class Camera:
         if(any(len(split[i]) == 0 for i in range(0,4))):
             printLog("error","Kunne ikke finde alle hjørner", producer="findCorners")
             return (None,None,None,None)
+        
         x0 = float(np.median(np.array([p.x for p in split[0]])))
         y0 = float(np.median(np.array([p.y for p in split[0]])))
         x1 = float(np.median(np.array([p.x for p in split[1]])))

@@ -27,7 +27,7 @@ class track:
             front:Union[Tuple[List[int | float],str],None] = None
             
         ):
-
+        self.failedTargetAdjustment:int = 0
         self.walls:List[Wall] = self.formatWalls(walls)
         self.goals:List[Point] = self.formatGoals(goals)
         self.targets:List[Point] = self.formatTargets(targets)
@@ -112,7 +112,7 @@ class track:
         
         return 1
     
-    def is_target_too_close(self, target: Point, min_distance: float = 25) -> bool:
+    def is_target_too_close(self, target: Point, min_distance: float = 50) -> bool:
         """Returns True if the target is too close to any wall or extra obstacle (like the cross)."""
         for wall in self.walls + self.extra_obstacles:
             if Line(wall.start, wall.end).distanceTo(target) < min_distance:
@@ -227,7 +227,8 @@ class track:
 
 
     def generatepath(self, target: Point | None = None, checkTarget: bool = True, attempt: int = 0, car: Car | None = None) -> tuple[List[Movement | Rotation | deliver], Point | None]:
-        MAX_ATTEMPTS = 15
+        """Generates a path from the car to the closest target"""
+        MAX_ATTEMPTS = 20
         walls = self.walls + self.extra_obstacles
 
         if attempt > MAX_ATTEMPTS:
@@ -324,7 +325,6 @@ class track:
 
         morePath, _ = self.generatepath(target=target, checkTarget=False, attempt=attempt+1, car=car.copy())
         return path + morePath, target
-
 
 
     def drawCar(self, frame:np.ndarray,car:Car) -> np.ndarray:

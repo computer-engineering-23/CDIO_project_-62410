@@ -154,7 +154,7 @@ try:
             if step.distance > 0:
                 cmd = f"drive {step.distance / 200}"
             elif step.distance < 0:
-                cmd = f"backward {abs(step.distance) / 200}"
+                cmd = f"drive {abs(step.distance) / 200}"
             else:
                 printLog("ERROR", "zero movement ignored", step.distance, producer="client sender")
                 continue
@@ -203,13 +203,13 @@ try:
 
 except Exception as e:
     printLog("ERROR", "An error occurred:", traceback.format_exception_only(e),producer="client cleanup")
-    printLog("ERROR", "Stack trace:", traceback.format_stack(),producer="client cleanup")
+    printLog("ERROR", "Stack trace:", *traceback.format_stack(),producer="client cleanup")
 
 finally:
     printLog("STATUS", "Closing connection without error",producer="client cleanup")
 
 try:
-    client_socket.close()
+    client_socket.close()   
 except Exception as e:
     printLog("ERROR", "Failed to close client socket", str(e),producer="client cleanup")
 finally:

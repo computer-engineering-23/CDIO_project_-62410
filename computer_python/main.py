@@ -23,8 +23,6 @@ import Log
 #     track_instance.update(walls=True, goals=True, targets=True, obsticles=True, car=True)
 #     track_instance.test()
 
-#main()
-
 
 def run_slider_mode():
     cam = Camera(debug=True)
